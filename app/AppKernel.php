@@ -19,6 +19,7 @@ class AppKernel extends Kernel
             new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
             new FOS\UserBundle\FOSUserBundle(),
             new Papyrillio\UserBundle\PapyrillioUserBundle(),
+            new Papyrillio\PapPalBundle\PapyrillioPapPalBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

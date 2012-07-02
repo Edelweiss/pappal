@@ -1,3 +1,7 @@
+PapyrillioPapPalBundle:
+    resource: "@PapyrillioPapPalBundle/Resources/config/routing.yml"
+    prefix:   /
+
 PapyrillioUserBundle:
     resource: "@PapyrillioUserBundle/Resources/config/routing.yml"
     prefix:   /
