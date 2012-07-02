@@ -1,3 +1,13 @@
 PapyrillioPapPalBundle_homepage:
     pattern:  /hello/{name}
     defaults: { _controller: PapyrillioPapPalBundle:Default:index }
+
+# Sample
+
+PapyrillioBeehiveBundle_SampleList:
+    pattern:  /sample/list
+    defaults: { _controller: PapyrillioPapPalBundle:Sample:list }
+
+PapyrillioBeehiveBundle_SampleShow:
+    pattern:  /sample/show/{id}
+    defaults: { _controller: PapyrillioPapPalBundle:Sample:show }

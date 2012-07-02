@@ -1,118 +1,87 @@
 Papyrillio\PapPalBundle\Entity\Sample:
     type: entity
     table: sample
-    gedmo:
-        loggable
     id:
         id:
             type: integer
             generator:
                 strategy: AUTO
     fields:
-        source:
-            type: integer
-            nullable: true
-        text:
-            type: string
-            length: 64
+
+        # ids
+
         tm:
             type: integer
-            nullable: true
         folder:
             type: integer
-            nullable: true
         hgv:
             type: string
             length: 64
-            nullable: true
         ddb:
             type: string
             length: 64
-            nullable: true
         collection:
             type: string
             length: 64
-            nullable: true
         volume:
             type: string
             length: 64
-            nullable: true
         document:
             type: string
             length: 64
-            nullable: true
-        position:
-            type: text
-            nullable: true
-            gedmo:
-                - versioned
-        description:
-            type: text
-            gedmo:
-                - versioned
-        status:
-            type: text
-            gedmo:
-                - versioned
-        creator:
-            type: text
-        created:
-            type: datetime
-        sortPage:
-            name: sort_page
-            type: integer
-            nullable: true
-        sortSide:
-            name: sort_side
-            type: string
-            length: 2
-            nullable: true
-        sortFragment:
-            name: sort_fragment
-            type: string
-            nullable: true
-        sortColumn:
-            name: sort_column
-            type: string
-            length: 8
-            nullable: true
-        sortLine:
-            name: sort_line
-            type: integer
-            nullable: true
-        sortSystem:
-            name: sort_system
-            type: string
-            length: 256
-        sortUser:
-            name: sort_user
-            type: string
-            length: 256
-            nullable: true
-        sort:
-            type: string
-            length: 256
-    manyToOne:
-        edition:
-            targetEntity: Edition
-            inversedBy: corrections
-            joinColumn:
-                name: edition_id
-                referencedColumnName: id
-                nullable: false
 
-        compilation:
-            targetEntity: Compilation
-            inversedBy: corrections
-            joinColumn:
-                name: compilation_id
-                referencedColumnName: id
-                nullable: false
+        # meta data
+
+        dateWhen:
+          type: string
+          length: 11
+          nullable: true
+        dateNotBefore:
+          type: string
+          length: 11
+          nullable: true
+        dateAfter:
+          type: string
+          length: 11
+          nullable: true
+        dateHgvFormat:
+          type: text
+        century:
+          type: integer
+          nullable: true
+        year:
+          type: integer
+          nullable: true
+        month:
+          type: integer
+          nullable: true
+        day:
+          type: integer
+          nullable: true
+        title:
+          type: text
+        material:
+          type: text
+        keywords:
+          type: text
+        digitalImages:
+          type: text
+        provenance:
+          type: text
+
+        # operational data
+
+        dateSort: # golden ratio of dateWhen, dateNotBefore, dateNotAfter: -YYYY-MM-DD
+          type: string
+          length: 11
+        status: # tells whether sample is ready to use
+            type: string
+            length: 64
+        importDate:
+          type: datetime
+
     oneToMany:
-        tasks:
-            targetEntity: Task
-            mappedBy: correction
-        indexEntries:
-            targetEntity: IndexEntry
-            mappedBy: correction
+        comments:
+            targetEntity: Comment
+            mappedBy: sample
     # don't forget to init the collection in entity __construct() method

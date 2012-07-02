@@ -1,0 +1,156 @@
+/* global site structure */
+
+body {
+  color: white;
+  font-size: 66%;
+  background-color: #222222;
+}
+
+div#site {
+  height: auto !important;
+  min-height: 100%;
+  position: relative;
+  width: 1024px;
+  margin: 0 auto;
+  color: white;
+  padding: 0 0 23em;
+ background-color: #111111;
+}
+
+div#header {
+  border-bottom: 0.1em solid #0972A5;
+  height: 2em;
+  padding: 1em;
+}
+
+div#content {
+  min-height: 100%;
+  padding: 1em 1em 5em;
+}
+
+div#footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  border-top: 0.1em solid #0972A5;
+}
+
+/* global element styling */
+
+a {
+  color: #0972A5;
+}
+
+a:hover {
+  color: #26B3F7;
+}
+
+p {
+  padding: 1em;
+}
+
+h3, h5 {
+  text-align: center;
+  width: auto;
+  clear: both;
+}
+
+h3 span {
+  font-size: 75%;
+}
+
+.highlight {
+  color: white;
+  line-height: 2em;
+  padding: 0.1em 0.4em;
+  font-size: 1em;
+  border: 1px solid #26B3F7;
+  background: url('jquery/dark-hive/images/?new=0972a5&w=1&h=100&f=png&q=100&fltr[]=over|textures/04_highlight_hard.png|0|0|20') repeat-x scroll 50% 50% #0972A5;
+}
+
+.keyword {
+  font-weight: bold;
+  color: #0972A5;
+}
+
+.keywordBright {
+  font-weight: bold;
+  color: #26B3F7;
+}
+
+span.action,
+.actionHolder span, 
+.actionHolder a {
+  margin: 0 0 0 0.4em;
+  float: right;
+  color: #0972A5;
+  text-decoration: underline;
+  cursor: hand;
+  cursor: pointer;
+  font-size: 1em;
+}
+
+span.action:hover,
+.actionHolder span:hover, 
+.actionHolder a:hover {
+  color: #26B3F7;
+}
+.ui-widget textarea,
+.ui-widget .ui-widget textarea,
+.ui-widget textarea.greek,
+.ui-widget .ui-widget textarea.greek,
+.greek {
+    font-family: "Lucida Grande", "Cardo", "Arial Unicode MS", "IFAO-Grec Unicode", "KadmosU", "New Athena Unicode", "Athena Unicode", "Lucida Grande", "Verdana", "Tahoma" !important;
+}
+
+/* SAMPLE SHOW */
+
+img.sample,
+table.sample {
+  float: left;
+}
+
+img.sampleMini{
+  cursor: hand;
+  cursor: pointer;
+}
+
+table.sample {
+  float: left;
+  margin: 0 0 0 1em;
+}
+
+table.sample th{
+  font-weight: bold;
+  font-variant: small-caps;
+  padding: 0 1em 0 0;
+}
+
+th.title,
+td.title {
+  font-size: larger;
+  font-weight: bold;
+}
+
+/* LOGIN */
+
+form#login {
+  margin: 0 auto;
+  width: 19em;
+  padding: 10em;
+}
+
+form#login label{
+  float: left;
+  margin: 0.2em;
+}
+
+form#login input{
+  float: right;
+  margin: 0.2em;
+}
+
+form#login input.data{
+  border: 0.1em solid #0972A5;
+  width: 12em;
+}
