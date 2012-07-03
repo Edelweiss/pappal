@@ -130,13 +130,16 @@ class Sample
     private $comments;
     
     public function getThumbnail(){
-      return 'thumbnail/' . $this->folder . '/' . $this->hgv . '/' . $this->hgv . '_0.jpg';
+      return 'thumbnail/' . $this->folder . '/' . $this->hgv . '/' . $this->hgv . '.jpg';
     }
     
     public function getThumbnails(){
       $thumbnails = array();
-      for($i = 0; $i < 9; $i++){
-        $thumbnails[] = 'thumbnail/' . $this->folder . '/' . $this->hgv . '/' . $this->hgv . '_' . $i . '.jpg';
+
+      foreach(scandir(__DIR__ . '/../../../../web/thumbnail/' . $this->folder . '/' . $this->hgv) as $file){
+        if(preg_match('/(' . $this->hgv . '_\d+_\d+\.jpg)$/', $file, $matches)){
+          $thumbnails[] = 'thumbnail/' . $this->folder . '/' . $this->hgv . '/' . $matches[1];
+        }
       }
       return $thumbnails;
     }
@@ -149,7 +152,7 @@ class Sample
     {
         $this->comments = new \Doctrine\Common\Collections\ArrayCollection();
     }
-    
+
     /**
      * Get id
      *
