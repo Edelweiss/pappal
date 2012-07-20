@@ -72,8 +72,7 @@ Papyrillio\PapPalBundle\Entity\Sample:
         # operational data
 
         dateSort: # golden ratio of dateWhen, dateNotBefore, dateNotAfter: -YYYY-MM-DD
-          type: string
-          length: 11
+          type: integer
         status: # tells whether sample is ready to use
             type: string
             length: 64

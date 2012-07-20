@@ -128,12 +128,31 @@ class Sample
      * @var Papyrillio\PapPalBundle\Entity\Comment
      */
     private $comments;
+    
+    public function getThumbnail(){
+      return 'thumbnail/' . $this->folder . '/' . $this->hgv . '/' . $this->hgv . '.jpg';
+    }
+    
+    public function getThumbnails(){
+      $thumbnails = array();
+
+      foreach(scandir(__DIR__ . '/../../../../web/thumbnail/' . $this->folder . '/' . $this->hgv) as $file){
+        if(preg_match('/(' . $this->hgv . '_\d+_\d+\.jpg)$/', $file, $matches)){
+          $thumbnails[] = 'thumbnail/' . $this->folder . '/' . $this->hgv . '/' . $matches[1];
+        }
+      }
+      return $thumbnails;
+    }
+    
+    public function getImageLinks(){
+      return explode(', ', $this->digitalImages);
+    }
 
     public function __construct()
     {
         $this->comments = new \Doctrine\Common\Collections\ArrayCollection();
     }
-    
+
     /**
      * Get id
      *

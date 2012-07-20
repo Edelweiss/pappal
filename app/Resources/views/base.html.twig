@@ -22,12 +22,12 @@
             <div id="header">
               {% if app.user %}
                 <span>Hallo {{ app.user.username }}!</span>
-                
+
                 <div id="navigation" class="ui-widget">
                   <div>Navigation</div>
                   <ul id="menu" class="ui-corner-all" style="display: none;">
                     {% set navigation = {
-                    'Samples': {'PapyrillioBeehiveBundle_SampleList': {'title': 'View Samples', 'parameters': {}}},
+                    'Samples': {'PapyrillioPapPalBundle_SampleList': {'title': 'View Samples', 'parameters': {}}},
 
                     'User':    {'fos_user_change_password': {'title': 'Change Password', 'parameters': {}}, 
                                  'fos_user_profile_edit': {'title': 'Edit Profile', 'parameters': {}},

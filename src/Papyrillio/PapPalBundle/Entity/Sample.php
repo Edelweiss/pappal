@@ -143,9 +143,25 @@ class Sample
       }
       return $thumbnails;
     }
-    
+
     public function getImageLinks(){
       return explode(', ', $this->digitalImages);
+    }
+
+    public function setMasterThumbnail($masterThumbnail){
+      $dir = __DIR__ . '/../../../../web/thumbnail/' . $this->folder . '/' . $this->hgv;
+      $dir = '/Users/Admin/PapPal/images/thumbnail/' . $this->folder . '/' . $this->hgv;
+      $masterThumbnail = $dir . '/' . $masterThumbnail;
+      $link = $dir . '/' . $this->hgv . '.jpg';
+      if(file_exists($masterThumbnail)){
+        if(file_exists($link)){
+          unlink($link);
+        }
+        if(symlink($masterThumbnail, $link)){
+          return true;
+        }
+      }
+      return false;
     }
 
     public function __construct()
@@ -566,7 +582,7 @@ class Sample
     /**
      * Set dateSort
      *
-     * @param date $dateSort
+     * @param integer $dateSort
      */
     public function setDateSort($dateSort)
     {
@@ -623,7 +639,7 @@ class Sample
         return $this->comments;
     }
     /**
-     * @var Date $importDate
+     * @var datetime $importDate
      */
     private $importDate;
 
@@ -631,9 +647,9 @@ class Sample
     /**
      * Set importDate
      *
-     * @param Date $importDate
+     * @param datetime $importDate
      */
-    public function setImportDate(\Date $importDate)
+    public function setImportDate($importDate)
     {
         $this->importDate = $importDate;
     }
@@ -641,7 +657,7 @@ class Sample
     /**
      * Get importDate
      *
-     * @return Date 
+     * @return datetime 
      */
     public function getImportDate()
     {

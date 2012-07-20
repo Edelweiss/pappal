@@ -4,10 +4,18 @@ PapyrillioPapPalBundle_homepage:
 
 # Sample
 
-PapyrillioBeehiveBundle_SampleList:
+PapyrillioPapPalBundle_SampleList:
     pattern:  /sample/list
     defaults: { _controller: PapyrillioPapPalBundle:Sample:list }
 
-PapyrillioBeehiveBundle_SampleShow:
+PapyrillioPapPalBundle_SampleGallery:
+    pattern:  /sample/gallery
+    defaults: { _controller: PapyrillioPapPalBundle:Sample:list }
+
+PapyrillioPapPalBundle_SampleShow:
     pattern:  /sample/show/{id}
     defaults: { _controller: PapyrillioPapPalBundle:Sample:show }
+
+PapyrillioPapPalBundle_SampleSetMasterThumbnail:
+    pattern:  /sample/setMasterThumbnail/{id}
+    defaults: { _controller: PapyrillioPapPalBundle:Sample:setMasterThumbnail }

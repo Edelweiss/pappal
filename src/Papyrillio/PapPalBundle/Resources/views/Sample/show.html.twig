@@ -41,10 +41,15 @@
   <tr><th class="importDate">Import date</th><td class="importDate">{{ sample.importDate.format('Y-m-d H:i:s') }}</td></tr>
 </table>
 
+<form action="{{ path('PapyrillioPapPalBundle_SampleSetMasterThumbnail', { 'id': sample.id }) }}" method="post" style="display: none;">
+  <input name="masterThumbnail" id="masterThumbnail" value="" />
+  <input type="submit" value="set current preview image as master thumbnail" />
+</form>
+
 <div class="clear"></div>
 
 {% for thumbnail in sample.thumbnails %}
-  <img class="sampleMini" src="{{ asset(thumbnail) }}" alt="bleeding edge" width="100" onclick="$('#sample').attr('src', $(this).attr('src'))" />
+  <img class="sampleMini" src="{{ asset(thumbnail) }}" alt="bleeding edge" width="100" onclick="var image = $(this).attr('src'); $('#sample').attr('src', image); $('#masterThumbnail').val(image.match(/\/([^\/]+\.jpg)/)[1]);" />
 {% endfor %}
 
 

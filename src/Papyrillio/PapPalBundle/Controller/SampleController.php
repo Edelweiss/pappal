@@ -3,27 +3,117 @@
 namespace Papyrillio\PapPalBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Papyrillio\PapPalBundle\Entity\Sample;
 use Papyrillio\PapPalBundle\Entity\Commet;
 use Papyrillio\UserBundle\Entity\User;
 use DateTime;
+use Date;
 
 class SampleController extends PapPalController{
+    
+  protected function getFilterForm(){
+    $sample = new Sample();
+
+    $form = $this->createFormBuilder($sample)
+      ->add('tm', 'text', array('required' => false))
+      ->add('hgv', 'text', array('required' => false))
+      ->add('ddb', 'text', array('required' => false))
+      ->add('dateWhen', 'text', array('required' => false))
+      ->add('dateNotBefore', 'text', array('required' => false))
+      ->add('dateAfter', 'text', array('required' => false))
+      ->add('title', 'text', array('required' => false))
+      ->add('material', 'text', array('required' => false))
+      ->add('keywords', 'text', array('required' => false))
+      ->add('provenance', 'text', array('required' => false))
+      ->getForm();
+
+    if ($this->getRequest()->getMethod() == 'POST') {
+
+      $form->bindRequest($this->getRequest());
+
+      // save to session
+    } // else retrieve session
+
+    return $form;
+  }
+  
+  protected function getSort(){
+    $result = array();
+    if($this->getParameter('sort')){
+      foreach($this->getParameter('sort') as $sort){
+        if(!empty($sort['value'])){
+          $result[$sort['value']] = $sort['direction'];
+        }
+      }
+    }
+    return $result;
+  }
 
   public function listAction(){
+    $template = 'list';
+    if($this->container->get('request')->get('_route') == 'PapyrillioPapPalBundle_SampleGallery'){
+      $template = 'gallery';
+    }
+    $filterForm = $this->getFilterForm();
+    $sort = $this->getSort();
+    $sortOptions = array('' => '', 'tm' => 'TM', 'hgv' => 'HGV', 'ddb' => 'DDB', 'dateSort' => 'Date', 'title' => 'Title', 'material' => 'Material', 'provenance' => 'Provenance', 'status' => 'Status', 'importDate' => 'Import Date');
+    $sortDirections = array('asc' => 'ascending', 'desc' => 'descending');
+    $filterAnd = array('title');
+    $filterOr = array('title', 'tm', 'hgv', 'ddb', 'date', 'material', 'provenance', 'status', 'keywords');
+
     $entityManager = $this->getDoctrine()->getEntityManager();
     $repository = $entityManager->getRepository('PapyrillioPapPalBundle:Sample');
     
+    // ORDER BY
+
+    $orderBy = ' ORDER BY';
+    if(count($sort)){
+      foreach($sort as $key => $direction){
+        if($key == 'hgv'){
+          $orderBy .= ' s.tm, s.hgv, ';
+        } else {
+          $orderBy .= ' s.' . $key . ', ';
+        }
+      }
+      $orderBy = rtrim($orderBy, ', ');
+    } else {
+      $orderBy .= ' s.dateSort';
+    }
+
+    // WHERE
+
+    $where = ' WHERE s.status = :status';
+    $parameters = array('status' => 'ok');
+    
+    if($this->getParameter('form')){
+      foreach($this->getParameter('form') as $field => $value){
+        if(!empty($value) && in_array($field, $filterOr)){
+          $where .= ' AND (';
+          $index = 0;
+          foreach(explode(' ', $value) as $or){
+            $where .= 's.' . $field . ' LIKE :' . $field . $index . ' OR ';
+            $parameters[$field . $index] = '%' . $or . '%';
+            $index++;
+          }
+
+          $where = rtrim($where, ' OR ') .  ')';
+        }
+      }
+    }
+
+    // SELECT
     $query = $entityManager->createQuery('
-        SELECT s FROM PapyrillioPapPalBundle:Sample s ORDER BY s.dateSort
+        SELECT s FROM PapyrillioPapPalBundle:Sample s ' . $where . ' ' . $orderBy .'
       ');
-    
+      
+    // QUERY
+
+    $query->setParameters($parameters);
     $samples = $query->getResult();
-    
-    
-    
-    return $this->render('PapyrillioPapPalBundle:Sample:list.html.twig', array('samples' => $samples));
+
+    return $this->render('PapyrillioPapPalBundle:Sample:' . $template . '.html.twig', array('samples' => $samples, 'filterForm' => $filterForm->createView(), 'sort' => $sort, 'sortOptions' => $sortOptions, 'sortDirections' => $sortDirections));
 
     if ($this->getRequest()->getMethod() == 'POST') {
       
@@ -48,26 +138,10 @@ class SampleController extends PapPalController{
       $visible = $visibleColumns;
 
       $this->get('logger')->info('visible: ' . print_r($visible, true));
-      $this->get('logger')->info('visible: ' . $this->getParameter('visible'));
-
-      // ODER BY
-      
-      $orderBy = '';
-      if(in_array($sort, array('tm', 'hgv', 'ddb', 'source', 'text', 'position', 'description', 'creator', 'created', 'status'))){
-        $orderBy = ' ORDER BY c.' . $sort . ' ' . $sortDirection;
-      }
-      if($sort == 'edition'){
-        $orderBy = ' ORDER BY e.sort, e.title ' . $sortDirection;
-      }
-      if($sort == 'compilation'){
-        $orderBy = ' ORDER BY c2.volume ' . $sortDirection;
-      }
+    
 
       // WHERE WITH
-      
-      $where = '';
-      $with = '';
-      $parameters = array();
+
       if($this->getParameter('_search') == 'true'){
         $prefix = ' WHERE ';
 
@@ -159,5 +233,24 @@ class SampleController extends PapPalController{
     }
 
     return $this->render('PapyrillioPapPalBundle:Sample:show.html.twig', array('sample' => $sample));
+  }
+
+  public function setMasterThumbnailAction($id){
+    $entityManager = $this->getDoctrine()->getEntityManager();
+    $repository = $entityManager->getRepository('PapyrillioPapPalBundle:Sample');
+    $sample = $repository->findOneBy(array('id' => $id));
+    $masterThumbnail = $this->getParameter('masterThumbnail');
+
+    if(!empty($masterThumbnail)){
+      if($sample and $sample->setMasterThumbnail($masterThumbnail)){
+        $this->get('session')->setFlash('notice', 'Preview image has been set as default thumbnail.');
+      } else {
+        $this->get('session')->setFlash('notice', 'Preview image ' . $masterThumbnail . ' could not bee set as default thumbnail.');
+      }
+    } else {
+      $this->get('session')->setFlash('notice', 'Empty image path');
+    }
+
+    return new RedirectResponse($this->generateUrl('PapyrillioPapPalBundle_SampleShow', array('id' => $id)));
   }
 }

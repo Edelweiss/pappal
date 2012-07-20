@@ -1,0 +1,17 @@
+<form action="{{ path(app.request.attributes.get('_route')) }}" method="post" {{ form_enctype(filterForm) }}>
+  {{ form_widget(filterForm) }}
+
+  <select id="sort_0_value" name="sort[0][value]">
+    {% for key, option in sortOptions %}
+      <option value="{{ key }}" {{ sort ? 'selected="selected"' : '' }}>{{ option }}</option>
+    {% endfor %}
+  </select>
+
+  <select id="sort_0_direction" name="sort[0][direction]">
+    {% for key, direction in sortDirections %}
+      <option value="{{ key }}" {{ sort ? 'selected="selected"' : '' }}>{{ direction }}</option>
+    {% endfor %}
+  </select>
+
+  <input type="submit" />
+</form>
