@@ -17,8 +17,8 @@
 
             {% for sample in samples %}
               <li id="sample{{ sample.id }}" style="display: none; width: 0; height: 0;">
-                <a href="{{ path('PapyrillioPapPalBundle_SampleShow', {id: sample.id}) }}" imtitle" title="{{ sample.title }}">{{ sample.title }}</a>
-                <a href="{{ asset(sample.thumbnail) }}" title="{{ sample.title }}"><img src="{{ asset('thumbnail/placeholder.gif') }}" data-original="{{ asset(sample.thumbnail) }}" alt="" /></a>
+                <span class="imtitle">{{ sample.title }}</span>
+                <a href="{{ path('PapyrillioPapPalBundle_SampleShow', {id: sample.id}) }}" title="{{ sample.title }}"><img src="{{ asset('thumbnail/placeholder.gif') }}" data-original="{{ asset(sample.thumbnail) }}" alt="" /></a>
               </li>
             {% endfor %}
 

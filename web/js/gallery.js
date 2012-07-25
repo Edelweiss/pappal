@@ -14,7 +14,7 @@ actual = 1;
 function equilibrate() {
   var from = Math.max(actual - 2, 0);
   var to = Math.min(actual + 4, slider.length);
-  
+
   //console.log('slider: ' + slider);
   //console.log('from:' + from + ' actual: ' + actual + ' to: ' +  to);
 
