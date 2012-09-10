@@ -17,17 +17,16 @@ class SampleController extends PapPalController{
     $sample = new Sample();
 
     $form = $this->createFormBuilder($sample)
-      ->add('tm', 'text', array('required' => false))
-      ->add('hgv', 'text', array('required' => false))
-      ->add('ddb', 'text', array('required' => false))
-      ->add('dateWhen', 'text', array('required' => false))
+      ->add('hgv', 'text', array('required' => false)) // e.g. 1915a
+      ->add('ddb', 'text', array('required' => false)) // e.g. bgu
+      ->add('dateWhen', 'text', array('required' => false)) // 
       ->add('dateNotBefore', 'text', array('required' => false))
-      ->add('dateAfter', 'text', array('required' => false))
+      ->add('dateNotAfter', 'text', array('required' => false))
       ->add('title', 'text', array('required' => false))
-      ->add('material', 'text', array('required' => false))
+      ->add('material', 'choice', array('choices' => array('Papyrus' => 'Papyrus', 'Ostrakon' => 'Ostrakon'), 'preferred_choices' => array(''), 'required' => false))
       ->add('keywords', 'text', array('required' => false))
       ->add('provenance', 'text', array('required' => false))
-      ->getForm();
+      ->getForm();  // digitalImages, status, importDate
 
     if ($this->getRequest()->getMethod() == 'POST') {
 
@@ -58,10 +57,10 @@ class SampleController extends PapPalController{
     }
     $filterForm = $this->getFilterForm();
     $sort = $this->getSort();
-    $sortOptions = array('' => '', 'tm' => 'TM', 'hgv' => 'HGV', 'ddb' => 'DDB', 'dateSort' => 'Date', 'title' => 'Title', 'material' => 'Material', 'provenance' => 'Provenance', 'status' => 'Status', 'importDate' => 'Import Date');
+    $sortOptions = array('' => '', 'hgv' => 'HGV', 'ddb' => 'DDB', 'dateSort' => 'Date', 'title' => 'Title', 'material' => 'Material', 'provenance' => 'Provenance', 'status' => 'Status', 'importDate' => 'Import Date');
     $sortDirections = array('asc' => 'ascending', 'desc' => 'descending');
     $filterAnd = array('title');
-    $filterOr = array('title', 'tm', 'hgv', 'ddb', 'date', 'material', 'provenance', 'status', 'keywords');
+    $filterOr = array('title', 'hgv', 'ddb', 'dateWhen', 'material', 'provenance', 'keywords', 'status');
 
     $entityManager = $this->getDoctrine()->getEntityManager();
     $repository = $entityManager->getRepository('PapyrillioPapPalBundle:Sample');
@@ -87,8 +86,10 @@ class SampleController extends PapPalController{
     $where = ' WHERE s.status = :status';
     $parameters = array('status' => 'ok');
     
-    if($this->getParameter('form')){
-      foreach($this->getParameter('form') as $field => $value){
+    if($filter = $this->getParameter('form')){
+      // standard fields
+      foreach($filter as $field => $value){
+        $value = trim($value);
         if(!empty($value) && in_array($field, $filterOr)){
           $where .= ' AND (';
           $index = 0;
@@ -101,6 +102,37 @@ class SampleController extends PapPalController{
           $where = rtrim($where, ' OR ') .  ')';
         }
       }
+
+      // date stuffff
+      $dateSortWhen = trim($filter['dateWhen']);
+      $dateSortNotBefore = trim($filter['dateNotBefore']);
+      $dateSortNotAfter = trim($filter['dateNotAfter']);
+
+      if(!empty($dateSortNotBefore) && !empty($dateSortNotAfter)){
+        // between
+        
+        $dateSortNotBefore = Sample::generateDateSortKey(Sample::makeIsoYear($dateSortNotBefore) . '-01-01');
+        $dateSortNotAfter = Sample::generateDateSortKey(Sample::makeIsoYear($dateSortNotAfter) . '-12-31');
+        
+        $where .= ' AND s.dateSort BETWEEN :dateNotBefore AND :dateNotAfter';
+        $parameters['dateNotBefore'] = $dateSortNotBefore;
+        $parameters['dateNotAfter'] = $dateSortNotAfter;
+      } else if(!empty($dateSortNotBefore)){
+        // not before
+        
+        $dateSortNotBefore = Sample::generateDateSortKey(Sample::makeIsoYear($dateSortNotBefore) . '-01-01');
+        
+        $where .= ' AND s.dateSort >= :dateNotBefore';
+        $parameters['dateNotBefore'] = $dateSortNotBefore;
+      } else if(!empty($dateSortNotAfter)){
+        // not after
+        
+        $dateSortNotAfter = Sample::generateDateSortKey(Sample::makeIsoYear($dateSortNotAfter) . '-12-31');
+        
+        $where .= ' AND s.dateSort <= :dateNotAfter';
+        $parameters['dateNotAfter'] = $dateSortNotAfter;
+      }
+      
     }
 
     // SELECT
@@ -112,6 +144,7 @@ class SampleController extends PapPalController{
 
     $query->setParameters($parameters);
     $samples = $query->getResult();
+    $count = count($samples);
 
     return $this->render('PapyrillioPapPalBundle:Sample:' . $template . '.html.twig', array('samples' => $samples, 'filterForm' => $filterForm->createView(), 'sort' => $sort, 'sortOptions' => $sortOptions, 'sortDirections' => $sortDirections));
 

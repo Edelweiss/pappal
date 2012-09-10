@@ -26,12 +26,30 @@
 	display: block;
 }
 
-#slider {
+#slider,
+#texts,
+#count {
 	/*width: 780px;*/
 	/*border: 1px solid #0f0;*/
 	margin: 0 auto;
-	background-color: #fff;
-	border: 1px solid #333;
+	background-color: #222222;
+	border: 1px solid #555555;
+  padding: 1em;
+  text-align: center;
+}
+
+#count {
+  border-bottom: none;
+}
+
+#texts {
+  border-top: none;
+}
+
+#slider > div{
+  margin: 0 auto;
+  text-align: center;
+  background: green;
 }
 
 #slider .floating {
@@ -91,18 +109,7 @@
 	margin: 0 auto;
 }
 
-#texts {
-	width: 330px;
-	height: 140px;
-	margin: 16px auto 4px auto;
-}
-
 .text {
-	width: 300px;
-	height: 100px;
-	border: 1px solid #333;
-	background-color: #fff;
-	padding: 12px;
-	color: #333;
 	overflow: auto;
+	text-align: center;
 }

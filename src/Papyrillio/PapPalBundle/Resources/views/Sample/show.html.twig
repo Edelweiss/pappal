@@ -25,7 +25,7 @@
 
   <!--tr><th class="dateWhen">When</th><td class="dateWhen">{{ sample.dateWhen }}</td></tr>
   <tr><th class="dateNotBefore">Not before</th><td class="dateNotBefore">{{ sample.dateNotBefore }}</td></tr>
-  <tr><th class="dateNotAfter">Not After</th><td class="dateNotAfter">{{ sample.dateAfter }}</td></tr>
+  <tr><th class="dateNotAfter">Not After</th><td class="dateNotAfter">{{ sample.dateNotAfter }}</td></tr>
   <tr><th class="id">id</th><td class="id">{{ sample.id }}</td></tr>
   <tr><th class="tm">tm</th><td class="tm">{{ sample.tm }}</td></tr>
   <tr><th class="folder">folder</th><td class="folder">{{ sample.folder }}</td></tr>
@@ -41,7 +41,7 @@
   <tr><th class="importDate">Import date</th><td class="importDate">{{ sample.importDate.format('Y-m-d H:i:s') }}</td></tr>
 </table>
 
-<form action="{{ path('PapyrillioPapPalBundle_SampleSetMasterThumbnail', { 'id': sample.id }) }}" method="post" style="display: none;">
+<form action="{{ path('PapyrillioPapPalBundle_SampleSetMasterThumbnail', { 'id': sample.id }) }}" method="post">
   <input name="masterThumbnail" id="masterThumbnail" value="" />
   <input type="submit" value="set current preview image as master thumbnail" />
 </form>

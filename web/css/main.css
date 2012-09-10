@@ -215,3 +215,54 @@ div#navigation ul#menu li {
 
 div#header span {
   float: right;
+}
+
+/* SAMPLE FILTER */
+
+form#filter fieldset {
+  background-color: #222222;
+  border: 1px solid #555555;
+  padding: 1em;
+}
+
+form#filter legend{
+  padding: 0.2em;
+  font-weight: bold;
+  font-variant: small-caps;
+}
+form#filter button,
+form#filter input,
+form#filter select,
+form#filter label{
+  margin: 0.2em 0 0 0.2em;
+  display: block;
+  float: left;
+  width: 10em;
+}
+
+form#filter input{
+  padding: 0;
+}
+
+form#filter label{
+  width: 8em;
+}
+
+form#filter input#form_title,
+form#filter input#form_keywords,
+form#filter input#form_provenance{
+  width: 30em;
+}
+
+form#filter input#form_dateWhen,
+form#filter input#form_dateNotBefore,
+form#filter input#form_dateNotAfter,
+form#filter input#form_hgv,
+form#filter input#form_ddb{
+  width: 4em;
+}
+
+form#filter button#reset,
+form#filter input#submit {
+  float: right;
+}

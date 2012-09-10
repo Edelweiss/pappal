@@ -52,6 +52,8 @@ function equilibrate() {
 			break;
 		}
 	});
+	
+	$('span#number').html(actual);
 
 }
 function actual_change(diff){
@@ -78,7 +80,7 @@ function lazyloadImage(image){
 
 $(document).ready(function(){
 
-	$('#slider ul').prepend('<li><a><img src="../../images/eo/vide.png" alt="" /></a></li>');
+	$('#slider ul').prepend('<li><a><img src="../../images/eo/vide.gif" alt="" /></a></li>');
 	var max = $('#slider ul li').size();
 	for(var i = 0; i < max; i++){
 	  if(i < 3){

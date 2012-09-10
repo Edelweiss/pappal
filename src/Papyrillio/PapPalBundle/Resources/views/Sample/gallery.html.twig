@@ -5,8 +5,12 @@
 {% endblock %}
 
 {% block body %}
+
   {% include 'PapyrillioPapPalBundle:Sample:filterForm.html.twig' with {'filterForm': filterForm, 'sortOptions': sortOptions, 'sortDirections': sortDirections} %}
 
+    <div id="count">
+      <span id="number">{{ samples | length ? 1 : 0 }}</span><span>/{{ samples | length }}</span>
+    </div>
     <div id="slider">
       <div>
         <div class="floating">

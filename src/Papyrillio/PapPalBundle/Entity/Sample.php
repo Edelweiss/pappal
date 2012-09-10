@@ -60,9 +60,9 @@ class Sample
     private $dateNotBefore;
 
     /**
-     * @var date $dateAfter
+     * @var date $dateNotAfter
      */
-    private $dateAfter;
+    private $dateNotAfter;
 
     /**
      * @var text $dateHgvFormat
@@ -360,23 +360,23 @@ class Sample
     }
 
     /**
-     * Set dateAfter
+     * Set dateNotAfter
      *
-     * @param date $dateAfter
+     * @param date $dateNotAfter
      */
-    public function setDateAfter($dateAfter)
+    public function setDateNotAfter($dateNotAfter)
     {
-        $this->dateAfter = $dateAfter;
+        $this->dateNotAfter = $dateNotAfter;
     }
 
     /**
-     * Get dateAfter
+     * Get dateNotAfter
      *
      * @return date 
      */
-    public function getDateAfter()
+    public function getDateNotAfter()
     {
-        return $this->dateAfter;
+        return $this->dateNotAfter;
     }
 
     /**
@@ -662,5 +662,38 @@ class Sample
     public function getImportDate()
     {
         return $this->importDate;
+    }
+
+    /**
+     * generate numerical key to sort dates by
+     *
+     * @param String $dateSort, iso formatted date string -YYYY-MM-DD
+     */
+    public static function generateDateSortKey($dateSort){
+      $dateSortKey = 0;
+      if($dateSort){
+
+        $sign = 1;
+        if(strpos($dateSort, '-') === 0){
+          $sign = -1;
+          $dateSort = substr($dateSort, 1);
+        }
+
+        $dateSort = explode('-', $dateSort);
+        $dateSortYear = isset($dateSort[0]) ? $dateSort[0] : '0000';
+        $dateSortMonth = isset($dateSort[1]) ? $dateSort[1] : '00';
+        $dateSortDay = isset($dateSort[2]) ? $dateSort[2] : '00';
+        
+        $dateSortKey = ($dateSortYear . $dateSortMonth . $dateSortDay ) * $sign;
+      }
+      return $dateSortKey;
+    }
+    public static function makeIsoYear($year){
+      $sign = '';
+      if(strpos($year, '-') === 0){
+        $sign = '-';
+        $year = substr($year, 1);
+      }
+      return $sign . str_pad($year, 4, '0', STR_PAD_LEFT);
     }
 }
