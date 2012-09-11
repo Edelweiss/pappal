@@ -135,6 +135,11 @@ div.sample span.id {
 
 /* SAMPLE SHOW */
 
+div.sampleThumbnail{
+  float: left;
+  text-align: center;
+}
+
 img.sample,
 table.sample {
   float: left;

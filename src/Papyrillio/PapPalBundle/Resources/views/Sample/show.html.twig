@@ -2,7 +2,21 @@
 
 {% block body %}
 
-<img id="sample" class="sample" src="{{ asset(sample.thumbnail) }}" alt="bleeding edge" width="300" />
+<div class="sampleThumbnail">
+  <img id="sample" class="sample" src="{{ asset(sample.thumbnail) }}" alt="bleeding edge" width="300" />
+  
+  {% if is_granted('ROLE_ADMIN') %}
+
+    <div class="clear"></div>
+
+    <form action="{{ path('PapyrillioPapPalBundle_SampleSetMasterThumbnail', { 'id': sample.id }) }}" method="post">
+      <input type="hidden" name="masterThumbnail" id="masterThumbnail" value="" />
+      <input type="submit" value="set current preview image as master thumbnail" />
+    </form>
+  
+  {% endif %}
+    
+</div>
 
 <table class="sample">
   <tr><th class="title">Title</th><td class="title">{{ sample.title }}</td></tr>
@@ -17,6 +31,17 @@
       {% for imageLink in sample.imageLinks %}
         <a href="{{ imageLink }}">{{ imageLink }}</a><br />
       {% endfor %}
+      {% for key, uploadedImage in sample.uploadedImages %}
+        <a href="{{ asset(uploadedImage) }}">{{ key }}</a><br />
+      {% endfor %}
+      {% if is_granted('ROLE_ADMIN') %}
+        <form action="{{ path('PapyrillioPapPalBundle_SampleUploadImage', { 'id': sample.id }) }}" method="post" {{ form_enctype(uploadForm) }}>
+          {{ form_widget(uploadForm.image) }}
+          {{ form_errors(uploadForm.image) }}
+          {{ form_widget(uploadForm) }}
+          <input type="submit" class="submit" id="form_submit" value="Save" />
+        </form>
+      {% endif %}
     </td>
   </tr>
 
@@ -41,10 +66,7 @@
   <tr><th class="importDate">Import date</th><td class="importDate">{{ sample.importDate.format('Y-m-d H:i:s') }}</td></tr>
 </table>
 
-<form action="{{ path('PapyrillioPapPalBundle_SampleSetMasterThumbnail', { 'id': sample.id }) }}" method="post">
-  <input name="masterThumbnail" id="masterThumbnail" value="" />
-  <input type="submit" value="set current preview image as master thumbnail" />
-</form>
+{% if is_granted('ROLE_ADMIN') %}
 
 <div class="clear"></div>
 
@@ -52,5 +74,6 @@
   <img class="sampleMini" src="{{ asset(thumbnail) }}" alt="bleeding edge" width="100" onclick="var image = $(this).attr('src'); $('#sample').attr('src', image); $('#masterThumbnail').val(image.match(/\/([^\/]+\.jpg)/)[1]);" />
 {% endfor %}
 
+{% endif %}
 
 {% endblock %}

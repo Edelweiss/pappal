@@ -144,10 +144,6 @@ class Sample
       return $thumbnails;
     }
 
-    public function getImageLinks(){
-      return explode(', ', $this->digitalImages);
-    }
-
     public function setMasterThumbnail($masterThumbnail){
       $dir = __DIR__ . '/../../../../web/thumbnail/' . $this->folder . '/' . $this->hgv;
       $dir = '/Users/Admin/PapPal/images/thumbnail/' . $this->folder . '/' . $this->hgv;
@@ -162,6 +158,21 @@ class Sample
         }
       }
       return false;
+    }
+
+    public function getImageLinks(){
+      return explode(', ', $this->digitalImages);
+    }
+    
+    public function getUploadedImages(){
+      $imageLinks = array();
+
+      foreach(scandir(__DIR__ . '/../../../../web/sample/' . $this->folder . '/' . $this->hgv) as $file){
+        if(preg_match('/^(.+\.jpg)$/', $file, $matches)){
+          $imageLinks[$matches[1]] = 'sample/' . $this->folder . '/' . $this->hgv . '/' . $matches[1];
+        }
+      }
+      return $imageLinks;
     }
 
     public function __construct()

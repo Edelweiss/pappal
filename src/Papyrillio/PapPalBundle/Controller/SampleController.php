@@ -265,7 +265,7 @@ class SampleController extends PapPalController{
       return $this->forward('PapyrillioPapPalBundle:Sample:list');
     }
 
-    return $this->render('PapyrillioPapPalBundle:Sample:show.html.twig', array('sample' => $sample));
+    return $this->render('PapyrillioPapPalBundle:Sample:show.html.twig', array('sample' => $sample, 'uploadForm' => $this->getUploadForm()->createView()));
   }
 
   public function setMasterThumbnailAction($id){
@@ -286,4 +286,83 @@ class SampleController extends PapPalController{
 
     return new RedirectResponse($this->generateUrl('PapyrillioPapPalBundle_SampleShow', array('id' => $id)));
   }
+  
+  protected function getUploadForm(){
+    $uploadForm = $this->get('form.factory')
+     ->createBuilder('form')
+     ->add('image','file', array('required' => true))
+     ->getForm();
+    
+    if($this->get('request')->getMethod() == 'POST'){
+      $uploadForm->bindRequest($this->get('request'));
+    }
+    
+    return $uploadForm;
+  }
+
+  public function uploadImageAction($id){
+    $entityManager = $this->getDoctrine()->getEntityManager();
+    $repository = $entityManager->getRepository('PapyrillioPapPalBundle:Sample');
+    $sample = $repository->findOneBy(array('id' => $id));
+
+    $uploadForm = $this->getUploadForm();
+    
+    if($this->get('request')->getMethod() == 'POST'){
+        
+        if($uploadForm->isValid()){
+          //Symfony\Component\HttpFoundation\File\UploadedFile
+          $files = $this->get('request')->files->get($uploadForm->getName());
+          $uploadedFile = $files['image'];
+          if($uploadedFile->getMimeType() == 'image/jpeg'){
+
+            // make sure directory exists
+            $sampleDirectory = $this->get('kernel')->getRootDir() . '/../web/sample';
+            $folderDirectory = $sampleDirectory . '/' . $sample->getFolder();
+            $hgvDirectory = $folderDirectory . '/' . $sample->getHgv();
+            if(!file_exists($folderDirectory)){
+              mkdir($folderDirectory);
+            }
+            if(!file_exists($hgvDirectory)){
+              mkdir($hgvDirectory);
+            }
+            
+            // make sure it ends with ».jpg«
+            $filename = $uploadedFile->getClientOriginalName();
+            $match = array();
+            if(preg_match('/^(.+)\.jpe?g$/i', $filename, $match)){
+              $filename = $match[1] . '.jpg';
+            } else {
+              $filename .= '.jpg';
+            }
+
+            // make sure there is no file by this name already
+            $i = 0;
+            $targetFile = $hgvDirectory . '/' . $filename;
+            while(file_exists($targetFile)){
+              $indexedFilename = substr($filename, 0, strrpos($filename, '.')) . '_' . ++$i . '.jpg';
+              $targetFile = $hgvDirectory . '/' . $indexedFilename;
+            }
+
+            // move file
+            $uploadedFile->move($hgvDirectory, $i ? $indexedFilename : $filename);
+
+            #$this->get('session')->setFlash('notice', 'File was uploaded to ' . $targetFile . '.');
+          } else {
+            $this->get('session')->setFlash('notice', 'Mime type ' . $uploadedFile->getMimeType() . ' not accepted. Please upload only jpg images.');
+          }
+
+        } else {
+          $this->get('session')->setFlash('notice', 'Invalid form data.');
+        }
+    }
+
+    #$this->get('session')->setFlash('notice', 'Image has been uploaded.');
+
+    if(!$sample){
+      return $this->forward('PapyrillioPapPalBundle:Sample:list');
+    } else {
+      return $this->forward('PapyrillioPapPalBundle:Sample:show', array('id' => $id));
+    }
+  }
+
 }

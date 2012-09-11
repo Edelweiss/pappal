@@ -19,3 +19,7 @@ PapyrillioPapPalBundle_SampleShow:
 PapyrillioPapPalBundle_SampleSetMasterThumbnail:
     pattern:  /sample/setMasterThumbnail/{id}
     defaults: { _controller: PapyrillioPapPalBundle:Sample:setMasterThumbnail }
+
+PapyrillioPapPalBundle_SampleUploadImage:
+    pattern:  /sample/uploadImage/{id}
+    defaults: { _controller: PapyrillioPapPalBundle:Sample:uploadImage }
