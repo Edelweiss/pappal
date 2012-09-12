@@ -319,6 +319,7 @@ class SampleController extends PapPalController{
             $sampleDirectory = $this->get('kernel')->getRootDir() . '/../web/sample';
             $folderDirectory = $sampleDirectory . '/' . $sample->getFolder();
             $hgvDirectory = $folderDirectory . '/' . $sample->getHgv();
+
             if(!file_exists($folderDirectory)){
               mkdir($folderDirectory);
             }
@@ -342,11 +343,18 @@ class SampleController extends PapPalController{
               $indexedFilename = substr($filename, 0, strrpos($filename, '.')) . '_' . ++$i . '.jpg';
               $targetFile = $hgvDirectory . '/' . $indexedFilename;
             }
+            $filename = $i ? $indexedFilename : $filename;
 
             // move file
-            $uploadedFile->move($hgvDirectory, $i ? $indexedFilename : $filename);
+            $uploadedFile->move($hgvDirectory, $filename);
+            
+            // create thumbnails
+            $thumbnailDirectory = $this->get('kernel')->getRootDir() . '/../web/thumbnail' . '/' . $sample->getFolder() . '/' . $sample->getHgv();
+            $cropper = $this->get('papyrillio_pap_pal.image_cropper');
+            $cropper->configure($hgvDirectory, $filename, $thumbnailDirectory, $sample->getHgv());
+            $cropper->crop();
 
-            #$this->get('session')->setFlash('notice', 'File was uploaded to ' . $targetFile . '.');
+            $this->get('session')->setFlash('notice', 'File was uploaded to ' . $targetFile . '.');
           } else {
             $this->get('session')->setFlash('notice', 'Mime type ' . $uploadedFile->getMimeType() . ' not accepted. Please upload only jpg images.');
           }

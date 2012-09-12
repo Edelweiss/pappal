@@ -135,10 +135,13 @@ class Sample
     
     public function getThumbnails(){
       $thumbnails = array();
+      $thumbnailDirectory = __DIR__ . '/../../../../web/thumbnail/' . $this->folder . '/' . $this->hgv;
 
-      foreach(scandir(__DIR__ . '/../../../../web/thumbnail/' . $this->folder . '/' . $this->hgv) as $file){
-        if(preg_match('/(' . $this->hgv . '_\d+_\d+\.jpg)$/', $file, $matches)){
-          $thumbnails[] = 'thumbnail/' . $this->folder . '/' . $this->hgv . '/' . $matches[1];
+      if(file_exists($thumbnailDirectory)){
+        foreach(scandir($thumbnailDirectory) as $file){
+          if(preg_match('/(' . $this->hgv . '_\d+_\d+\.jpg)$/', $file, $matches)){
+            $thumbnails[] = 'thumbnail/' . $this->folder . '/' . $this->hgv . '/' . $matches[1];
+          }
         }
       }
       return $thumbnails;
@@ -166,10 +169,13 @@ class Sample
     
     public function getUploadedImages(){
       $imageLinks = array();
+      $imageDirectory = __DIR__ . '/../../../../web/sample/' . $this->folder . '/' . $this->hgv;
 
-      foreach(scandir(__DIR__ . '/../../../../web/sample/' . $this->folder . '/' . $this->hgv) as $file){
-        if(preg_match('/^(.+\.jpg)$/', $file, $matches)){
-          $imageLinks[$matches[1]] = 'sample/' . $this->folder . '/' . $this->hgv . '/' . $matches[1];
+      if(file_exists($imageDirectory)){
+        foreach(scandir($imageDirectory) as $file){
+          if(preg_match('/^(.+\.jpg)$/', $file, $matches)){
+            $imageLinks[$matches[1]] = 'sample/' . $this->folder . '/' . $this->hgv . '/' . $matches[1];
+          }
         }
       }
       return $imageLinks;

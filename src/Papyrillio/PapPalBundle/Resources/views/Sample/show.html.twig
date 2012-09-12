@@ -3,7 +3,7 @@
 {% block body %}
 
 <div class="sampleThumbnail">
-  <img id="sample" class="sample" src="{{ asset(sample.thumbnail) }}" alt="bleeding edge" width="300" />
+  <img id="sample" class="sample" src="{{ asset(sample.thumbnail) }}?{{ 'now'|date('YmdHis') }}" alt="bleeding edge" width="300" />
   
   {% if is_granted('ROLE_ADMIN') %}
 
@@ -45,8 +45,8 @@
     </td>
   </tr>
 
-  <tr><th class="hgv">HGV</th><td class="hgv">{{ sample.hgv }}</td></tr>
-  <tr><th class="ddb">DDB</th><td class="ddb">{{ sample.ddb }}</td></tr>
+  <tr><th class="hgv">HGV</th><td class="hgv"><a href="http://www.papyri.info/hgv/{{ sample.hgv }}">{{ sample.hgv }}</a></td></tr>
+  <tr><th class="ddb">DDB</th><td class="ddb"><a href="http://www.papyri.info/ddbdp/{{ sample.ddb }}">{{ sample.ddb }}</a></td></tr>
 
   <!--tr><th class="dateWhen">When</th><td class="dateWhen">{{ sample.dateWhen }}</td></tr>
   <tr><th class="dateNotBefore">Not before</th><td class="dateNotBefore">{{ sample.dateNotBefore }}</td></tr>
