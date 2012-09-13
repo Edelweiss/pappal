@@ -48,16 +48,26 @@
   {{ form_widget(filterForm) }}
 
   <fieldset>
-    <legend>Sort</legend>
+    <legend>Display options</legend>
+    <label class="sort">Sort</label>
     <select id="sort_0_value" name="sort[0][value]">
       {% for key, option in sortOptions %}
-        <option value="{{ key }}" {{ sort ? 'selected="selected"' : '' }}>{{ option }}</option>
+        <option value="{{ key }}" {{ sort[key] is defined ? 'selected="selected"' : '' }}>{{ option }}</option>
       {% endfor %}
     </select>
   
     <select id="sort_0_direction" name="sort[0][direction]">
       {% for key, direction in sortDirections %}
-        <option value="{{ key }}" {{ sort ? 'selected="selected"' : '' }}>{{ direction }}</option>
+        <option value="{{ key }}" {{ key in sort ? 'selected="selected"' : '' }}>{{ direction }}</option>
+      {% endfor %}
+    </select>
+    
+    <div class="clear"></div>
+
+    <label class="template">Template</label>
+    <select id="template" name="template">
+      {% for key, option in templateOptions %}
+        <option value="{{ key }}" {{ key == template ? 'selected="selected"' : '' }}>{{ option }}</option>
       {% endfor %}
     </select>
   </fieldset>

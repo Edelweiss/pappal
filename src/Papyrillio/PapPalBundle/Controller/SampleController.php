@@ -49,16 +49,29 @@ class SampleController extends PapPalController{
     }
     return $result;
   }
+  
+  public function getTemplate(){
+    if($this->getParameter('template')){
+      return $this->getParameter('template');
+    }
+
+    if($this->container->get('request')->get('_route') == 'PapyrillioPapPalBundle_SampleGallery'){
+      return 'gallery';
+    }
+
+    return 'list';
+  }
 
   public function listAction(){
-    $template = 'list';
-    if($this->container->get('request')->get('_route') == 'PapyrillioPapPalBundle_SampleGallery'){
-      $template = 'gallery';
-    }
     $filterForm = $this->getFilterForm();
+    
+    $templateOptions = array('list' => 'List', 'gallery' => 'Gallery');
+    $template = $this->getTemplate();
+    
     $sort = $this->getSort();
     $sortOptions = array('' => '', 'hgv' => 'HGV', 'ddb' => 'DDB', 'dateSort' => 'Date', 'title' => 'Title', 'material' => 'Material', 'provenance' => 'Provenance', 'status' => 'Status', 'importDate' => 'Import Date');
     $sortDirections = array('asc' => 'ascending', 'desc' => 'descending');
+    
     $filterAnd = array('title');
     $filterOr = array('title', 'hgv', 'ddb', 'dateWhen', 'material', 'provenance', 'keywords', 'status');
 
@@ -146,7 +159,7 @@ class SampleController extends PapPalController{
     $samples = $query->getResult();
     $count = count($samples);
 
-    return $this->render('PapyrillioPapPalBundle:Sample:' . $template . '.html.twig', array('samples' => $samples, 'filterForm' => $filterForm->createView(), 'sort' => $sort, 'sortOptions' => $sortOptions, 'sortDirections' => $sortDirections));
+    return $this->render('PapyrillioPapPalBundle:Sample:' . $template . '.html.twig', array('samples' => $samples, 'filterForm' => $filterForm->createView(), 'template' => $template, 'templateOptions' => $templateOptions, 'sort' => $sort, 'sortOptions' => $sortOptions, 'sortDirections' => $sortDirections));
 
     if ($this->getRequest()->getMethod() == 'POST') {
       
