@@ -286,7 +286,22 @@ class SampleController extends PapPalController{
 
     return new RedirectResponse($this->generateUrl('PapyrillioPapPalBundle_SampleShow', array('id' => $id)));
   }
-  
+
+  public function deleteAction($id){
+    $entityManager = $this->getDoctrine()->getEntityManager();
+    $repository = $entityManager->getRepository('PapyrillioPapPalBundle:Sample');
+    $sample = $repository->findOneBy(array('id' => $id));
+
+    if($sample){
+      $entityManager->remove($sample);
+      $entityManager->flush();
+      $this->get('session')->setFlash('notice', 'Data record was deleted.');
+      return new RedirectResponse($this->generateUrl('PapyrillioPapPalBundle_SampleList'));
+    }
+
+    return new RedirectResponse($this->generateUrl('PapyrillioPapPalBundle_SampleShow', array('id' => $id)));
+  }
+
   protected function getUploadForm(){
     $uploadForm = $this->get('form.factory')
      ->createBuilder('form')

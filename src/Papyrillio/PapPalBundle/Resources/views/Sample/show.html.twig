@@ -74,6 +74,14 @@
   <img class="sampleMini" src="{{ asset(thumbnail) }}" alt="bleeding edge" width="100" onclick="var image = $(this).attr('src'); $('#sample').attr('src', image); $('#masterThumbnail').val(image.match(/\/([^\/]+\.jpg)/)[1]);" />
 {% endfor %}
 
+
+<button name="delete" type="button" id="buttonDelete" value="{{ path('PapyrillioPapPalBundle_SampleDelete', { 'id': sample.id }) }}">delete sample record</button>
+
 {% endif %}
 
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+  <script src="{{ asset('js/sample.js') }}" type="text/javascript"></script>
 {% endblock %}

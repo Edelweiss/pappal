@@ -58,6 +58,10 @@ security:
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin/, role: ROLE_ADMIN }
         - { path: ^/sample/uploadImage, role: ROLE_ADMIN }
+        - { path: ^/sample/delete, role: ROLE_ADMIN }
+        - { path: ^/sample/setMasterThumbnail, role: ROLE_ADMIN }
+        
+        
 
     role_hierarchy:
         ROLE_ADMIN:       ROLE_USER

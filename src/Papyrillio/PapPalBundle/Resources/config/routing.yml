@@ -16,6 +16,8 @@ PapyrillioPapPalBundle_SampleShow:
     pattern:  /sample/show/{id}
     defaults: { _controller: PapyrillioPapPalBundle:Sample:show }
 
+# Sample Admin
+
 PapyrillioPapPalBundle_SampleSetMasterThumbnail:
     pattern:  /sample/setMasterThumbnail/{id}
     defaults: { _controller: PapyrillioPapPalBundle:Sample:setMasterThumbnail }
@@ -23,3 +25,7 @@ PapyrillioPapPalBundle_SampleSetMasterThumbnail:
 PapyrillioPapPalBundle_SampleUploadImage:
     pattern:  /sample/uploadImage/{id}
     defaults: { _controller: PapyrillioPapPalBundle:Sample:uploadImage }
+
+PapyrillioPapPalBundle_SampleDelete:
+    pattern:  /sample/delete/{id}
+    defaults: { _controller: PapyrillioPapPalBundle:Sample:delete }
