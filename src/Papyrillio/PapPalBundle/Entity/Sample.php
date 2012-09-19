@@ -140,7 +140,7 @@ class Sample
       if(file_exists($thumbnailDirectory)){
         foreach(scandir($thumbnailDirectory) as $file){
           if(preg_match('/(' . $this->hgv . '_\d+_\d+\.jpg)$/', $file, $matches)){
-            $thumbnails[] = 'thumbnail/' . $this->folder . '/' . $this->hgv . '/' . $matches[1];
+            $thumbnails[$matches[1]] = 'thumbnail/' . $this->folder . '/' . $this->hgv . '/' . $matches[1];
           }
         }
       }

@@ -60,6 +60,8 @@ security:
         - { path: ^/sample/uploadImage, role: ROLE_ADMIN }
         - { path: ^/sample/delete, role: ROLE_ADMIN }
         - { path: ^/sample/setMasterThumbnail, role: ROLE_ADMIN }
+        - { path: ^/sample/deleteThumbnail, role: ROLE_ADMIN }
+        - { path: ^/sample/rotateThumbnail, role: ROLE_ADMIN }
         
         
 

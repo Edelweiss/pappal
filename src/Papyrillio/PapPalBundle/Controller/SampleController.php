@@ -8,11 +8,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Papyrillio\PapPalBundle\Entity\Sample;
 use Papyrillio\PapPalBundle\Entity\Commet;
 use Papyrillio\UserBundle\Entity\User;
+use Papyrillio\PapPalBundle\Service\ImagePeer;
 use DateTime;
 use Date;
 
 class SampleController extends PapPalController{
-    
+
   protected function getFilterForm(){
     $sample = new Sample();
 
@@ -278,7 +279,7 @@ class SampleController extends PapPalController{
       return $this->forward('PapyrillioPapPalBundle:Sample:list');
     }
 
-    return $this->render('PapyrillioPapPalBundle:Sample:show.html.twig', array('sample' => $sample, 'uploadForm' => $this->getUploadForm()->createView()));
+    return $this->render('PapyrillioPapPalBundle:Sample:show.html.twig', array('sample' => $sample, 'uploadForm' => $this->getUploadForm()->createView(), 'clockwise' => ImagePeer::DIRECTION_CLOCKWISE, 'counterclockwise' => 90));
   }
 
   public function setMasterThumbnailAction($id){
@@ -379,8 +380,7 @@ class SampleController extends PapPalController{
             // create thumbnails
             $thumbnailDirectory = $this->get('kernel')->getRootDir() . '/../web/thumbnail' . '/' . $sample->getFolder() . '/' . $sample->getHgv();
             $cropper = $this->get('papyrillio_pap_pal.image_cropper');
-            $cropper->configure($hgvDirectory, $filename, $thumbnailDirectory, $sample->getHgv());
-            $cropper->crop();
+            $cropper->crop($hgvDirectory, $filename, $thumbnailDirectory, $sample->getHgv());
 
             $this->get('session')->setFlash('notice', 'File was uploaded to ' . $targetFile . '.');
           } else {
@@ -392,13 +392,67 @@ class SampleController extends PapPalController{
         }
     }
 
-    #$this->get('session')->setFlash('notice', 'Image has been uploaded.');
+    $this->get('session')->setFlash('notice', 'Image has been uploaded.');
 
     if(!$sample){
       return $this->forward('PapyrillioPapPalBundle:Sample:list');
     } else {
       return $this->forward('PapyrillioPapPalBundle:Sample:show', array('id' => $id));
     }
+  }
+
+  public function deleteThumbnailAction($id, $thumbnail){
+    if($sample = $this->getSample($id)){
+      $filepath = $this->getFilepathForThumbnail($sample, $thumbnail);
+
+      if(file_exists($filepath)){
+        if(unlink($filepath)){
+          //$this->get('session')->setFlash('notice', 'Thumbnail was deleted.');
+          return new Response(json_encode(array('success' => true, 'data' => array('id' => $id, 'thumbnail' => $thumbnail))));          
+        } else {
+          return new Response(json_encode(array('success' => false, 'error' => 'File ' . $filepath . ' could not be deleted.')));
+          //$this->get('session')->setFlash('error', 'File ' . $filepath . ' could not be deleted.');
+        }
+      } else {
+        return new Response(json_encode(array('success' => false, 'error' => 'File ' . $filepath . ' could not be found on this system.')));
+        //$this->get('session')->setFlash('error', 'File ' . $filepath . ' could not be found on this system.');
+      }
+    }
+    //return new RedirectResponse($this->generateUrl('PapyrillioPapPalBundle_SampleShow', array('id' => $id)));
+  }
+
+  public function rotateThumbnailAction($id, $thumbnail, $direction){
+    if($sample = $this->getSample($id)){
+      $thumbnailDirectory = $this->get('kernel')->getRootDir() . '/../web/thumbnail';
+      $folderDirectory = $thumbnailDirectory . '/' . $sample->getFolder();
+      $hgvDirectory = $folderDirectory . '/' . $sample->getHgv();
+      $filepath =  $hgvDirectory . '/' . $thumbnail;
+
+      if(file_exists($filepath)){
+        try{
+          $rotator = $this->get('papyrillio_pap_pal.image_rotator');
+          $rotator->rotate($hgvDirectory, $thumbnail, $direction);
+          return new Response(json_encode(array('success' => true, 'data' => array('id' => $id, 'thumbnail' => $thumbnail))));          
+        } catch(Exception $e) {
+          return new Response(json_encode(array('success' => false, 'error' => 'File ' . $filepath . ' could not be rotated (' . $e->getMessage() . ').')));
+        }
+      } else {
+        return new Response(json_encode(array('success' => false, 'error' => 'File ' . $filepath . ' could not be found on this system.')));
+      }
+    }
+  }
+
+  protected function getSample($id){
+    $entityManager = $this->getDoctrine()->getEntityManager();
+    $repository = $entityManager->getRepository('PapyrillioPapPalBundle:Sample');
+    return $repository->findOneBy(array('id' => $id));
+  }
+  
+  protected function getFilepathForThumbnail($sample, $thumbnail){
+    $thumbnailDirectory = $this->get('kernel')->getRootDir() . '/../web/thumbnail';
+    $folderDirectory = $thumbnailDirectory . '/' . $sample->getFolder();
+    $hgvDirectory = $folderDirectory . '/' . $sample->getHgv();
+    return $hgvDirectory . '/' . $thumbnail;
   }
 
 }

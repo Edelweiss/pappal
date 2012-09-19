@@ -29,3 +29,11 @@ PapyrillioPapPalBundle_SampleUploadImage:
 PapyrillioPapPalBundle_SampleDelete:
     pattern:  /sample/delete/{id}
     defaults: { _controller: PapyrillioPapPalBundle:Sample:delete }
+
+PapyrillioPapPalBundle_SampleDeleteThumbnail:
+    pattern:  /sample/deleteThumbnail/{id}/{thumbnail}
+    defaults: { _controller: PapyrillioPapPalBundle:Sample:deleteThumbnail }
+
+PapyrillioPapPalBundle_SampleRotateThumbnail:
+    pattern:  /sample/rotateThumbnail/{id}/{thumbnail}/{direction}
+    defaults: { _controller: PapyrillioPapPalBundle:Sample:rotateThumbnail }

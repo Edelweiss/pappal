@@ -20,7 +20,7 @@ div#site {
   margin: 0 auto;
   color: white;
   padding: 0 0 23em;
- background-color: #111111;
+  background-color: #111111;
 }
 
 div#header {
@@ -169,6 +169,16 @@ th.title,
 td.title {
   font-size: larger;
   font-weight: bold;
+}
+
+div#tiptip_content span{
+  cursor: hand;
+  cursor: pointer;
+  color: #e25818;
+}
+
+div#tiptip_content span:hover {
+  color: #f78c26;
 }
 
 /* LOGIN */

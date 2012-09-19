@@ -1,11 +1,19 @@
 parameters:
 #    papyrillio_pap_pal.example.class: Papyrillio\PapPalBundle\Example
+    papyrillio_pap_pal.image_peer.class: Papyrillio\PapPalBundle\Service\ImagePeer
     papyrillio_pap_pal.image_cropper.class: Papyrillio\PapPalBundle\Service\ImageCropper
+    papyrillio_pap_pal.image_rotator.class: Papyrillio\PapPalBundle\Service\ImageRotator
 
 services:
 #    papyrillio_pap_pal.example:
 #        class: %papyrillio_pap_pal.example.class%
 #        arguments: [@service_id, "plain_value", %parameter%]
 
+    papyrillio_pap_pal.image_peer:
+        class: %papyrillio_pap_pal.image_peer.class%
     papyrillio_pap_pal.image_cropper:
         class: %papyrillio_pap_pal.image_cropper.class%
+        parent: papyrillio_pap_pal.image_peer
+    papyrillio_pap_pal.image_rotator:
+        class: %papyrillio_pap_pal.image_rotator.class%
+        parent: papyrillio_pap_pal.image_peer 

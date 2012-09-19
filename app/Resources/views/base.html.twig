@@ -65,6 +65,11 @@
                         {{ app.session.flash('notice') }}
                     </div>
                 {% endif %}
+                {% if app.session.hasFlash('error') %}
+                    <div class="flashError">
+                        {{ app.session.flash('error') }}
+                    </div>
+                {% endif %}
                 {% block body %}{% endblock %}
             </div>
             <div class="clear">&nbsp;</div>
