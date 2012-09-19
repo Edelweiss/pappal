@@ -285,15 +285,20 @@ class SampleController extends PapPalController{
   public function setMasterThumbnailAction($id){
     $entityManager = $this->getDoctrine()->getEntityManager();
     $repository = $entityManager->getRepository('PapyrillioPapPalBundle:Sample');
-    $sample = $repository->findOneBy(array('id' => $id));
+    
     $masterThumbnail = $this->getParameter('masterThumbnail');
 
     if(!empty($masterThumbnail)){
-      if($sample and $sample->setMasterThumbnail($masterThumbnail)){
-        $this->get('session')->setFlash('notice', 'Preview image has been set as default thumbnail.');
+      if($sample = $repository->findOneBy(array('id' => $id))){
+        if($sample->setMasterThumbnail($masterThumbnail)){
+          $this->get('session')->setFlash('notice', 'Preview image has been set as default thumbnail.');
+        } else {
+          $this->get('session')->setFlash('notice', 'Preview image ' . $masterThumbnail . ' could not bee set as default thumbnail.');
+        }
       } else {
-        $this->get('session')->setFlash('notice', 'Preview image ' . $masterThumbnail . ' could not bee set as default thumbnail.');
+        $this->get('session')->setFlash('notice', 'Preview image ' . $masterThumbnail . ' could not bee set becaus record #' . $id . ' does not exist.');        
       }
+      
     } else {
       $this->get('session')->setFlash('notice', 'Empty image path');
     }
@@ -395,9 +400,9 @@ class SampleController extends PapPalController{
     $this->get('session')->setFlash('notice', 'Image has been uploaded.');
 
     if(!$sample){
-      return $this->forward('PapyrillioPapPalBundle:Sample:list');
+      return new RedirectResponse($this->generateUrl('PapyrillioPapPalBundle_SampleList'));
     } else {
-      return $this->forward('PapyrillioPapPalBundle:Sample:show', array('id' => $id));
+      return new RedirectResponse($this->generateUrl('PapyrillioPapPalBundle_SampleShow', array('id' => $id)));
     }
   }
 
@@ -406,19 +411,20 @@ class SampleController extends PapPalController{
       $filepath = $this->getFilepathForThumbnail($sample, $thumbnail);
 
       if(file_exists($filepath)){
-        if(unlink($filepath)){
-          //$this->get('session')->setFlash('notice', 'Thumbnail was deleted.');
-          return new Response(json_encode(array('success' => true, 'data' => array('id' => $id, 'thumbnail' => $thumbnail))));          
+        $link = readlink($sample->getThumbnail(true));
+        if(strstr($link, '/' . $thumbnail) === FALSE){
+          if(unlink($filepath)){
+            return new Response(json_encode(array('success' => true, 'data' => array('id' => $id, 'thumbnail' => $thumbnail))));          
+          } else {
+            return new Response(json_encode(array('success' => false, 'error' => 'File ' . $filepath . ' could not be deleted.')));
+          }
         } else {
-          return new Response(json_encode(array('success' => false, 'error' => 'File ' . $filepath . ' could not be deleted.')));
-          //$this->get('session')->setFlash('error', 'File ' . $filepath . ' could not be deleted.');
+          return new Response(json_encode(array('success' => false, 'error' => 'Thumbnail ' . $thumbnail . ' could be deleted because it is the current preview item.')));
         }
       } else {
         return new Response(json_encode(array('success' => false, 'error' => 'File ' . $filepath . ' could not be found on this system.')));
-        //$this->get('session')->setFlash('error', 'File ' . $filepath . ' could not be found on this system.');
       }
     }
-    //return new RedirectResponse($this->generateUrl('PapyrillioPapPalBundle_SampleShow', array('id' => $id)));
   }
 
   public function rotateThumbnailAction($id, $thumbnail, $direction){

@@ -129,10 +129,10 @@ class Sample
      */
     private $comments;
     
-    public function getThumbnail(){
-      return 'thumbnail/' . $this->folder . '/' . $this->hgv . '/' . $this->hgv . '.jpg';
+    public function getThumbnail($fullpath = false){
+      return ($fullpath ? readlink(__DIR__ . '/../../../../web/thumbnail') . '/' : 'thumbnail/') . $this->folder . '/' . $this->hgv . '/' . $this->hgv . '.jpg';
     }
-    
+
     public function getThumbnails(){
       $thumbnails = array();
       $thumbnailDirectory = __DIR__ . '/../../../../web/thumbnail/' . $this->folder . '/' . $this->hgv;
@@ -148,8 +148,7 @@ class Sample
     }
 
     public function setMasterThumbnail($masterThumbnail){
-      $dir = __DIR__ . '/../../../../web/thumbnail/' . $this->folder . '/' . $this->hgv;
-      $dir = '/Users/Admin/PapPal/images/thumbnail/' . $this->folder . '/' . $this->hgv;
+      $dir = readlink(__DIR__ . '/../../../../web/thumbnail') . '/' . $this->folder . '/' . $this->hgv;
       $masterThumbnail = $dir . '/' . $masterThumbnail;
       $link = $dir . '/' . $this->hgv . '.jpg';
       if(file_exists($masterThumbnail)){
