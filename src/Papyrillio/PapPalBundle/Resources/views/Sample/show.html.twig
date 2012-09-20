@@ -71,7 +71,7 @@
 <div class="clear"></div>
 
 {% for key, thumbnail in sample.thumbnails %}
-  <img class="sampleMini" src="{{ asset(thumbnail) }}" alt="bleeding edge" width="100" title="{{ path('PapyrillioPapPalBundle_SampleDeleteThumbnail', {'id': sample.id, 'thumbnail': key}) }}" id="{{ key }}" onclick="var image = $(this).attr('src'); $('#sample').attr('src', image); $('#masterThumbnail').val(image.match(/\/([^\/]+\.jpg)/)[1]);" />
+  <img class="sampleMini" src="{{ asset(thumbnail) }}" alt="bleeding edge" width="100" title="{{ path('PapyrillioPapPalBundle_SampleDeleteThumbnail', {'id': sample.id, 'thumbnail': key}) }}" id="{{ key }}" />
   <div class="sampleMiniTooltip" id="tooltip_{{ key }}" style="width: 0; height: 0; visibility: invisible; display: none;">
     <span onclick="sampleDeleteThumbnail('{{ path('PapyrillioPapPalBundle_SampleDeleteThumbnail', {'id': sample.id, 'thumbnail': key})}}');">Delete Thumbnail</span>
     <div class="clear"></div>
