@@ -26,6 +26,10 @@ PapyrillioPapPalBundle_SampleUploadImage:
     pattern:  /sample/uploadImage/{id}
     defaults: { _controller: PapyrillioPapPalBundle:Sample:uploadImage }
 
+PapyrillioPapPalBundle_SampleDeleteImage:
+    pattern:  /sample/deleteImage/{id}/{image}
+    defaults: { _controller: PapyrillioPapPalBundle:Sample:deleteImage }
+
 PapyrillioPapPalBundle_SampleDelete:
     pattern:  /sample/delete/{id}
     defaults: { _controller: PapyrillioPapPalBundle:Sample:delete }

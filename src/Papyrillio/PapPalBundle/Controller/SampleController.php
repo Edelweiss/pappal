@@ -334,15 +334,31 @@ class SampleController extends PapPalController{
     return $uploadForm;
   }
 
+  public function deleteImageAction($id, $image){
+    if($sample = $this->getSample($id)){
+      if(file_exists($filepath = $this->getFilepathForImage($sample, $image))){
+          if(unlink($filepath)){
+            return new Response(json_encode(array('success' => true, 'data' => array('id' => $id, 'image' => $image))));          
+          } else {
+            return new Response(json_encode(array('success' => false, 'error' => 'File ' . $filepath . ' could not be deleted.')));
+          }
+      } else {
+        return new Response(json_encode(array('success' => false, 'error' => 'File ' . $filepath . ' could not be found on this system.')));
+      }
+    } else {
+      return new Response(json_encode(array('success' => false, 'error' => 'Sample record #' . $id . ' could not be found.')));
+    }
+  }
+
   public function uploadImageAction($id){
     $entityManager = $this->getDoctrine()->getEntityManager();
     $repository = $entityManager->getRepository('PapyrillioPapPalBundle:Sample');
     $sample = $repository->findOneBy(array('id' => $id));
 
     $uploadForm = $this->getUploadForm();
-    
+
     if($this->get('request')->getMethod() == 'POST'){
-        
+
         if($uploadForm->isValid()){
           //Symfony\Component\HttpFoundation\File\UploadedFile
           $files = $this->get('request')->files->get($uploadForm->getName());
@@ -408,9 +424,7 @@ class SampleController extends PapPalController{
 
   public function deleteThumbnailAction($id, $thumbnail){
     if($sample = $this->getSample($id)){
-      $filepath = $this->getFilepathForThumbnail($sample, $thumbnail);
-
-      if(file_exists($filepath)){
+      if(file_exists($filepath = $this->getFilepathForThumbnail($sample, $thumbnail))){
         $link = readlink($sample->getThumbnail(true));
         if(strstr($link, '/' . $thumbnail) === FALSE){
           if(unlink($filepath)){
@@ -424,6 +438,8 @@ class SampleController extends PapPalController{
       } else {
         return new Response(json_encode(array('success' => false, 'error' => 'File ' . $filepath . ' could not be found on this system.')));
       }
+    } else {
+      return new Response(json_encode(array('success' => false, 'error' => 'Sample record #' . $id . ' could not be found.')));
     }
   }
 
@@ -459,6 +475,13 @@ class SampleController extends PapPalController{
     $folderDirectory = $thumbnailDirectory . '/' . $sample->getFolder();
     $hgvDirectory = $folderDirectory . '/' . $sample->getHgv();
     return $hgvDirectory . '/' . $thumbnail;
+  }
+  
+  protected function getFilepathForImage($sample, $image){
+    $imageDirectory = $this->get('kernel')->getRootDir() . '/../web/sample';
+    $folderDirectory = $imageDirectory . '/' . $sample->getFolder();
+    $hgvDirectory = $folderDirectory . '/' . $sample->getHgv();
+    return $hgvDirectory . '/' . $image;
   }
 
 }

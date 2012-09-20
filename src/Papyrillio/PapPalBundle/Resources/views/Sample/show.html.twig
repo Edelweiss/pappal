@@ -31,16 +31,26 @@
       {% for imageLink in sample.imageLinks %}
         <a href="{{ imageLink }}">{{ imageLink }}</a><br />
       {% endfor %}
-      {% for key, uploadedImage in sample.uploadedImages %}
-        <a href="{{ asset(uploadedImage) }}">{{ key }}</a><br />
-      {% endfor %}
+      
       {% if is_granted('ROLE_ADMIN') %}
+        {% for key, uploadedImage in sample.uploadedImages %}
+          <a class="uploadedImage" href="{{ asset(uploadedImage) }}">{{ key }}
+            <div class="uploadedImageTooltip" id="tooltip_{{ key }}" style="width: 0; height: 0; visibility: invisible; display: none;">
+              <span onclick="sampleDeleteImage('{{ path('PapyrillioPapPalBundle_SampleDeleteImage', {'id': sample.id, 'image': key})}}');">Delete image</span>
+            </div>
+          </a><br />
+        {% endfor %}
+        
         <form action="{{ path('PapyrillioPapPalBundle_SampleUploadImage', { 'id': sample.id }) }}" method="post" {{ form_enctype(uploadForm) }}>
           {{ form_widget(uploadForm.image) }}
           {{ form_errors(uploadForm.image) }}
           {{ form_widget(uploadForm) }}
           <input type="submit" class="submit" id="form_submit" value="Save" />
         </form>
+      {% else %}
+        {% for key, uploadedImage in sample.uploadedImages %}
+          <a href="{{ asset(uploadedImage) }}">{{ key }}</a><br />
+        {% endfor %}
       {% endif %}
     </td>
   </tr>
@@ -73,7 +83,7 @@
 {% for key, thumbnail in sample.thumbnails %}
   <img class="sampleMini" src="{{ asset(thumbnail) }}" alt="bleeding edge" width="100" title="{{ path('PapyrillioPapPalBundle_SampleDeleteThumbnail', {'id': sample.id, 'thumbnail': key}) }}" id="{{ key }}" />
   <div class="sampleMiniTooltip" id="tooltip_{{ key }}" style="width: 0; height: 0; visibility: invisible; display: none;">
-    <span onclick="sampleDeleteThumbnail('{{ path('PapyrillioPapPalBundle_SampleDeleteThumbnail', {'id': sample.id, 'thumbnail': key})}}');">Delete Thumbnail</span>
+    <span onclick="sampleDeleteThumbnail('{{ path('PapyrillioPapPalBundle_SampleDeleteThumbnail', {'id': sample.id, 'thumbnail': key})}}');">Delete thumbnail</span>
     <div class="clear"></div>
     <span onclick="sampleRotateThumbnail('{{ path('PapyrillioPapPalBundle_SampleRotateThumbnail', {'id': sample.id, 'thumbnail': key, 'direction': clockwise})}}');">Rotate clockwise</span>
     <div class="clear"></div>

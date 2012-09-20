@@ -13,17 +13,43 @@ $(function(){
       window.location.href = this.value;
     }
   });
-  
+
   // tooltips for thumbnails
-  $('.sampleMini').each(function(index){
+  $('img.sampleMini').each(function(index){
 
     var image = $(this);
     image.attr('title', image.next('div.sampleMiniTooltip').html());
 
   });
-  $('.sampleMini').tipTip({keepAlive: true});
+  $('img.sampleMini').tipTip({keepAlive: true});
+
+  // tooltips for image
+  $('a.uploadedImage').each(function(index){
+
+    var a = $(this);
+    a.attr('title', a.find('div.uploadedImageTooltip').html());
+
+  });
+  $('a.uploadedImage').tipTip({keepAlive: true});
 
 });
+
+function sampleDeleteImage(path){
+  if(confirm('Are you sure you want to delete this image?\nThis action cannot be undone.')){
+
+    $.post(path, {}, function(data){
+      if(data.success){
+        $('a.uploadedImage[href*="' + data.data.image + '"]').fadeOut('slow', function(){
+          var a = $(this);
+          a.next('br').remove();
+          a.remove();
+        });
+      } else {
+        alert(data.error);
+      }
+    }, 'json');
+  }
+}
 
 function sampleDeleteThumbnail(path){
   if(confirm('Are you sure you want to delete this thumbnail?\nThis action cannot be undone.')){
