@@ -7,9 +7,9 @@ Leuchtblau* #26b3f7 #f78c26
 Hellstahlblau #2e7db2 #b26e2e */
 
 body {
-  color: white;
   font-size: 66%;
-  background-color: #222222;
+  color: black;
+  background-color: #f0f0f0;
 }
 
 div#site {
@@ -18,13 +18,13 @@ div#site {
   position: relative;
   width: 1024px;
   margin: 0 auto;
-  color: white;
   padding: 0 0 23em;
-  background-color: #111111;
+  color: black;
+  background-color: white;
 }
 
 div#header {
-  border-bottom: 0.1em solid #e25818;
+  border-bottom: 0.1em solid #c0c0c0;
   height: 2em;
   padding: 1em;
 }
@@ -38,17 +38,17 @@ div#footer {
   position: absolute;
   bottom: 0;
   width: 100%;
-  border-top: 0.1em solid #e25818;
+  border-top: 0.1em solid #c0c0c0;
 }
 
 /* global element styling */
 
 a {
-  color: #e25818;
+  color: #c0c0c0;
 }
 
 a:hover {
-  color: #f78c26;
+  color: #f0f0f0;
 }
 
 p {
@@ -70,18 +70,18 @@ h3 span {
   line-height: 2em;
   padding: 0.1em 0.4em;
   font-size: 1em;
-  border: 1px solid #f78c26;
-  background: url('jquery/dark-hive/images/?new=0972a5&w=1&h=100&f=png&q=100&fltr[]=over|textures/04_highlight_hard.png|0|0|20') repeat-x scroll 50% 50% #e25818;
+  border: 1px solid #f0f0f0;
+  background: url('jquery/dark-hive/images/?new=0972a5&w=1&h=100&f=png&q=100&fltr[]=over|textures/04_highlight_hard.png|0|0|20') repeat-x scroll 50% 50% #c0c0c0;
 }
 
 .keyword {
   font-weight: bold;
-  color: #e25818;
+  color: #c0c0c0;
 }
 
 .keywordBright {
   font-weight: bold;
-  color: #f78c26;
+  color: #f0f0f0;
 }
 
 span.action,
@@ -89,7 +89,7 @@ span.action,
 .actionHolder a {
   margin: 0 0 0 0.4em;
   float: right;
-  color: #e25818;
+  color: #c0c0c0;
   text-decoration: underline;
   cursor: hand;
   cursor: pointer;
@@ -99,7 +99,7 @@ span.action,
 span.action:hover,
 .actionHolder span:hover, 
 .actionHolder a:hover {
-  color: #f78c26;
+  color: #f0f0f0;
 }
 .ui-widget textarea,
 .ui-widget .ui-widget textarea,
@@ -122,16 +122,6 @@ div.sample {
 div.sample span.id {
   font-size: smaller;
 }
-
-.tooltip {
-    display:none;
-    background:transparent url(/media/img/tooltip/black_arrow.png);
-    font-size:12px;
-    height:70px;
-    width:160px;
-    padding:25px;
-    color:#eee;
-  }
 
 /* SAMPLE SHOW */
 
@@ -174,11 +164,11 @@ td.title {
 div#tiptip_content span{
   cursor: hand;
   cursor: pointer;
-  color: #e25818;
+  color: #c0c0c0;
 }
 
 div#tiptip_content span:hover {
-  color: #f78c26;
+  color: #f0f0f0;
 }
 
 /* LOGIN */
@@ -200,7 +190,7 @@ form#login input{
 }
 
 form#login input.data{
-  border: 0.1em solid #e25818;
+  border: 0.1em solid #c0c0c0;
   width: 12em;
 }
 
@@ -220,8 +210,8 @@ div#navigation ul {
 div#navigation ul#menu {
   width: 20em;
   padding: 0.2em 0.2em 0.2em 0.2em;
-  background-color: #222222;
-  border: 1px solid #555555;
+  border: 1px solid #c0c0c0;
+  background-color: #f0f0f0;
 }
 
 div#navigation ul#menu li {
@@ -235,9 +225,9 @@ div#header span {
 /* SAMPLE FILTER */
 
 form#filter fieldset {
-  background-color: #222222;
-  border: 1px solid #555555;
   padding: 1em;
+  border: 1px solid #c0c0c0;
+  background-color: #f0f0f0;
 }
 
 form#filter legend{
