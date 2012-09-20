@@ -293,14 +293,14 @@ class SampleController extends PapPalController{
         if($sample->setMasterThumbnail($masterThumbnail)){
           $this->get('session')->setFlash('notice', 'Preview image has been set as default thumbnail.');
         } else {
-          $this->get('session')->setFlash('notice', 'Preview image ' . $masterThumbnail . ' could not bee set as default thumbnail.');
+          $this->get('session')->setFlash('error', 'Preview image ' . $masterThumbnail . ' could not bee set as default thumbnail.');
         }
       } else {
-        $this->get('session')->setFlash('notice', 'Preview image ' . $masterThumbnail . ' could not bee set becaus record #' . $id . ' does not exist.');        
+        $this->get('session')->setFlash('error', 'Preview image ' . $masterThumbnail . ' could not bee set becaus record #' . $id . ' does not exist.');        
       }
       
     } else {
-      $this->get('session')->setFlash('notice', 'Empty image path');
+      $this->get('session')->setFlash('error', 'Empty image path');
     }
 
     return new RedirectResponse($this->generateUrl('PapyrillioPapPalBundle_SampleShow', array('id' => $id)));
@@ -403,13 +403,12 @@ class SampleController extends PapPalController{
             $cropper = $this->get('papyrillio_pap_pal.image_cropper');
             $cropper->crop($hgvDirectory, $filename, $thumbnailDirectory, $sample->getHgv());
 
-            $this->get('session')->setFlash('notice', 'File was uploaded to ' . $targetFile . '.');
           } else {
-            $this->get('session')->setFlash('notice', 'Mime type ' . $uploadedFile->getMimeType() . ' not accepted. Please upload only jpg images.');
+            $this->get('session')->setFlash('error', 'Mime type ' . $uploadedFile->getMimeType() . ' not accepted. Please upload only jpg images.');
           }
 
         } else {
-          $this->get('session')->setFlash('notice', 'Invalid form data.');
+          $this->get('session')->setFlash('error', 'Invalid form data.');
         }
     }
 
