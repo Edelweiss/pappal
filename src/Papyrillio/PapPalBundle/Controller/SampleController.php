@@ -351,14 +351,9 @@ class SampleController extends PapPalController{
   }
 
   public function uploadImageAction($id){
-    $entityManager = $this->getDoctrine()->getEntityManager();
-    $repository = $entityManager->getRepository('PapyrillioPapPalBundle:Sample');
-    $sample = $repository->findOneBy(array('id' => $id));
-
-    $uploadForm = $this->getUploadForm();
-
-    if($this->get('request')->getMethod() == 'POST'){
-
+    if($sample = $this->getSample($id)){
+      if($this->get('request')->getMethod() == 'POST'){
+        $uploadForm = $this->getUploadForm();
         if($uploadForm->isValid()){
           //Symfony\Component\HttpFoundation\File\UploadedFile
           $files = $this->get('request')->files->get($uploadForm->getName());
@@ -402,22 +397,18 @@ class SampleController extends PapPalController{
             $thumbnailDirectory = $this->get('kernel')->getRootDir() . '/../web/thumbnail' . '/' . $sample->getFolder() . '/' . $sample->getHgv();
             $cropper = $this->get('papyrillio_pap_pal.image_cropper');
             $cropper->crop($hgvDirectory, $filename, $thumbnailDirectory, $sample->getHgv());
-
+            
+            $this->get('session')->setFlash('notice', 'Image has been uploaded.');
           } else {
             $this->get('session')->setFlash('error', 'Mime type ' . $uploadedFile->getMimeType() . ' not accepted. Please upload only jpg images.');
           }
-
         } else {
           $this->get('session')->setFlash('error', 'Invalid form data.');
         }
-    }
-
-    $this->get('session')->setFlash('notice', 'Image has been uploaded.');
-
-    if(!$sample){
-      return new RedirectResponse($this->generateUrl('PapyrillioPapPalBundle_SampleList'));
-    } else {
+      }
       return new RedirectResponse($this->generateUrl('PapyrillioPapPalBundle_SampleShow', array('id' => $id)));
+    } else {
+      return new RedirectResponse($this->generateUrl('PapyrillioPapPalBundle_SampleList'));
     }
   }
 
