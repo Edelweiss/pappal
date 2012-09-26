@@ -16,6 +16,18 @@ PapyrillioPapPalBundle_SampleShow:
     pattern:  /sample/show/{id}
     defaults: { _controller: PapyrillioPapPalBundle:Sample:show }
 
+PapyrillioPapPalBundle_SampleTm:
+    pattern:  /tm/{tm}
+    defaults: { _controller: PapyrillioPapPalBundle:Sample:tm }
+
+PapyrillioPapPalBundle_SampleHgv:
+    pattern:  /hgv/{hgv}
+    defaults: { _controller: PapyrillioPapPalBundle:Sample:hgv }
+
+PapyrillioPapPalBundle_SampleDdb:
+    pattern:  /ddb/{ddb}
+    defaults: { _controller: PapyrillioPapPalBundle:Sample:ddb }
+
 # Sample Admin
 
 PapyrillioPapPalBundle_SampleSetMasterThumbnail:

@@ -270,6 +270,39 @@ class SampleController extends PapPalController{
     }
   }
 
+  public function tmAction($tm){
+    $entityManager = $this->getDoctrine()->getEntityManager();
+    $repository = $entityManager->getRepository('PapyrillioPapPalBundle:Sample');
+
+    if($sample = $repository->findOneBy(array('tm' => $tm))){
+      return $this->forward('PapyrillioPapPalBundle:Sample:show', array('id' => $sample->getId()));
+    }
+
+    return $this->render('PapyrillioPapPalBundle:Sample:notFound.html.twig', array('identifierClass' => 'tm', 'id' => $tm));
+  }
+
+  public function hgvAction($hgv){
+    $entityManager = $this->getDoctrine()->getEntityManager();
+    $repository = $entityManager->getRepository('PapyrillioPapPalBundle:Sample');
+
+    if($sample = $repository->findOneBy(array('hgv' => $hgv))){
+      return $this->forward('PapyrillioPapPalBundle:Sample:show', array('id' => $sample->getId()));
+    }
+
+    return $this->render('PapyrillioPapPalBundle:Sample:notFound.html.twig', array('identifierClass' => 'hgv', 'id' => $hgv));
+  }
+
+  public function ddbAction($ddb){
+    $entityManager = $this->getDoctrine()->getEntityManager();
+    $repository = $entityManager->getRepository('PapyrillioPapPalBundle:Sample');
+
+    if($sample = $repository->findOneBy(array('ddb' => $ddb))){
+      return $this->forward('PapyrillioPapPalBundle:Sample:show', array('id' => $sample->getId()));
+    }
+
+    return $this->render('PapyrillioPapPalBundle:Sample:notFound.html.twig', array('identifierClass' => 'ddb', 'id' => $ddb));
+  }
+
   public function showAction($id){
     $entityManager = $this->getDoctrine()->getEntityManager();
     $repository = $entityManager->getRepository('PapyrillioPapPalBundle:Sample');
