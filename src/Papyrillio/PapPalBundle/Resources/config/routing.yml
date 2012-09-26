@@ -53,3 +53,9 @@ PapyrillioPapPalBundle_SampleDeleteThumbnail:
 PapyrillioPapPalBundle_SampleRotateThumbnail:
     pattern:  /sample/rotateThumbnail/{id}/{thumbnail}/{direction}
     defaults: { _controller: PapyrillioPapPalBundle:Sample:rotateThumbnail }
+
+# Static pages
+
+PapyrillioPapPalBundle_Home:
+    pattern:  /
+    defaults: { _controller: PapyrillioPapPalBundle:Default:home }

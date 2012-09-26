@@ -1,0 +1,27 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+
+<div style="width: 600px; margin: auto;">
+<h3>Welcome to <a href="{{ path('PapyrillioPapPalBundle_SampleList') }}" class="ui-button-text">PapPal</a> ...</h3>
+
+<h4>Nunc vitae leo non nulla lobortis faucibus</h4>
+
+<p>Lorem ipsum dolor sit amet, consectetur <a href="http://papyri.info">The Papyrological Navigator</a> elit. Cras euismod orci a mi semper vulputate. Donec eros risus, scelerisque vitae suscipit vitae, imperdiet et magna. Maecenas a leo in ligula consequat pretium. In iaculis justo sed lectus malesuada laoreet. Morbi luctus varius risus, nec viverra nunc mollis id. Mauris nunc urna, pharetra et auctor eu, viverra mollis justo. Aliquam lacinia consectetur vestibulum. Suspendisse sit amet augue urna, vitae consequat leo. Sed sit amet est nunc, non ultricies purus. Vestibulum gravida interdum vehicula. Fusce sed purus dui.</p>
+
+<p>Pellentesque non neque nunc, id imperdiet enim. Ut eget <a href="http://www.rzuser.uni-heidelberg.de/~gv0/gvz.html">HGV</a> dolor. Aenean in libero <a href="http://www.uni-heidelberg.de/fakultaeten/philosophie/zaw/papy/index.html">Institut für Papyrologie</a> nibh mattis convallis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Mauris a nulla nisl. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Vestibulum elementum enim a ante sodales a euismod orci auctor. Nam in quam et magna commodo accumsan. Sed id arcu varius libero feugiat lacinia. Vestibulum nulla sapien, mollis nec placerat sit amet, convallis tincidunt mi.</p>
+
+<p style="text-align: center;"><button onclick="document.location.href='{{ path('PapyrillioPapPalBundle_SampleList') }}';" id="button" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" aria-disabled="false"><span" class="ui-button-text">Browse PapPal's sample library ...</span></button></p>
+
+<h4>Duis massa odio</h4>
+
+<p>Mauris accumsan tincidunt ornare. Suspendisse dictum eros lectus. Suspendisse molestie hendrerit tortor eu suscipit. Ut sodales, nunc et bibendum tincidunt, orci tortor imperdiet purus, ut porta nulla velit vel orci. Nulla id sodales felis. Donec nec porta turpis. Praesent non magna metus.</p>
+
+<p style="text-align: center;">
+  <input type="text" id="hgv" value="5838" />
+  <button onclick="document.location.href='{{ path('PapyrillioPapPalBundle_SampleHgv', {'hgv': 0}) }}'.replace('0', $('#hgv').val());" id="button" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" aria-disabled="false"><span" class="ui-button-text">Search by HGV id ... (e.g. 5838)</span></button>
+</p>
+
+</div>
+
+{% endblock %}
