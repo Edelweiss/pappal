@@ -2,6 +2,15 @@ PapyrillioPapPalBundle_homepage:
     pattern:  /hello/{name}
     defaults: { _controller: PapyrillioPapPalBundle:Default:index }
 
+# Special
+
+PapyrillioPapPalBundle_hgvChanges:
+    pattern:  /hgvChanges/{jourFixe}
+    defaults: { _controller: PapyrillioPapPalBundle:Default:hgvChanges, jourFixe: null }
+    requirements:
+        jourFixe:  \d{4}-\d{2}-\d{2}
+
+
 # Sample
 
 PapyrillioPapPalBundle_SampleList:
@@ -59,3 +68,7 @@ PapyrillioPapPalBundle_SampleRotateThumbnail:
 PapyrillioPapPalBundle_Home:
     pattern:  /
     defaults: { _controller: PapyrillioPapPalBundle:Default:home }
+
+PapyrillioPapPalBundle_Contact:
+    pattern:  /contact
+    defaults: { _controller: PapyrillioPapPalBundle:Default:contact }

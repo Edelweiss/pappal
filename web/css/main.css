@@ -8,8 +8,7 @@ Hellstahlblau #2e7db2 #b26e2e */
 
 body {
   font-size: 66%;
-  color: black;
-  background-color: #f0f0f0;
+  background-color: white;
 }
 
 div#site {
@@ -19,14 +18,28 @@ div#site {
   width: 1024px;
   margin: 0 auto;
   padding: 0 0 23em;
-  color: black;
-  background-color: white;
+  color: white;
+  background-color: #202020;
+  background-image: url('../images/PapPalPapPal.png');
+  background-repeat: no-repeat;
+  background-position: bottom right;
 }
 
 div#header {
-  border-bottom: 0.1em solid #c0c0c0;
-  height: 2em;
+  background-color: #690102;
+  border-bottom: 0.2em solid #3a0101;
+  height: 10em;
+  background-image: url('../images/PapPal.png');
+  background-repeat: no-repeat;
+  background-position: center top; 
   padding: 1em;
+}
+
+div#header a, div#header a:hover,
+div#footer a, div#footer a:hover {
+  color: white;
+  background: none;
+  padding: 0;
 }
 
 div#content {
@@ -35,20 +48,33 @@ div#content {
 }
 
 div#footer {
+  background-color: #690102;
   position: absolute;
   bottom: 0;
   width: 100%;
-  border-top: 0.1em solid #c0c0c0;
+  height: 5em;
+  border-top: 0.1em solid #3a0101;
 }
 
 /* global element styling */
 
 a {
-  color: #c0c0c0;
+  /*color: #990102;*/
+  color: white;
+  padding-left: 2.5em;
+  background-image: url('../images/link.png');
+  background-repeat: no-repeat;
+  background-position: left center;
 }
 
 a:hover {
-  color: #f0f0f0;
+  /*color: #bc0102;*/
+  color: #990102;
+}
+
+h3 a {
+  background-image: url('../images/link_big.png');
+  padding-left: 2em;
 }
 
 p {
@@ -66,7 +92,7 @@ h3 span {
 }
 
 .highlight {
-  color: white;
+  color: #990102;
   line-height: 2em;
   padding: 0.1em 0.4em;
   font-size: 1em;
@@ -121,6 +147,11 @@ div.sample {
 
 div.sample span.id {
   font-size: smaller;
+}
+
+div.sample a {
+  background: none;
+  padding: 0;
 }
 
 /* SAMPLE SHOW */
@@ -205,6 +236,11 @@ div#navigation {
 div#navigation ul {
   list-style-type: none;
   margin: 0;
+  color: #202020;
+}
+
+div#navigation ul a, div#navigation ul a:hover{
+  color: #202020;
 }
 
 div#navigation ul#menu {
@@ -218,7 +254,7 @@ div#navigation ul#menu li {
   margin: 0;
 }
 
-div#header span {
+div#header span, a.logout {
   float: right;
 }
 
@@ -227,7 +263,7 @@ div#header span {
 form#filter fieldset {
   padding: 1em;
   border: 1px solid #c0c0c0;
-  background-color: #f0f0f0;
+  background-color: #303030;
 }
 
 form#filter legend{
@@ -270,4 +306,28 @@ form#filter input#form_ddb{
 form#filter button#reset,
 form#filter input#submit {
   float: right;
+}
+
+/* FOSUSer */
+
+div#fos_user_profile_form label.required{
+  display: none;
+  width: 0;
+  height: 0;
+  visibility: hidden;
+}
+
+div#fos_user_change_password_form label,
+div#fos_user_profile_form_user label,
+label[for='fos_user_profile_form_current'] {
+  display: block;
+  float: left;
+  width: 12em;
+}
+
+
+div#fos_user_change_password_form input,
+div#fos_user_profile_form_user input,
+input#fos_user_profile_form_current {
+  width: 24em;
 }

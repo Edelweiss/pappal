@@ -1,0 +1,33 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+
+<form id="jourFixe" action="{{ path(app.request.attributes.get('_route')) }}" method="post" autocomplete="off">
+  <label class="day">Day</label>
+  <select id="day" name="day">
+  {% for i in 1..31 %}
+    <option value="{{ i }}" {{ i == day ? 'selected="selected"' : ''}}>{{ i }}</option>
+  {% endfor %}
+  </select>
+  
+  <label class="month">Month</label>
+  <select id="month" name="month">
+  {% for i in 1..12 %}
+    <option value="{{ i }}" {{ i == month ? 'selected="selected"' : ''}}>{{ i }}</option>
+  {% endfor %}
+  </select>
+  
+  <label class="year">Year</label>
+  <select id="year" name="year">
+  {% for i in 2010..2020 %}
+    <option value="{{ i }}" {{ i == year ? 'selected="selected"' : ''}}>{{ i }}</option>
+  {% endfor %}
+  </select>
+  <input type="submit" id="submit" />
+</form>
+
+
+{{ hgvChanges | raw }}
+
+
+{% endblock %}

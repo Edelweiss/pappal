@@ -7,7 +7,7 @@
             <link href="{{ asset('css/960/reset.css') }}" type="text/css" rel="stylesheet" />
             <link href="{{ asset('css/960/text.css') }}" type="text/css" rel="stylesheet" />
             <link href="{{ asset('css/960/960.css') }}" type="text/css" rel="stylesheet" />
-            {% if app.environment %}
+            {% if app.environment == 'prod' %}
               <link href="{{ asset('css/jquery/dark-hive/jquery-ui-1.8.21.custom.css') }}" type="text/css" rel="stylesheet" />
             {% else %}
               <link href="{{ asset('css/jquery/smoothness/jquery-ui-1.8.23.custom.css') }}" type="text/css" rel="stylesheet" />
@@ -15,7 +15,7 @@
             
             <link href="{{ asset('css/jquery/tipTip.css') }}" type="text/css" rel="stylesheet" />
             <link href="{{ asset('css/main.css') }}" type="text/css" rel="stylesheet" />
-            {% if app.environment %}
+            {% if app.environment == 'prod' %}
               <link href="{{ asset('css/dev.css') }}" type="text/css" rel="stylesheet" />
             {% endif %}
             <link href="{{ asset('css/print.css') }}" type="text/css" rel="stylesheet" media="print" />
@@ -27,19 +27,19 @@
           <img src="{{ asset('images/dev.png') }}" alt="bleeding edge" width="100" style="position: fixed; right: 0; z-index: 999;" />
         {% endif %}
         <div id="site">
+            
             <div id="header">
               {% if app.user %}
-                <span>Hallo {{ app.user.username }}!</span>
+                <a href="{{ path('fos_user_security_logout', { 'id': app.user.id }) }}" class="logout" title="logged in as {{ app.user.username }}">Logout</a>
 
                 <div id="navigation" class="ui-widget">
-                  <div>Navigation</div>
+                  <div>Settings</div>
                   <ul id="menu" class="ui-corner-all" style="display: none;">
                     {% set navigation = {
                     'Samples': {'PapyrillioPapPalBundle_SampleList': {'title': 'View Samples', 'parameters': {}}},
 
                     'User':    {'fos_user_change_password': {'title': 'Change Password', 'parameters': {}}, 
-                                 'fos_user_profile_edit': {'title': 'Edit Profile', 'parameters': {}},
-                                 'fos_user_security_logout': {'title': 'Logout', 'parameters': { 'id': app.user.id }}}
+                                 'fos_user_profile_edit': {'title': 'Edit Profile', 'parameters': {}}}
                                         } %}
                     
                     {% for category, menu in navigation %}
@@ -62,9 +62,8 @@
                 </div>
 
               {% elseif app.request.attributes.get('_route') %}
-                <a href="{{ path('fos_user_security_login') }}">Login</a>
-                or
-                <a href="{{ path('fos_user_registration_register') }}">Register</a>
+                <a href="{{ path('fos_user_security_login') }}" class="logout">Login</a>
+                <!--a href="{{ path('fos_user_registration_register') }}">Register</a-->
               {% endif %}
             </div>
             <div id="content">
@@ -91,7 +90,9 @@
             <div class="clear">&nbsp;</div>
             <div id="footer">
                 <p>
-
+                  <a href="{{ path('PapyrillioPapPalBundle_Home') }}">Home</a>
+                  |
+                  <a href="{{ path('PapyrillioPapPalBundle_Contact') }}">Contact</a>
                 </p>
             </div>
         </div>

@@ -13,14 +13,14 @@
     </div>
     <div id="slider">
       <div>
-        <div class="floating">
-          <img id="butleft" src="{{ asset('images/eo/left.png') }}" alt="" />
+        <div class="floating control controlLeft">
+          <img id="butleft" src="{{ asset('images/arrowL.png') }}" alt="" />
         </div>
         <div class="floating">
           <ul class="clearfix">
 
             {% for sample in samples %}
-              <li id="sample{{ sample.id }}" style="display: none; width: 0; height: 0;">
+              <li id="sample{{ sample.id }}">
                 <span class="imtitle">{{ sample.title }}</span>
                 <a href="{{ path('PapyrillioPapPalBundle_SampleShow', {id: sample.id}) }}" title="{{ sample.title }}"><img src="{{ asset('thumbnail/placeholder.gif') }}" data-original="{{ asset(sample.thumbnail) }}" alt="" /></a>
               </li>
@@ -28,19 +28,15 @@
 
           </ul>
         </div>
-        <div class="floating">
-          <img id="butright" src="{{ asset('images/eo/right.png') }}" alt="" />
+        <div class="floating control">
+          <img id="butright" src="{{ asset('images/arrowR.png') }}" alt="" />
         </div>
       </div>
       <div class="clear"></div>
     </div>
     <div id="texts">
       {% for sample in samples %}
-        <div id="text{{ sample.id }}" class="text" style="display: none;">
-          <span clas="title">{{ sample.title }}</span><br />
-          <span class="date">{{ sample.dateHgvFormat }}</span>,
-          <span class="provenance">{{ sample.provenance }}</span>
-        </div>
+        <div id="text{{ sample.id }}" class="text">{{ sample.title }}</span><br />{{ sample.dateHgvFormat }} – {{ sample.provenance }}</div>
       {% endfor %}
     </div>
 

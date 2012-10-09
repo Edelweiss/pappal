@@ -66,7 +66,7 @@ class SampleController extends PapPalController{
   public function listAction(){
     $filterForm = $this->getFilterForm();
     
-    $templateOptions = array('list' => 'List', 'gallery' => 'Gallery');
+    $templateOptions = array('list' => 'List', 'gallery' => 'Slideshow');
     $template = $this->getTemplate();
     
     $sort = $this->getSort();
@@ -74,7 +74,7 @@ class SampleController extends PapPalController{
     $sortDirections = array('asc' => 'ascending', 'desc' => 'descending');
     
     $filterAnd = array('title');
-    $filterOr = array('title', 'hgv', 'ddb', 'dateWhen', 'material', 'provenance', 'keywords', 'status');
+    $filterOr = array('title', 'hgv', 'ddb', 'material', 'provenance', 'keywords', 'status');
 
     $entityManager = $this->getDoctrine()->getEntityManager();
     $repository = $entityManager->getRepository('PapyrillioPapPalBundle:Sample');
@@ -117,7 +117,7 @@ class SampleController extends PapPalController{
         }
       }
 
-      // date stuffff
+      // date stuff
       $dateSortWhen = trim($filter['dateWhen']);
       $dateSortNotBefore = trim($filter['dateNotBefore']);
       $dateSortNotAfter = trim($filter['dateNotAfter']);
@@ -145,6 +145,19 @@ class SampleController extends PapPalController{
         
         $where .= ' AND s.dateSort <= :dateNotAfter';
         $parameters['dateNotAfter'] = $dateSortNotAfter;
+      } else if(!empty($dateSortWhen)){
+        $dateSortFrom = Sample::generateDateSortKey(Sample::makeIsoYear($dateSortWhen) . '-01-01');
+        $dateSortTo = Sample::generateDateSortKey(Sample::makeIsoYear($dateSortWhen) . '-12-31');
+        
+        if($dateSortWhen < 0){
+          $tmp = $dateSortFrom;
+          $dateSortFrom = $dateSortTo;
+          $dateSortTo = $tmp;
+        }
+
+        $where .= ' AND s.dateSort BETWEEN :dateFrom AND :dateTo';
+        $parameters['dateFrom'] = $dateSortFrom;
+        $parameters['dateTo'] = $dateSortTo;
       }
       
     }
