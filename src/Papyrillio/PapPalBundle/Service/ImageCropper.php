@@ -67,6 +67,16 @@ class ImageCropper extends ImagePeer{
     }
   }
 
+  public function cropSpecial($x, $y, $width, $height, $path, $file, $targetDirectory, $prefix){
+    $this->configure($path, $file, $targetDirectory, $prefix);
+
+    $thumbnail = imagecreatetruecolor(self::THUMBNAIL_SIZE, self::THUMBNAIL_SIZE);
+    imagecopyresized ($thumbnail, $this->image, 0, 0, $x, $y, self::THUMBNAIL_SIZE, self::THUMBNAIL_SIZE, $width, $height);
+
+    $this->saveThumbnail($thumbnail);
+    $this->destroyThumbnail($thumbnail);
+  }
+
   protected function createThumbnail($x = 0, $y = 0, $width = null, $height = null){
     $width = $width ? $width : self::THUMBNAIL_SIZE;
     $height = $height ? $height : self::THUMBNAIL_SIZE;

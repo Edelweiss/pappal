@@ -376,7 +376,7 @@ class SampleController extends PapPalController{
     if($this->get('request')->getMethod() == 'POST'){
       $uploadForm->bindRequest($this->get('request'));
     }
-    
+
     return $uploadForm;
   }
 
@@ -406,18 +406,8 @@ class SampleController extends PapPalController{
           $uploadedFile = $files['image'];
           if($uploadedFile->getMimeType() == 'image/jpeg'){
 
-            // make sure directory exists
-            $sampleDirectory = $this->get('kernel')->getRootDir() . '/../web/sample';
-            $folderDirectory = $sampleDirectory . '/' . $sample->getFolder();
-            $hgvDirectory = $folderDirectory . '/' . $sample->getHgv();
+            $imageDirectory = $this->makeSureImageDirectoryExists($sample);
 
-            if(!file_exists($folderDirectory)){
-              mkdir($folderDirectory);
-            }
-            if(!file_exists($hgvDirectory)){
-              mkdir($hgvDirectory);
-            }
-            
             // make sure it ends with ».jpg«
             $filename = $uploadedFile->getClientOriginalName();
             $match = array();
@@ -429,21 +419,21 @@ class SampleController extends PapPalController{
 
             // make sure there is no file by this name already
             $i = 0;
-            $targetFile = $hgvDirectory . '/' . $filename;
+            $targetFile = $imageDirectory . '/' . $filename;
             while(file_exists($targetFile)){
               $indexedFilename = substr($filename, 0, strrpos($filename, '.')) . '_' . ++$i . '.jpg';
-              $targetFile = $hgvDirectory . '/' . $indexedFilename;
+              $targetFile = $imageDirectory . '/' . $indexedFilename;
             }
             $filename = $i ? $indexedFilename : $filename;
 
             // move file
-            $uploadedFile->move($hgvDirectory, $filename);
-            
+            $uploadedFile->move($imageDirectory, $filename);
+
             // create thumbnails
-            $thumbnailDirectory = $this->get('kernel')->getRootDir() . '/../web/thumbnail' . '/' . $sample->getFolder() . '/' . $sample->getHgv();
+            $thumbnailDirectory = $this->getDirectoryForThumbnails($sample);
             $cropper = $this->get('papyrillio_pap_pal.image_cropper');
-            $cropper->crop($hgvDirectory, $filename, $thumbnailDirectory, $sample->getHgv());
-            
+            $cropper->crop($imageDirectory, $filename, $thumbnailDirectory, $sample->getHgv());
+
             $this->get('session')->setFlash('notice', 'Image has been uploaded.');
           } else {
             $this->get('session')->setFlash('error', 'Mime type ' . $uploadedFile->getMimeType() . ' not accepted. Please upload only jpg images.');
@@ -498,26 +488,6 @@ class SampleController extends PapPalController{
         return new Response(json_encode(array('success' => false, 'error' => 'File ' . $filepath . ' could not be found on this system.')));
       }
     }
-  }
-
-  protected function getSample($id){
-    $entityManager = $this->getDoctrine()->getEntityManager();
-    $repository = $entityManager->getRepository('PapyrillioPapPalBundle:Sample');
-    return $repository->findOneBy(array('id' => $id));
-  }
-  
-  protected function getFilepathForThumbnail($sample, $thumbnail){
-    $thumbnailDirectory = $this->get('kernel')->getRootDir() . '/../web/thumbnail';
-    $folderDirectory = $thumbnailDirectory . '/' . $sample->getFolder();
-    $hgvDirectory = $folderDirectory . '/' . $sample->getHgv();
-    return $hgvDirectory . '/' . $thumbnail;
-  }
-  
-  protected function getFilepathForImage($sample, $image){
-    $imageDirectory = $this->get('kernel')->getRootDir() . '/../web/sample';
-    $folderDirectory = $imageDirectory . '/' . $sample->getFolder();
-    $hgvDirectory = $folderDirectory . '/' . $sample->getHgv();
-    return $hgvDirectory . '/' . $image;
   }
 
 }

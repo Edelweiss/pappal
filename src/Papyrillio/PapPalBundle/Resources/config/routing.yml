@@ -63,6 +63,12 @@ PapyrillioPapPalBundle_SampleRotateThumbnail:
     pattern:  /sample/rotateThumbnail/{id}/{thumbnail}/{direction}
     defaults: { _controller: PapyrillioPapPalBundle:Sample:rotateThumbnail }
 
+# Images
+
+PapyrillioPapPalBundle_ImageCrop:
+    pattern:  /image/crop/{id}/{image}
+    defaults: { _controller: PapyrillioPapPalBundle:Image:crop }
+
 # Static pages
 
 PapyrillioPapPalBundle_Home:

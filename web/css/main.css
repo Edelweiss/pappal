@@ -192,12 +192,17 @@ td.title {
   font-weight: bold;
 }
 
+div#tiptip_content a,
 div#tiptip_content span{
   cursor: hand;
   cursor: pointer;
   color: #c0c0c0;
+  padding: 0;
+  background: none;
+  text-decoration: none;
 }
 
+div#tiptip_content a,
 div#tiptip_content span:hover {
   color: #f0f0f0;
 }
