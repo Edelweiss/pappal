@@ -30,7 +30,7 @@
             
             <div id="header">
               {% if app.user %}
-                <a href="{{ path('fos_user_security_logout', { 'id': app.user.id }) }}" class="logout" title="logged in as {{ app.user.username }}">Logout</a>
+                <a href="{{ path('fos_user_security_logout', { 'id': app.user.id }) }}" class="pageLinkTop" title="logged in as {{ app.user.username }}">Logout</a>
 
                 <div id="navigation" class="ui-widget">
                   <div>Settings</div>
@@ -62,9 +62,18 @@
                 </div>
 
               {% elseif app.request.attributes.get('_route') %}
-                <a href="{{ path('fos_user_security_login') }}" class="logout">Login</a>
+                <a href="{{ path('fos_user_security_login') }}" class="pageLinkTop">Login</a>
                 <!--a href="{{ path('fos_user_registration_register') }}">Register</a-->
               {% endif %}
+
+              <span> | </span>
+              <a href="{{ path('PapyrillioPapPalBundle_Contact') }}" title="Contact" class="pageLinkTop">Contact</a>
+              <span> | </span>
+              <a href="{{ path('PapyrillioPapPalBundle_BrowsingTips') }}" title="Browsing Tips" class="pageLinkTop">Browsing Tips</a>
+              <span> | </span>
+              <a href="{{ path('PapyrillioPapPalBundle_About') }}" title="About" class="pageLinkTop">About</a>
+              <span> | </span>
+              <a href="{{ path('PapyrillioPapPalBundle_Home') }}" title="Home" class="pageLinkTop">Home</a>
             </div>
             <div id="content">
                 {% if app.session.hasFlash('notice') %}
@@ -90,9 +99,13 @@
             <div class="clear">&nbsp;</div>
             <div id="footer">
                 <p>
-                  <a href="{{ path('PapyrillioPapPalBundle_Home') }}">Home</a>
+                  <a href="{{ path('PapyrillioPapPalBundle_Home') }}" title="Home">Home</a>
                   |
-                  <a href="{{ path('PapyrillioPapPalBundle_Contact') }}">Contact</a>
+                  <a href="{{ path('PapyrillioPapPalBundle_About') }}" title="About">About</a>
+                  |
+                  <a href="{{ path('PapyrillioPapPalBundle_BrowsingTips') }}" title="Browsing Tips">Browsing Tips</a>
+                  |
+                  <a href="{{ path('PapyrillioPapPalBundle_Contact') }}" title="Contact">Contact</a>
                 </p>
             </div>
         </div>
