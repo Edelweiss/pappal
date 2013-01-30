@@ -19,7 +19,7 @@ div#site {
   margin: 0 auto;
   padding: 0 0 23em;
   color: white;
-  background-color: #202020;
+  background-color: #404040;
   background-image: url('../images/PapPalPapPal.png');
   background-repeat: no-repeat;
   background-position: bottom right;
@@ -133,6 +133,36 @@ span.action:hover,
 .ui-widget .ui-widget textarea.greek,
 .greek {
     font-family: "Lucida Grande", "Cardo", "Arial Unicode MS", "IFAO-Grec Unicode", "KadmosU", "New Athena Unicode", "Athena Unicode", "Lucida Grande", "Verdana", "Tahoma" !important;
+}
+
+/* STATIC PAGES */
+
+div.page {
+  font-size: 1.2em;
+  width: 600px;
+  margin: auto;
+  background-position: top left;
+  background-repeat: no-repeat;
+  padding-top: 10em;
+}
+
+div.home {
+  padding: 0;
+}
+
+div.about {
+  background-image: url('../images/PageAbout.png');
+  
+}
+
+div.browsingTips {
+  background-image: url('../images/PageBrowsingTips.png');
+  
+}
+
+div.contact {
+  background-image: url('../images/PageContact.png');
+  
 }
 
 /* SAMPLE LIST */
@@ -259,7 +289,11 @@ div#navigation ul#menu li {
   margin: 0;
 }
 
-div#header span, a.logout {
+div#header span{
+  padding: 0 0.4em 0 0.4em;
+}
+
+div#header span, a.pageLinkTop {
   float: right;
 }
 

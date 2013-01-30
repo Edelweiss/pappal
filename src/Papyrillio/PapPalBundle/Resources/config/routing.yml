@@ -75,6 +75,14 @@ PapyrillioPapPalBundle_Home:
     pattern:  /
     defaults: { _controller: PapyrillioPapPalBundle:Default:home }
 
+PapyrillioPapPalBundle_About:
+    pattern:  /about
+    defaults: { _controller: PapyrillioPapPalBundle:Default:about }
+
+PapyrillioPapPalBundle_BrowsingTips:
+    pattern:  /browsingTips
+    defaults: { _controller: PapyrillioPapPalBundle:Default:browsingTips }
+
 PapyrillioPapPalBundle_Contact:
     pattern:  /contact
     defaults: { _controller: PapyrillioPapPalBundle:Default:contact }

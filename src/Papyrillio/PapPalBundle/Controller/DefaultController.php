@@ -17,6 +17,16 @@ class DefaultController extends Controller
         return $this->render('PapyrillioPapPalBundle:Default:home.html.twig');
     }
 
+    public function aboutAction()
+    {
+        return $this->render('PapyrillioPapPalBundle:Default:about.html.twig');
+    }
+
+    public function browsingTipsAction()
+    {
+        return $this->render('PapyrillioPapPalBundle:Default:browsingTips.html.twig');
+    }
+
     public function contactAction()
     {
         return $this->render('PapyrillioPapPalBundle:Default:contact.html.twig');
