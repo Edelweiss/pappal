@@ -105,7 +105,7 @@ class SampleController extends PapPalController{
       foreach($filter as $field => $value){
         $value = trim($value);
         if(!empty($value) && in_array($field, $filterOr)){
-          $where .= ' AND (';
+          $where .= ' OR ('; /* was: AND */
           $index = 0;
           foreach(explode(' ', $value) as $or){
             $where .= 's.' . $field . ' LIKE :' . $field . $index . ' OR ';
