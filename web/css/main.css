@@ -7,8 +7,8 @@ Leuchtblau* #26b3f7 #f78c26
 Hellstahlblau #2e7db2 #b26e2e */
 
 body {
-  font-size: 66%;
-  background-color: white;
+  font-size: 75%;
+  background-color: #202020;
 }
 
 div#site {
@@ -19,7 +19,7 @@ div#site {
   margin: 0 auto;
   padding: 0 0 23em;
   color: white;
-  background-color: #404040;
+  background-color: #454545;
   background-image: url('../images/PapPalPapPal.png');
   background-repeat: no-repeat;
   background-position: bottom right;
@@ -27,11 +27,11 @@ div#site {
 
 div#header {
   background-color: #690102;
-  border-bottom: 0.2em solid #3a0101;
+  border-bottom: 1px solid #3a0101;
   height: 10em;
-  background-image: url('../images/PapPal.png');
+  background-image: url('../images/PapPalHand.png');
   background-repeat: no-repeat;
-  background-position: center top; 
+  background-position: center top;
   padding: 1em;
 }
 
@@ -61,10 +61,6 @@ div#footer {
 a {
   /*color: #990102;*/
   color: white;
-  padding-left: 2.5em;
-  background-image: url('../images/link.png');
-  background-repeat: no-repeat;
-  background-position: left center;
 }
 
 a:hover {
@@ -319,6 +315,13 @@ form#filter label{
   float: left;
   width: 10em;
 }
+
+form#filter label.notBefore,
+form#filter label.notAfter,
+form#filter label.ddb{
+  text-align: right;
+}
+
 
 form#filter input{
   padding: 0;
