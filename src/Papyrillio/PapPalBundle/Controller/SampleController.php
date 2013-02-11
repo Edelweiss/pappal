@@ -66,7 +66,7 @@ class SampleController extends PapPalController{
   public function listAction(){
     $filterForm = $this->getFilterForm();
     
-    $templateOptions = array('list' => 'List', 'gallery' => 'Slideshow');
+    $templateOptions = array('list' => 'Gallery', 'gallery' => 'Slideshow');
     $template = $this->getTemplate();
     
     $sort = $this->getSort();
