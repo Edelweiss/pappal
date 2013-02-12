@@ -33,12 +33,33 @@ class SampleController extends PapPalController{
 
       $form->bindRequest($this->getRequest());
 
-      // save to session
-    } // else retrieve session
+      $this->getRequest()->getSession()->set('sampleFilterForm', $this->getRequest()); // save to session
+
+    } elseif ($this->getRequest()->getSession()->get('sampleFilterForm')) {
+
+      $form->bindRequest($this->getRequest()->getSession()->get('sampleFilterForm')); // retrieve session
+
+    }
 
     return $form;
   }
-  
+
+  protected function getFilter(){
+    $result = null;
+
+    if($this->getParameter('form')){
+      $result = $this->getParameter('form');
+      
+      $this->getRequest()->getSession()->set('sampleFilter', $result); // save to session
+
+    } elseif($this->getRequest()->getSession()->get('sampleFilter')){
+
+      $result = $this->getRequest()->getSession()->get('sampleFilter'); // retrieve session
+
+    }
+    return $result;
+  }
+
   protected function getSort(){
     $result = array();
     if($this->getParameter('sort')){
@@ -47,38 +68,55 @@ class SampleController extends PapPalController{
           $result[$sort['value']] = $sort['direction'];
         }
       }
+      
+      $this->getRequest()->getSession()->set('sampleSort', $result); // save to session
+
+    } elseif($this->getRequest()->getSession()->get('sampleSort')){
+
+      $result = $this->getRequest()->getSession()->get('sampleSort'); // retrieve session
+
     }
     return $result;
   }
-  
+
   public function getTemplate(){
-    if($this->getParameter('template')){
-      return $this->getParameter('template');
-    }
-
+    $template = 'list';
+    
     if($this->container->get('request')->get('_route') == 'PapyrillioPapPalBundle_SampleGallery'){
-      return 'gallery';
+
+      $template = 'gallery';
+
+    } elseif($this->getParameter('template')){
+
+      $template = $this->getParameter('template');
+      $this->getRequest()->getSession()->set('sampleTemplate', $template); // save to session
+
+    } elseif($this->getRequest()->getSession()->get('sampleTemplate')){
+
+      $template = $this->getRequest()->getSession()->get('sampleTemplate'); // retrieve session
+
     }
 
-    return 'list';
+    return $template;
   }
 
   public function listAction(){
-    $filterForm = $this->getFilterForm();
-    
+    $filterForm = $this->getFilterForm(); // DEFAULT or POST or SESSION
+
     $templateOptions = array('list' => 'Gallery', 'gallery' => 'Slideshow');
-    $template = $this->getTemplate();
+    $template = $this->getTemplate(); // DEFAULT or ROUTE or POST or SESSION
     
-    $sort = $this->getSort();
+    $filter = $this->getFilter(); // DEFAULT or POST or SESSION
+
+    $sort = $this->getSort(); // DEFAULT or POST or SESSION
     $sortOptions = array('' => '', 'hgv' => 'HGV', 'ddb' => 'DDB', 'dateSort' => 'Date', 'title' => 'Title', 'material' => 'Material', 'provenance' => 'Provenance', 'status' => 'Status', 'importDate' => 'Import Date');
     $sortDirections = array('asc' => 'ascending', 'desc' => 'descending');
-    
-    $filterAnd = array('title');
+
     $filterOr = array('title', 'hgv', 'ddb', 'material', 'provenance', 'keywords', 'status');
 
     $entityManager = $this->getDoctrine()->getEntityManager();
     $repository = $entityManager->getRepository('PapyrillioPapPalBundle:Sample');
-    
+
     // ORDER BY
 
     $orderBy = ' ORDER BY';
@@ -100,7 +138,7 @@ class SampleController extends PapPalController{
     $where = ' WHERE s.status = :status';
     $parameters = array('status' => 'ok');
     
-    if($filter = $this->getParameter('form')){
+    if($filter){
       // standard fields
       foreach($filter as $field => $value){
         $value = trim($value);
@@ -159,14 +197,14 @@ class SampleController extends PapPalController{
         $parameters['dateFrom'] = $dateSortFrom;
         $parameters['dateTo'] = $dateSortTo;
       }
-      
+ 
     }
 
     // SELECT
     $query = $entityManager->createQuery('
         SELECT s FROM PapyrillioPapPalBundle:Sample s ' . $where . ' ' . $orderBy .'
       ');
-      
+
     // QUERY
 
     $query->setParameters($parameters);
@@ -174,113 +212,6 @@ class SampleController extends PapPalController{
     $count = count($samples);
 
     return $this->render('PapyrillioPapPalBundle:Sample:' . $template . '.html.twig', array('samples' => $samples, 'filterForm' => $filterForm->createView(), 'template' => $template, 'templateOptions' => $templateOptions, 'sort' => $sort, 'sortOptions' => $sortOptions, 'sortDirections' => $sortDirections));
-
-    if ($this->getRequest()->getMethod() == 'POST') {
-      
-      // REQUEST PARAMETERS
-      
-      $limit         = $this->getParameter('rows');
-      $page          = $this->getParameter('page');
-      $offset        = $page * $limit - $limit;
-      $offset        = $offset < 0 ? 0 : $offset;
-      $sort          = $this->getParameter('sidx');
-      $sortDirection = $this->getParameter('sord');
-      $visible       = explode(';', rtrim($this->getParameter('visible'), ';'));
-      
-      // SELECT
-
-      $visibleColumns = array('title');
-      foreach($visible as $column){
-        if($column != ''){
-          $visibleColumns[] = $column;
-        }
-      }
-      $visible = $visibleColumns;
-
-      $this->get('logger')->info('visible: ' . print_r($visible, true));
-    
-
-      // WHERE WITH
-
-      if($this->getParameter('_search') == 'true'){
-        $prefix = ' WHERE ';
-
-        foreach(array('tm', 'hgv', 'ddb', 'source', 'text', 'position', 'description', 'creator', 'created', 'status') as $field){
-          if(strlen($this->getParameter($field))){
-            $where .= $prefix . 'c.' . $field . ' LIKE :' . $field;
-            $parameters[$field] = '%' . $this->getParameter($field) . '%';
-            $prefix = ' AND ';
-          }
-        }
-
-        if($this->getParameter('edition')){
-          $where .= $prefix . '(e.title LIKE :edition OR e.sort LIKE :edition)';
-          $parameters['edition'] = '%' . $this->getParameter('edition') . '%';
-          $prefix = ' AND ';
-        }
-
-        if($this->getParameter('compilation')){
-          $where .= $prefix . '(c2.title LIKE :compilation OR c2.volume LIKE :compilation)';
-          $parameters['compilation'] = '%' . $this->getParameter('compilation') . '%';
-          $prefix = ' AND ';
-        }
-
-        $prefix = ' WITH ';
-        foreach(array('task_bl', 'task_tm', 'task_hgv', 'task_ddb', 'task_apis', 'task_biblio') as $field){
-          if(strlen($this->getParameter($field))){
-            $with = $prefix . ' (t.category = \'' . str_replace('task_', '', $field) . '\' AND t.description LIKE \'%' . ($this->getParameter($field) != '*' ? $this->getParameter($field) : '') . '%\')';
-            //$key =  ucfirst(str_replace('task_', '', $field));
-            //$with = $prefix . ' (t.category = :category' . $key . ' AND t.description LIKE :description' . $key . ')'; 
-            //$parameters['category' . $key] = strtolower($field);
-            //$parameters['description' . $key] = '%' . $this->getParameter($field) . '%';
-            $prefix = ' OR ';
-          }
-        }
-      }
-
-      // LIMIT
-
-      $query = $entityManager->createQuery('
-        SELECT count(DISTINCT c.id) FROM PapyrillioBeehiveBundle:Correction c
-        LEFT JOIN c.tasks t JOIN c.edition e JOIN c.compilation c2
-        ' . $with . ' ' . $where
-      );
-      $query->setParameters($parameters);
-      $count = $query->getSingleScalarResult();
-      $totalPages = ($count > 0 && $limit > 0) ? ceil($count/$limit) : 0;
-      
-      $this->get('logger')->info('limit: ' . $limit);
-      $this->get('logger')->info('page: ' . $page);
-      $this->get('logger')->info('offset: ' . $offset);
-      $this->get('logger')->info('sort: ' . $sort);
-      $this->get('logger')->info('sortDirection: ' . $sortDirection);
-      $this->get('logger')->info('totalPages: ' . $totalPages);
-
-      // QUERY
-      
-      $query = $entityManager->createQuery('
-        SELECT e, c, t FROM PapyrillioBeehiveBundle:Correction c
-        LEFT JOIN c.tasks t JOIN c.edition e JOIN c.compilation c2 ' . $with . ' ' . $where . ' ' . $orderBy
-      );
-      if(!$print){
-        $query->setFirstResult($offset)->setMaxResults($limit);
-      }
-      $query->setParameters($parameters);
-
-      $corrections = $query->getResult();
-
-      if($print){
-        return $this->render('PapyrillioBeehiveBundle:Correction:print.html.twig', array('corrections' => $corrections, 'visible' => $visible));
-      } else {
-        return $this->render('PapyrillioBeehiveBundle:Correction:list.xml.twig', array('corrections' => $corrections, 'count' => $count, 'totalPages' => $totalPages, 'page' => $page));
-      }
-    } else {
-      if($print){
-        return $this->render('PapyrillioBeehiveBundle:Correction:print.html.twig', array('corrections' => $corrections, 'visible' => array()));
-      } else {
-        return $this->render('PapyrillioBeehiveBundle:Correction:list.html.twig', array('corrections' => $corrections));
-      }
-    }
   }
 
   public function tmAction($tm){
