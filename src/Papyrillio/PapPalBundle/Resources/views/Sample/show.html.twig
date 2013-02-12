@@ -76,6 +76,7 @@
   <tr><th class="dateSort">dateSort</th><td class="dateSort">{{ sample.dateSort }}</td></tr>
   <tr><th class="status">status</th><td class="status">{{ sample.status }}</td></tr-->
   <tr><th class="importDate">Import date</th><td class="importDate">{{ sample.importDate.format('Y-m-d H:i:s') }}</td></tr>
+  <tr><th class="importDate"></th><td class="link"><a href="{{ path('PapyrillioPapPalBundle_SampleList') }}"><br />Jump back to overview!</a></td></tr>
 </table>
 
 {% if is_granted('ROLE_ADMIN') %}
