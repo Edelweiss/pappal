@@ -9,13 +9,13 @@
   {% include 'PapyrillioPapPalBundle:Sample:filterForm.html.twig' with {'filterForm': filterForm, 'template': template, 'templateOptions': templateOptions, 'sort': sort, 'sortOptions': sortOptions, 'sortDirections': sortDirections} %}
 
     <div id="count">
+      <img id="butleft" class="controlButton" src="{{ asset('images/arrowL.png') }}" alt="" />
       <span id="number">{{ samples | length ? 1 : 0 }}</span><span>/{{ samples | length }}</span>
+      <img id="butright" class="controlButton" src="{{ asset('images/arrowR.png') }}" alt="" />
     </div>
     <div id="slider">
       <div>
-        <div class="floating control controlLeft">
-          <img id="butleft" src="{{ asset('images/arrowL.png') }}" alt="" />
-        </div>
+
         <div class="floating">
           <ul class="clearfix">
 
@@ -28,9 +28,7 @@
 
           </ul>
         </div>
-        <div class="floating control">
-          <img id="butright" src="{{ asset('images/arrowR.png') }}" alt="" />
-        </div>
+
       </div>
       <div class="clear"></div>
     </div>

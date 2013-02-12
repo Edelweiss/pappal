@@ -29,17 +29,20 @@
 #slider,
 #texts,
 #count {
-	/*width: 780px;*/
-	/*border: 1px solid #0f0;*/
-	margin: 0 auto;
-	background-color: #222222;
-	border: 1px solid #555555;
+  /*width: 780px;*/
+  /*border: 1px solid #0f0;*/
+  margin: 0 auto;
+  background-color: #222222;
+  border: 1px solid #555555;
   padding: 1em;
   text-align: center;
 }
 
 #count {
   border-bottom: none;
+  height: 30px;
+  vertical-align: middle;
+  position: relative;
 }
 
 #texts {
@@ -56,7 +59,7 @@
 
 #slider ul {
 	list-style-type: none;
-	width: 640px;
+	width: 940px; /* 640 */
 	height: 348px;
 	overflow: hidden; /* cl */
 	/*border: 1px solid #00f;*/
@@ -90,23 +93,23 @@
 /*303030*/
 
 #butleft, #butright {
-	padding: 0px;
-	margin: 0;
+  padding: 0px;
+  margin: 0;
   cursor: hand;
   cursor: pointer;
+  width: 32px;
 }
 
-div.control{
-  margin: 10em 0 0 0;
+#count img#butleft {
+  position: absolute;
+  top: 4px;
+  left: 4px;
 }
 
-div.controlLeft{
-  margin: 10em 0 0 8em;
-}
-
-#controls {
-	width: 100px;
-	margin: 0 auto;
+#count img#butright {
+  position: absolute;
+  top: 4px;
+  right: 4px;
 }
 
 .text {

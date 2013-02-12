@@ -3,9 +3,9 @@ sliderOptions = {
   bigWidth:     300,
   bigHeight:    300,
   bigHeight2:   332,
-  smallWidth:   150,
-  smallHeight:  150,
-  smallHeight2: 332,
+  smallWidth:   300, // 150
+  smallHeight:  300, // 150
+  smallHeight2: 332, // 332
   fontBig:      16,
   fontSmall:    12
 };
