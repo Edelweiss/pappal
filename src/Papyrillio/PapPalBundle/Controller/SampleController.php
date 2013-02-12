@@ -105,15 +105,15 @@ class SampleController extends PapPalController{
       foreach($filter as $field => $value){
         $value = trim($value);
         if(!empty($value) && in_array($field, $filterOr)){
-          $where .= ' OR ('; /* was: AND */
+          $where .= ' AND (';
           $index = 0;
           foreach(explode(' ', $value) as $or){
-            $where .= 's.' . $field . ' LIKE :' . $field . $index . ' OR ';
+            $where .= 's.' . $field . ' LIKE :' . $field . $index . ' AND '; // was: OR
             $parameters[$field . $index] = '%' . $or . '%';
             $index++;
           }
 
-          $where = rtrim($where, ' OR ') .  ')';
+          $where = rtrim($where, ' AND ') .  ')'; // was: OR
         }
       }
 
