@@ -49,7 +49,7 @@ class SampleController extends PapPalController{
 
     if($this->getParameter('form')){
       $result = $this->getParameter('form');
-      
+
       $this->getRequest()->getSession()->set('sampleFilter', $result); // save to session
 
     } elseif($this->getRequest()->getSession()->get('sampleFilter')){
@@ -146,9 +146,16 @@ class SampleController extends PapPalController{
           $where .= ' AND (';
           $index = 0;
           foreach(explode(' ', $value) as $or){
-            $where .= 's.' . $field . ' LIKE :' . $field . $index . ' AND '; // was: OR
-            $parameters[$field . $index] = '%' . $or . '%';
-            $index++;
+            if(preg_match('/(ae|oe|ue)/', $or)){
+              $valueUmlaut = str_replace(array('ae', 'oe', 'ue'), array('ä', 'ö', 'ü'), $or);
+              $where .= '(s.' . $field . ' LIKE :' . $field . $index . ' OR s.' . $field . ' LIKE :' . $field . ($index + 1) . ') AND '; // was: OR
+              $parameters[$field . ($index++)] = '%' . $or . '%';
+              $parameters[$field . ($index++)] = '%' . $valueUmlaut . '%';
+            } else {
+              $where .= 's.' . $field . ' LIKE :' . $field . $index . ' AND '; // was: OR
+              $parameters[$field . $index] = '%' . $or . '%';
+              $index++;
+            }
           }
 
           $where = rtrim($where, ' AND ') .  ')'; // was: OR
