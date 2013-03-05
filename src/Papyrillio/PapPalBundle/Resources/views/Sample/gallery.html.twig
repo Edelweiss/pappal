@@ -7,36 +7,38 @@
 {% block body %}
 
   {% include 'PapyrillioPapPalBundle:Sample:filterForm.html.twig' with {'filterForm': filterForm, 'template': template, 'templateOptions': templateOptions, 'sort': sort, 'sortOptions': sortOptions, 'sortDirections': sortDirections} %}
+  
+  <br />
 
-    <div id="count">
-      <img id="butleft" class="controlButton" src="{{ asset('images/arrowL.png') }}" alt="" />
-      <span id="number">{{ samples | length ? 1 : 0 }}</span><span>/{{ samples | length }}</span>
-      <img id="butright" class="controlButton" src="{{ asset('images/arrowR.png') }}" alt="" />
-    </div>
-    <div id="slider">
-      <div>
+  <div id="count">
+    <img id="butleft" class="controlButton" src="{{ asset('images/arrowL.png') }}" alt="" />
+    <span id="number">{{ samples | length ? 1 : 0 }}</span><span>/{{ samples | length }}</span>
+    <img id="butright" class="controlButton" src="{{ asset('images/arrowR.png') }}" alt="" />
+  </div>
+  <div id="slider">
+    <div>
 
-        <div class="floating">
-          <ul class="clearfix">
+      <div class="floating">
+        <ul class="clearfix">
 
-            {% for sample in samples %}
-              <li id="sample{{ sample.id }}">
-                <span class="imtitle">{{ sample.title }}</span>
-                <a href="{{ path('PapyrillioPapPalBundle_SampleShow', {id: sample.id}) }}" title="{{ sample.title }}"><img src="{{ asset('thumbnail/placeholder.gif') }}" data-original="{{ asset(sample.thumbnail) }}" alt="" /></a>
-              </li>
-            {% endfor %}
+          {% for sample in samples %}
+            <li id="sample{{ sample.id }}">
+              <span class="imtitle">{{ sample.title }}</span>
+              <a href="{{ path('PapyrillioPapPalBundle_SampleShow', {id: sample.id}) }}" title="{{ sample.title }}"><img src="{{ asset('thumbnail/placeholder.gif') }}" data-original="{{ asset(sample.thumbnail) }}" alt="" /></a>
+            </li>
+          {% endfor %}
 
-          </ul>
-        </div>
-
+        </ul>
       </div>
-      <div class="clear"></div>
+
     </div>
-    <div id="texts">
-      {% for sample in samples %}
-        <div id="text{{ sample.id }}" class="text">{{ sample.title }}</span><br />{{ sample.dateHgvFormat }} – {{ sample.provenance }}</div>
-      {% endfor %}
-    </div>
+    <div class="clear"></div>
+  </div>
+  <div id="texts">
+    {% for sample in samples %}
+      <div id="text{{ sample.id }}" class="text">{{ sample.title }}</span><br />{{ sample.dateHgvFormat }} – {{ sample.provenance }}</div>
+    {% endfor %}
+  </div>
 
 {% endblock %}
 
