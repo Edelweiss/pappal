@@ -7,7 +7,8 @@ Leuchtblau* #26b3f7 #f78c26
 Hellstahlblau #2e7db2 #b26e2e */
 
 body {
-  font-size: 75%;
+  font-size: 0.8em;
+  font-family: Georgia,serif;
   background-color: #202020;
 }
 
@@ -28,11 +29,12 @@ div#site {
 div#header {
   background-color: #690102;
   border-bottom: 1px solid #3a0101;
-  height: 10em;
+  height: 6em;
   background-image: url('../images/PapPalHand.png');
   background-repeat: no-repeat;
   background-position: center top;
   padding: 1em;
+  font-size: 1em;
 }
 
 div#header a, div#header a:hover,
@@ -49,11 +51,26 @@ div#content {
 
 div#footer {
   background-color: #690102;
+  background-image: url('../images/mtk.png');
+  background-repeat: no-repeat;
+  background-position: right;
   position: absolute;
   bottom: 0;
   width: 100%;
-  height: 5em;
+  height: 76px;
   border-top: 0.1em solid #3a0101;
+  font-family: Verdana,Helvetica,sans-serif;
+  font-size: 0.9em;
+}
+
+div#footer p{
+  padding: 1em 0 0 4em;
+}
+
+div#footer span:first-child{
+  font-variant: small-caps;
+  font-weight: bold;
+  font-size: larger;
 }
 
 /* global element styling */
@@ -74,6 +91,10 @@ h3 a {
 }
 
 p {
+  padding: 0 0 0.2em 0;
+}
+
+div.home p {
   padding: 1em;
 }
 
@@ -139,26 +160,7 @@ div.page {
   margin: auto;
   background-position: top left;
   background-repeat: no-repeat;
-  padding-top: 10em;
-}
-
-div.home {
-  padding: 0;
-}
-
-div.about {
-  background-image: url('../images/PageAbout.png');
-  
-}
-
-div.browsingTips {
-  background-image: url('../images/PageBrowsingTips.png');
-  
-}
-
-div.contact {
-  background-image: url('../images/PageContact.png');
-  
+  padding-top: 2em;
 }
 
 /* SAMPLE LIST */
@@ -293,6 +295,11 @@ div#header span, a.pageLinkTop {
   float: right;
 }
 
+div#header a:last-child {
+  padding: 1.2em 6em 0 0;
+  font-size: larger;
+}
+
 /* SAMPLE FILTER */
 
 form#filter fieldset {
@@ -316,13 +323,6 @@ form#filter label{
   width: 10em;
 }
 
-form#filter label.notBefore,
-form#filter label.notAfter,
-form#filter label.ddb{
-  text-align: right;
-}
-
-
 form#filter input{
   padding: 0;
 }
@@ -337,12 +337,23 @@ form#filter input#form_provenance{
   width: 30em;
 }
 
+form#filter label.material{
+  padding: 0 0 0 5em;
+  text-align: right;
+}
+
 form#filter input#form_dateWhen,
 form#filter input#form_dateNotBefore,
 form#filter input#form_dateNotAfter,
 form#filter input#form_hgv,
 form#filter input#form_ddb{
   width: 4em;
+}
+
+form#filter label.notBefore,
+form#filter label.notAfter,
+form#filter label.ddb{
+  text-align: right;
 }
 
 form#filter button#reset,

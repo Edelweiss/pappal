@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <title>{% block title %}PapPal - Paläografische Datenbank{% endblock %}</title>
+        <title>{% block title %}PapPal - Papyrology | Paleography{% endblock %}</title>
         {% block stylesheets %}
             <link href="{{ asset('css/960/reset.css') }}" type="text/css" rel="stylesheet" />
             <link href="{{ asset('css/960/text.css') }}" type="text/css" rel="stylesheet" />
@@ -71,6 +71,8 @@
               <a href="{{ path('PapyrillioPapPalBundle_About') }}" title="About" class="pageLinkTop">About</a>
               <span> | </span>
               <a href="{{ path('PapyrillioPapPalBundle_Home') }}" title="Home" class="pageLinkTop">Home</a>
+              <br />
+              <a href="{{ path('PapyrillioPapPalBundle_SampleList') }}" title="Browse Images&nbsp;…" class="pageLinkTop ">To the Images&nbsp;…</a>
             </div>
             <div id="content">
                 {% if app.session.hasFlash('notice') %}
@@ -96,13 +98,9 @@
             <div class="clear">&nbsp;</div>
             <div id="footer">
                 <p>
-                  <a href="{{ path('PapyrillioPapPalBundle_Home') }}" title="Home">Home</a>
-                  |
-                  <a href="{{ path('PapyrillioPapPalBundle_About') }}" title="About">About</a>
-                  |
-                  <a href="{{ path('PapyrillioPapPalBundle_BrowsingTips') }}" title="Browsing Tips">Browsing Tips</a>
-                  |
-                  <a href="{{ path('PapyrillioPapPalBundle_Contact') }}" title="Contact">Contact</a>
+                  <span><a href="www.materiale-textkulturen.de">Materiale Textkulturen</a></span>
+                  <br />
+                  <span>Materialität und Präsenz des Geschriebenen in non-typographischen Gesellschaften</span>
                 </p>
             </div>
         </div>
