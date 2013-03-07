@@ -18,12 +18,13 @@ div#site {
   position: relative;
   width: 1024px;
   margin: 0 auto;
-  padding: 0 0 23em;
   color: white;
   background-color: #404040;
-  background-image: url('../images/PapPalPapPal.png');
+  padding: 0 0 4em;
+  /*background-image: url('../images/PapPalPapPal.png');
   background-repeat: no-repeat;
   background-position: bottom right;
+  padding: 0 0 23em;*/
 }
 
 div#header {
@@ -356,7 +357,7 @@ form#filter label.ddb{
   text-align: right;
 }
 
-form#filter button#reset,
+form#filter input#reset,
 form#filter input#submit {
   float: right;
 }
