@@ -116,7 +116,12 @@
 	overflow: auto;
 	text-align: center;
 	display: none;
-	font-size: 12pt;
+	font-size: 10pt;
+}
+
+.text span {
+  font-size: 12pt;
+  font-weight: bold;
 }
 
 #slider ul li span.imtitle{
