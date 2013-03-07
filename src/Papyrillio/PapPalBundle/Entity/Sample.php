@@ -695,10 +695,10 @@ class Sample
           $dateSort = substr($dateSort, 1);
         }
 
-        $dateSort = explode('-', $dateSort);
-        $dateSortYear = isset($dateSort[0]) ? $dateSort[0] : '0000';
+        $dateSort      = explode('-', $dateSort);
+        $dateSortYear  = isset($dateSort[0]) ? $dateSort[0] : '0000';
         $dateSortMonth = isset($dateSort[1]) ? $dateSort[1] : '00';
-        $dateSortDay = isset($dateSort[2]) ? $dateSort[2] : '00';
+        $dateSortDay   = isset($dateSort[2]) ? $dateSort[2] : '00';
         
         $dateSortKey = ($dateSortYear . $dateSortMonth . $dateSortDay ) * $sign;
       }

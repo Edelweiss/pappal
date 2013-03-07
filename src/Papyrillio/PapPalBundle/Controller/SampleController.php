@@ -137,7 +137,7 @@ class SampleController extends PapPalController{
 
     $where = ' WHERE s.status = :status';
     $parameters = array('status' => 'ok');
-    
+
     if($filter){
       // standard fields
       foreach($filter as $field => $value){
@@ -167,33 +167,34 @@ class SampleController extends PapPalController{
       $dateSortNotBefore = trim($filter['dateNotBefore']);
       $dateSortNotAfter = trim($filter['dateNotAfter']);
 
-      if(!empty($dateSortNotBefore) && !empty($dateSortNotAfter)){
+      if(strlen($dateSortNotBefore) && strlen($dateSortNotAfter)){
         // between
-        
+
         $dateSortNotBefore = Sample::generateDateSortKey(Sample::makeIsoYear($dateSortNotBefore) . '-01-01');
         $dateSortNotAfter = Sample::generateDateSortKey(Sample::makeIsoYear($dateSortNotAfter) . '-12-31');
-        
+
         $where .= ' AND s.dateSort BETWEEN :dateNotBefore AND :dateNotAfter';
         $parameters['dateNotBefore'] = $dateSortNotBefore;
         $parameters['dateNotAfter'] = $dateSortNotAfter;
-      } else if(!empty($dateSortNotBefore)){
+      } else if(strlen($dateSortNotBefore)){
         // not before
-        
+
         $dateSortNotBefore = Sample::generateDateSortKey(Sample::makeIsoYear($dateSortNotBefore) . '-01-01');
-        
+
         $where .= ' AND s.dateSort >= :dateNotBefore';
         $parameters['dateNotBefore'] = $dateSortNotBefore;
-      } else if(!empty($dateSortNotAfter)){
+      } else if(strlen($dateSortNotAfter)){
         // not after
-        
+
         $dateSortNotAfter = Sample::generateDateSortKey(Sample::makeIsoYear($dateSortNotAfter) . '-12-31');
         
         $where .= ' AND s.dateSort <= :dateNotAfter';
         $parameters['dateNotAfter'] = $dateSortNotAfter;
-      } else if(!empty($dateSortWhen)){
+      } else if(strlen($dateSortWhen)){
+
         $dateSortFrom = Sample::generateDateSortKey(Sample::makeIsoYear($dateSortWhen) . '-01-01');
         $dateSortTo = Sample::generateDateSortKey(Sample::makeIsoYear($dateSortWhen) . '-12-31');
-        
+
         if($dateSortWhen < 0){
           $tmp = $dateSortFrom;
           $dateSortFrom = $dateSortTo;
