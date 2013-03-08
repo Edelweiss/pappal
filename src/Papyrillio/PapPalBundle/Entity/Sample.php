@@ -697,9 +697,9 @@ class Sample
 
         $dateSort      = explode('-', $dateSort);
         $dateSortYear  = isset($dateSort[0]) ? $dateSort[0] : '0000';
-        $dateSortMonth = isset($dateSort[1]) ? $dateSort[1] : '00';
-        $dateSortDay   = isset($dateSort[2]) ? $dateSort[2] : '00';
-        
+        $dateSortMonth = isset($dateSort[1]) ? ($sign > 0 ? $dateSort[1] : str_pad(13 - $dateSort[1], 2, '0', STR_PAD_LEFT)) : '00';
+        $dateSortDay   = isset($dateSort[2]) ? ($sign > 0 ? $dateSort[2] : str_pad(31 - $dateSort[2], 2, '0', STR_PAD_LEFT)) : '00';
+
         $dateSortKey = ($dateSortYear . $dateSortMonth . $dateSortDay ) * $sign;
       }
       return $dateSortKey;
