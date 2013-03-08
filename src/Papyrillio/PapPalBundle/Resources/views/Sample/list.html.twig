@@ -6,7 +6,7 @@
 
   {% for sample in samples %}
     <div class="sample">
-      <a href="{{ path('PapyrillioPapPalBundle_SampleShow', {id: sample.id}) }}"><img src="{{ asset('thumbnail/placeholder.gif') }}" data-original="{{ asset(sample.thumbnail) }}" class="lazy" title="&lt;span class=&quot;keyword&quot;&gt;{{ sample.title != 'keiner' ? sample.title : '...' }}&lt;/span&gt; &lt;br/&gt; {{ sample.dateHgvFormat }} &lt;br/&gt; {{ sample.provenance }} &lt;br/&gt; {{ sample.material }}, {{ sample.keywords }} &lt;br/&gt; DDB {{ sample.ddb }} / HGV {{ sample.hgv }}" /></a>
+      <a href="{{ path('PapyrillioPapPalBundle_SampleShow', {id: sample.id}) }}"><img src="{{ asset('thumbnail/placeholder.gif') }}" data-original="{{ asset(sample.thumbnail) }}" class="lazy" title="&lt;span class=&quot;keyword&quot;&gt;{{ sample.title != 'keiner' ? sample.title : '...' }}&lt;/span&gt; &lt;br/&gt; {{ sample.dateHgvFormat }} &lt;br/&gt; {{ sample.provenance }} &lt;br/&gt; {{ sample.material }}, {{ sample.keywords }} &lt;br/&gt; DDB {{ sample.ddb }} / HGV/TM {{ sample.hgv }}" /></a>
       <br />
       <span class="date">{{ sample.dateHgvFormat }}</span>,
       <span class="provenance">{{ sample.provenance }}</span> -

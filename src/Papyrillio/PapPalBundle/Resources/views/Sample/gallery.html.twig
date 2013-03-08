@@ -36,7 +36,7 @@
   </div>
   <div id="texts">
     {% for sample in samples %}
-      <div id="text{{ sample.id }}" class="text"><span>{{ sample.title != 'keiner' ? sample.title : '...' }}</span><br />{{ sample.dateHgvFormat }} - {{ sample.provenance }}<br />{{ sample.material }}, {{ sample.keywords }}<br />DDB {{ sample.ddb }} / HGV {{ sample.hgv }}</div>
+      <div id="text{{ sample.id }}" class="text"><span>{{ sample.title != 'keiner' ? sample.title : '...' }}</span><br />{{ sample.dateHgvFormat }} - {{ sample.provenance }}<br />{{ sample.material }}, {{ sample.keywords }}<br />DDB {{ sample.ddb }} / HGV/TM {{ sample.hgv }}</div>
     {% endfor %}
   </div>
 
