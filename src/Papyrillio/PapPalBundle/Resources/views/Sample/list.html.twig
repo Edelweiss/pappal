@@ -3,14 +3,16 @@
   {% include 'PapyrillioPapPalBundle:Sample:filterForm.html.twig' with {'filterForm': filterForm, 'template': template, 'templateOptions': templateOptions, 'sort': sort, 'sortOptions': sortOptions, 'sortDirections': sortDirections} %}
   
   <br />
+  
+  <p>number of records found: {{ samples | length }}</p>
 
   {% for sample in samples %}
     <div class="sample">
-      <a href="{{ path('PapyrillioPapPalBundle_SampleShow', {id: sample.id}) }}"><img src="{{ asset('thumbnail/placeholder.gif') }}" data-original="{{ asset(sample.thumbnail) }}" class="lazy" title="&lt;span class=&quot;keyword&quot;&gt;{{ sample.title != 'keiner' ? sample.title : '...' }}&lt;/span&gt; &lt;br/&gt; {{ sample.dateHgvFormat }} &lt;br/&gt; {{ sample.provenance }} &lt;br/&gt; {{ sample.material }}, {{ sample.keywords }} &lt;br/&gt; DDbDP {{ sample.ddb }} / HGV/TM {{ sample.hgv }}" /></a>
+      <a href="{{ path('PapyrillioPapPalBundle_SampleShow', {id: sample.id}) }}"><img src="{{ asset('thumbnail/placeholder.gif') }}" data-original="{{ asset(sample.thumbnail) }}" class="lazy" title="&lt;span class=&quot;keyword greek&quot;&gt;{{ sample.title != 'keiner' ? sample.title : '...' }}&lt;/span&gt; &lt;br/&gt; {{ sample.dateHgvFormat }} &lt;br/&gt; {{ sample.provenance }} &lt;br/&gt; {{ sample.material }}, &lt;span class=&quot;greek&quot;&gt;{{ sample.keywords }}&lt;/span&gt; &lt;br/&gt; DDbDP {{ sample.ddb }} / HGV/TM {{ sample.hgv }}" /></a>
       <br />
       <span class="date">{{ sample.dateHgvFormat }}</span>,
       <span class="provenance">{{ sample.provenance }}</span> -
-      <span clas="title">{{ sample.title }}</span>
+      <span class="title greek">{{ sample.title }}</span>
     </div>
   {% endfor %}
 
@@ -25,7 +27,7 @@
   <script type="text/javascript">
     $(document).ready(function(){
       $('img.lazy').lazyload();
-      $('img[title]').tipTip({});
+      $('img[title]').tipTip({keepAlive: true});
     });
   </script>
 {% endblock %}

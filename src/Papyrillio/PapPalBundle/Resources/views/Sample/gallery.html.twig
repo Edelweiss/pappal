@@ -23,7 +23,7 @@
 
           {% for sample in samples %}
             <li id="sample{{ sample.id }}">
-              <span class="imtitle">{{ sample.title }}</span>
+              <span class="imtitle greek">{{ sample.title }}</span>
               <a href="{{ path('PapyrillioPapPalBundle_SampleShow', {id: sample.id}) }}" title="{{ sample.title }}"><img src="{{ asset('thumbnail/placeholder.gif') }}" data-original="{{ asset(sample.thumbnail) }}" alt="" /></a>
             </li>
           {% endfor %}
@@ -36,7 +36,7 @@
   </div>
   <div id="texts">
     {% for sample in samples %}
-      <div id="text{{ sample.id }}" class="text"><span>{{ sample.title != 'keiner' ? sample.title : '...' }}</span><br />{{ sample.dateHgvFormat }} - {{ sample.provenance }}<br />{{ sample.material }}, {{ sample.keywords }}<br />DDbDP {{ sample.ddb }} / HGV/TM {{ sample.hgv }}</div>
+      <div id="text{{ sample.id }}" class="text greek"><span>{{ sample.title != 'keiner' ? sample.title : '...' }}</span><br />{{ sample.dateHgvFormat }} - {{ sample.provenance }}<br />{{ sample.material }}, {{ sample.keywords }}<br />DDbDP {{ sample.ddb }} / HGV/TM {{ sample.hgv }}</div>
     {% endfor %}
   </div>
 

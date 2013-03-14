@@ -121,11 +121,12 @@ class SampleController extends PapPalController{
 
     $orderBy = ' ORDER BY';
     if(count($sort)){
+
       foreach($sort as $key => $direction){
         if($key == 'hgv'){
-          $orderBy .= ' s.tm, s.hgv, ';
+          $orderBy .= ' s.tm ' . ($direction === 'desc' ? 'DESC' : 'ASC') . ', s.hgv ' . ($direction === 'desc' ? 'DESC' : 'ASC') . ', ';
         } else {
-          $orderBy .= ' s.' . $key . ', ';
+          $orderBy .= ' s.' . $key . ' ' . ($direction === 'desc' ? 'DESC' : 'ASC') . ', ';
         }
       }
       $orderBy = rtrim($orderBy, ', ');
@@ -167,27 +168,33 @@ class SampleController extends PapPalController{
       $dateSortNotBefore = trim($filter['dateNotBefore']);
       $dateSortNotAfter = trim($filter['dateNotAfter']);
 
-      if(strlen($dateSortNotBefore) && strlen($dateSortNotAfter)){
-        // between
+      if(strlen($dateSortNotBefore) && strlen($dateSortNotAfter)){ // between
 
+        
         $dateSortNotBefore = Sample::generateDateSortKey(Sample::makeIsoYear($dateSortNotBefore) . '-00-00');
-        $dateSortNotAfter = Sample::generateDateSortKey(Sample::makeIsoYear($dateSortNotAfter) . '-12-31');
+        if($dateSortNotAfter < 0){
+          $dateSortNotAfter = Sample::generateDateSortKey(Sample::makeIsoYear($dateSortNotAfter) . '-13-31');
+        } else {
+          $dateSortNotAfter = Sample::generateDateSortKey(Sample::makeIsoYear($dateSortNotAfter) . '-12-31');
+        }
 
         $where .= ' AND s.dateSort BETWEEN :dateNotBefore AND :dateNotAfter';
         $parameters['dateNotBefore'] = $dateSortNotBefore;
         $parameters['dateNotAfter'] = $dateSortNotAfter;
-      } else if(strlen($dateSortNotBefore)){
-        // not before
+      } else if(strlen($dateSortNotBefore)){ // not before
 
         $dateSortNotBefore = Sample::generateDateSortKey(Sample::makeIsoYear($dateSortNotBefore) . '-00-00');
 
         $where .= ' AND s.dateSort >= :dateNotBefore';
         $parameters['dateNotBefore'] = $dateSortNotBefore;
-      } else if(strlen($dateSortNotAfter)){
-        // not after
+      } else if(strlen($dateSortNotAfter)){ // not after
 
-        $dateSortNotAfter = Sample::generateDateSortKey(Sample::makeIsoYear($dateSortNotAfter) . '-12-31');
-        
+        if($dateSortNotAfter < 0){
+          $dateSortNotAfter = Sample::generateDateSortKey(Sample::makeIsoYear($dateSortNotAfter) . '-13-31');
+        } else {
+          $dateSortNotAfter = Sample::generateDateSortKey(Sample::makeIsoYear($dateSortNotAfter) . '-12-31');
+        }
+
         $where .= ' AND s.dateSort <= :dateNotAfter';
         $parameters['dateNotAfter'] = $dateSortNotAfter;
       } else if(strlen($dateSortWhen)){
@@ -196,9 +203,7 @@ class SampleController extends PapPalController{
         $dateSortTo = Sample::generateDateSortKey(Sample::makeIsoYear($dateSortWhen) . '-12-31');
 
         if($dateSortWhen < 0){
-          $tmp = $dateSortFrom;
-          $dateSortFrom = $dateSortTo;
-          $dateSortTo = $tmp;
+          $dateSortTo = Sample::generateDateSortKey(Sample::makeIsoYear($dateSortWhen) . '-13-31');
         }
 
         $where .= ' AND s.dateSort BETWEEN :dateFrom AND :dateTo';
