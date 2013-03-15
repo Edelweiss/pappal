@@ -150,7 +150,7 @@ span.action:hover,
 .ui-widget textarea.greek,
 .ui-widget .ui-widget textarea.greek,
 .greek {
-    font-family: "Lucida Grande", "Cardo", "Arial Unicode MS", "IFAO-Grec Unicode", "KadmosU", "New Athena Unicode", "Athena Unicode", "Lucida Grande", "Verdana", "Tahoma" !important;
+    font-family: "Titus Cyberbit Basic", "Lucida Grande", "Times New Roman", "KadmosU", "Gentium", "GentiumAlt", "Arial Unicode MS", "IFAO-Grec Unicode", "New Athena Unicode", "Athena Unicode", "Cardo" !important;
 }
 
 /* STATIC PAGES */
@@ -222,7 +222,7 @@ td.title {
 }
 
 div#tiptip_content a,
-div#tiptip_content span{
+div#tiptip_content span.title{
   cursor: hand;
   cursor: pointer;
   color: #c0c0c0;
@@ -232,7 +232,7 @@ div#tiptip_content span{
 }
 
 div#tiptip_content a,
-div#tiptip_content span:hover {
+div#tiptip_content span.title:hover {
   color: #f0f0f0;
 }
 
