@@ -83,4 +83,7 @@ Papyrillio\PapPalBundle\Entity\Sample:
         comments:
             targetEntity: Comment
             mappedBy: sample
+        thumbnails:
+            targetEntity: Thumbnail
+            mappedBy: sample
     # don't forget to init the collection in entity __construct() method

@@ -128,12 +128,22 @@ class Sample
      * @var Papyrillio\PapPalBundle\Entity\Comment
      */
     private $comments;
-    
+
+    /**
+     * @var Papyrillio\PapPalBundle\Entity\Thumbnail
+     */
+    private $thumbnails;
+
+    /**
+     * @var datetime $importDate
+     */
+    private $importDate;
+
     public function getThumbnail($fullpath = false){
       return ($fullpath ? readlink(__DIR__ . '/../../../../web/thumbnail') . '/' : 'thumbnail/') . $this->folder . '/' . $this->hgv . '/' . $this->hgv . '.jpg';
     }
 
-    public function getThumbnails(){
+    public function getThumbnailList(){
       $thumbnails = array();
       $thumbnailDirectory = __DIR__ . '/../../../../web/thumbnail/' . $this->folder . '/' . $this->hgv;
 
@@ -654,11 +664,26 @@ class Sample
     {
         return $this->comments;
     }
-    /**
-     * @var datetime $importDate
-     */
-    private $importDate;
 
+    /**
+     * Add thumbnails
+     *
+     * @param Papyrillio\PapPalBundle\Entity\Thumbnail $thumbnails
+     */
+    public function addThumbnail(\Papyrillio\PapPalBundle\Entity\Thumbnail $thumbnails)
+    {
+        $this->thumbnails[] = $thumbnails;
+    }
+
+    /**
+     * Get thumbnails
+     *
+     * @return Doctrine\Common\Collections\Collection 
+     */
+    public function getThumbnails()
+    {
+        return $this->thumbnails;
+    }
 
     /**
      * Set importDate
@@ -706,6 +731,7 @@ class Sample
       }
       return $dateSortKey;
     }
+
     public static function makeIsoYear($year){
       $sign = '';
       if(strpos($year, '-') === 0){
