@@ -193,6 +193,7 @@ class Sample
     public function __construct()
     {
         $this->comments = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->thumbnails = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**

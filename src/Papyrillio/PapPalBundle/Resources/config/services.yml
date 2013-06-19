@@ -16,4 +16,9 @@ services:
         parent: papyrillio_pap_pal.image_peer
     papyrillio_pap_pal.image_rotator:
         class: %papyrillio_pap_pal.image_rotator.class%
-        parent: papyrillio_pap_pal.image_peer 
+        parent: papyrillio_pap_pal.image_peer
+
+    papyrillio.twig.papyrillio_extension:
+        class: Papyrillio\PapPalBundle\Twig\PapyrillioExtension
+        tags:
+            - { name: twig.extension }

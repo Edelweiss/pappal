@@ -4,7 +4,7 @@
 
 <div class="sampleThumbnail">
   <img id="sample" class="sample" src="{{ asset(sample.thumbnail) }}?{{ 'now'|date('YmdHis') }}" alt="bleeding edge" width="300" />
-  
+
   {% if is_granted('ROLE_ADMIN') %}
 
     <div class="clear"></div>
@@ -24,9 +24,18 @@
   <tr><th class="keywords">Keywords</th><td class="keywords greek">{{ sample.keywords }}</td></tr>
   <tr><th class="provenance">Provenance</th><td class="provenance">{{ sample.provenance }}</td></tr>
   <tr><th class="dateHgvFormat">Date</th><td class="dateHgvFormat">{{ sample.dateHgvFormat }}</td></tr>
-  
   <tr>
-    <th class="digitalImages">Digital images</th>
+    <th class="language">Language{% if sample.thumbnails | length > 1 %}s{% endif %}</th>
+    <td class="language">
+      {% for thumb in sample.thumbnails %}
+        {% if loop.index > 1 %}, {% endif %}
+        {{ thumb.language|iso }}
+      {% endfor %}
+    </td>
+  </tr>
+
+  <tr>
+    <th class="digitalImages">Digital image{% if sample.imageLinks | length > 1 %}s{% endif %}</th>
     <td class="digitalImages">
       {% for imageLink in sample.imageLinks %}
         <a href="{{ imageLink }}">{{ imageLink }}</a><br />
