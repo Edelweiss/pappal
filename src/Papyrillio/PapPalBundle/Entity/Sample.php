@@ -143,7 +143,18 @@ class Sample
       return ($fullpath ? readlink(__DIR__ . '/../../../../web/thumbnail') . '/' : 'thumbnail/') . $this->folder . '/' . $this->hgv . '/' . $this->hgv . '.jpg';
     }
 
-    public function getThumbnailList(){
+    public function getThumbnailList($fullpath = false){
+      $thumbnailList = array();
+      
+      foreach($this->thumbnails as $thumbnail){
+        $thumbnailList[$thumbnail->getLanguage()] = ($fullpath ? readlink(__DIR__ . '/../../../../web/thumbnail') . '/' : 'thumbnail/') . $this->folder . '/' . $this->hgv . '/' . $this->hgv . ($thumbnail->getLanguage() !== 'grc' ? $thumbnail->getLanguage() : '') . '.jpg';
+      }
+        
+        
+      return $thumbnailList; //($fullpath ? readlink(__DIR__ . '/../../../../web/thumbnail') . '/' : 'thumbnail/') . $this->folder . '/' . $this->hgv . '/' . $this->hgv . '.jpg';
+    }
+
+    public function getThumbnailStash(){
       $thumbnails = array();
       $thumbnailDirectory = __DIR__ . '/../../../../web/thumbnail/' . $this->folder . '/' . $this->hgv;
 
@@ -157,10 +168,11 @@ class Sample
       return $thumbnails;
     }
 
-    public function setMasterThumbnail($masterThumbnail){
+    public function setMasterThumbnail($masterThumbnail, $language = 'grc'){
+      // filesystem
       $dir = readlink(__DIR__ . '/../../../../web/thumbnail') . '/' . $this->folder . '/' . $this->hgv;
       $masterThumbnail = $dir . '/' . $masterThumbnail;
-      $link = $dir . '/' . $this->hgv . '.jpg';
+      $link = $dir . '/' . $this->hgv . ($language != 'grc' ? $language : '') . '.jpg';
       if(file_exists($masterThumbnail)){
         if(file_exists($link)){
           unlink($link);
@@ -170,6 +182,15 @@ class Sample
         }
       }
       return false;
+    }
+    
+    public function getThumbnailByLanguage($language){
+      foreach($this->thumbnails as $thumbnail){
+        if($thumbnail->getLanguage() == $language){
+          return $thumbnail;
+        }
+      }
+      return null;
     }
 
     public function getImageLinks(){

@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Papyrillio\PapPalBundle\Entity\Sample;
+use Papyrillio\PapPalBundle\Entity\Thumbnail;
 use Papyrillio\PapPalBundle\Entity\Commet;
 use Papyrillio\UserBundle\Entity\User;
 use Papyrillio\PapPalBundle\Service\ImagePeer;
@@ -269,10 +270,10 @@ class SampleController extends PapPalController{
       return $this->forward('PapyrillioPapPalBundle:Sample:list');
     }
 
-    return $this->render('PapyrillioPapPalBundle:Sample:show.html.twig', array('sample' => $sample, 'uploadForm' => $this->getUploadForm()->createView(), 'clockwise' => ImagePeer::DIRECTION_CLOCKWISE, 'counterclockwise' => 90));
+    return $this->render('PapyrillioPapPalBundle:Sample:show.html.twig', array('sample' => $sample, 'uploadForm' => $this->getUploadForm()->createView(), 'clockwise' => ImagePeer::DIRECTION_CLOCKWISE, 'counterclockwise' => ImagePeer::DIRECTION_COUNTERCLOCKWISE));
   }
 
-  public function setMasterThumbnailAction($id){
+  public function _setMasterThumbnailAction($id){
     $entityManager = $this->getDoctrine()->getEntityManager();
     $repository = $entityManager->getRepository('PapyrillioPapPalBundle:Sample');
     
@@ -434,4 +435,34 @@ class SampleController extends PapPalController{
     }
   }
 
+  public function setMasterThumbnailAction($id, $thumbnail, $language = 'grc'){
+    $entityManager = $this->getDoctrine()->getEntityManager();
+    $repository = $entityManager->getRepository('PapyrillioPapPalBundle:Sample');
+    $error = '';
+
+    if(!empty($thumbnail)){
+      if($sample = $this->getSample($id)){
+        if($sample->setMasterThumbnail($thumbnail, $language)){
+          if(!$sample->getThumbnailByLanguage($language)){
+            $newThumbnail = new Thumbnail($language);
+            $newThumbnail->setSample($sample);
+            $entityManager->persist($newThumbnail);
+            $entityManager->flush();
+            $sample->addThumbnail($newThumbnail); // Nanyatte!?!
+          }
+          return new Response(json_encode(array('success' => true, 'data' => array('id' => $id, 'thumbnail' => $thumbnail, 'asset' => $sample->getThumbnailByLanguage($language)->getFile(), 'language' => $language))));
+        } else {
+          $error = 'Preview image ' . $thumbnail . ' could not bee set as default thumbnail.';
+        }
+      } else {
+        $error = 'Preview image ' . $thumbnail . ' could not bee set because record #' . $id . ' does not exist.';
+      }
+    } else {
+      $error = 'Empty image path';
+    }
+
+    return new Response(json_encode(array('success' => false, 'error' => $error)));
+  }
+
 }
+

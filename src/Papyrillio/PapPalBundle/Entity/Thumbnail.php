@@ -28,6 +28,10 @@ class Thumbnail
      * @var Papyrillio\PapPalBundle\Entity\Sample
      */
     private $sample;
+    
+    public function __construct($language = 'grc'){
+      $this->setLanguage($language);
+    }
 
 
     /**
@@ -41,13 +45,20 @@ class Thumbnail
     }
 
     /**
-     * Set language
+     * Set language -> also updates member »file«
      *
      * @param text $language
      */
     public function setLanguage($language)
     {
-        $this->language = $language;
+        if(in_array($language, array('lat','cop','egy','ara'))){
+          if($this->file){
+            $this->file = preg_replace('/(lat|cop|egy|ara)/', $language != 'grc' ? $language : '', $this->file);
+          } else if ($this->sample){
+            $this->file = $sample->getFolder() . '/' . $sample->getHgv() . '/' . $sample->getHgv() . ($language != 'grc' ? $language : '') . '.jpg';
+          }
+          $this->language = $language;
+        }
     }
 
     /**
@@ -81,13 +92,14 @@ class Thumbnail
     }
 
     /**
-     * Set sample
+     * Set sample -> also upates member variable »file«
      *
      * @param Papyrillio\PapPalBundle\Entity\Sample $sample
      */
     public function setSample(\Papyrillio\PapPalBundle\Entity\Sample $sample)
     {
         $this->sample = $sample;
+        $this->file = $sample->getFolder() . '/' . $sample->getHgv() . '/' . $sample->getHgv() . ($this->language != 'grc' ? $this->language : '') . '.jpg';
     }
 
     /**

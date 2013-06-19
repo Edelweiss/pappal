@@ -2,23 +2,15 @@
 
 {% block body %}
 
-<div class="sampleThumbnail">
-  <img id="sample" class="sample" src="{{ asset(sample.thumbnail) }}?{{ 'now'|date('YmdHis') }}" alt="bleeding edge" width="300" />
+<div id="thumbnail" class="thumbnail">
 
-  {% if is_granted('ROLE_ADMIN') %}
+  {% for language, thumbnail in sample.thumbnailList %}
+    <img id="thumbnail{{ language|capitalize }}" src="{{ asset(thumbnail) }}?{{ 'now'|date('YmdHis') }}" title="{{ language|iso }}" alt="{{ language|iso }}" width="300" />
+  {% endfor %}
 
-    <div class="clear"></div>
-
-    <form action="{{ path('PapyrillioPapPalBundle_SampleSetMasterThumbnail', { 'id': sample.id }) }}" method="post">
-      <input type="hidden" name="masterThumbnail" id="masterThumbnail" value="" />
-      <input type="submit" value="set current preview image as master thumbnail" />
-    </form>
-  
-  {% endif %}
-    
 </div>
 
-<table class="sample">
+<table class="meta">
   <tr><th class="title">Title</th><td class="title greek">{{ sample.title }}</td></tr>
   <tr><th class="material">Material</th><td class="material">{{ sample.material }}</td></tr>
   <tr><th class="keywords">Keywords</th><td class="keywords greek">{{ sample.keywords }}</td></tr>
@@ -68,22 +60,6 @@
 
   <tr><th class="hgv">HGV</th><td class="hgv"><a href="http://aquila.papy.uni-heidelberg.de/Hauptregister/FMPro?-db=hauptregister_&TM_Nr.={{ sample.hgv }}&-format=DTableVw.htm&-lay=Liste&-find">{{ sample.hgv }}</a></td></tr>
   <tr><th class="ddb">DDbDP</th><td class="ddb"><a href="http://www.papyri.info/ddbdp/{{ sample.ddb }}">{{ sample.ddb }}</a></td></tr>
-
-  <!--tr><th class="dateWhen">When</th><td class="dateWhen">{{ sample.dateWhen }}</td></tr>
-  <tr><th class="dateNotBefore">Not before</th><td class="dateNotBefore">{{ sample.dateNotBefore }}</td></tr>
-  <tr><th class="dateNotAfter">Not After</th><td class="dateNotAfter">{{ sample.dateNotAfter }}</td></tr>
-  <tr><th class="id">id</th><td class="id">{{ sample.id }}</td></tr>
-  <tr><th class="tm">tm</th><td class="tm">{{ sample.tm }}</td></tr>
-  <tr><th class="folder">folder</th><td class="folder">{{ sample.folder }}</td></tr>
-  <tr><th class="collection">collection</th><td class="collection">{{ sample.collection }}</td></tr>
-  <tr><th class="volume">volume</th><td class="volume">{{ sample.volume }}</td></tr>
-  <tr><th class="document">document</th><td class="document">{{ sample.document }}</td></tr>  
-  <tr><th class="century">century</th><td class="century">{{ sample.century }}</td></tr>
-  <tr><th class="year">year</th><td class="year">{{ sample.year }}</td></tr>
-  <tr><th class="month">month</th><td class="month">{{ sample.month }}</td></tr>
-  <tr><th class="day">day</th><td class="day">{{ sample.day }}</td></tr>
-  <tr><th class="dateSort">dateSort</th><td class="dateSort">{{ sample.dateSort }}</td></tr>
-  <tr><th class="status">status</th><td class="status">{{ sample.status }}</td></tr-->
   <tr><th class="importDate">Import date</th><td class="importDate">{{ sample.importDate.format('Y-m-d H:i:s') }}</td></tr>
   <tr><th class="importDate"></th><td class="link"><a href="{{ path('PapyrillioPapPalBundle_SampleList') }}"><br />Jump back to overview!</a></td></tr>
 </table>
@@ -92,7 +68,7 @@
 
 <div class="clear"></div>
 
-{% for key, thumbnail in sample.thumbnailList %}
+{% for key, thumbnail in sample.thumbnailStash %}
   <img class="sampleMini" src="{{ asset(thumbnail) }}" alt="bleeding edge" width="100" title="{{ path('PapyrillioPapPalBundle_SampleDeleteThumbnail', {'id': sample.id, 'thumbnail': key}) }}" id="{{ key }}" />
   <div class="sampleMiniTooltip" id="tooltip_{{ key }}" style="width: 0; height: 0; visibility: invisible; display: none;">
     <span onclick="sampleDeleteThumbnail('{{ path('PapyrillioPapPalBundle_SampleDeleteThumbnail', {'id': sample.id, 'thumbnail': key})}}');">Delete thumbnail</span>
@@ -100,6 +76,10 @@
     <span onclick="sampleRotateThumbnail('{{ path('PapyrillioPapPalBundle_SampleRotateThumbnail', {'id': sample.id, 'thumbnail': key, 'direction': clockwise})}}');">Rotate clockwise</span>
     <div class="clear"></div>
     <span onclick="sampleRotateThumbnail('{{ path('PapyrillioPapPalBundle_SampleRotateThumbnail', {'id': sample.id, 'thumbnail': key, 'direction': counterclockwise})}}');">Rotate counter-clockwise</span>
+    <div class="clear"></div>
+    <span onclick="sampleSetMasterThumbnail('{{ path('PapyrillioPapPalBundle_SampleSetMasterThumbnail', {'id': sample.id, 'thumbnail': key, 'language': 'grc'})}}');">Set as master thumb for Greek</span>
+    <div class="clear"></div>
+    <span onclick="sampleSetMasterThumbnail('{{ path('PapyrillioPapPalBundle_SampleSetMasterThumbnail', {'id': sample.id, 'thumbnail': key, 'language': 'lat'})}}');">Set as master thumb for Latin</span>
   </div>
 {% endfor %}
 

@@ -185,28 +185,22 @@ div.sample a {
 
 /* SAMPLE SHOW */
 
-div.sampleThumbnail{
+div.thumbnail{
   float: left;
-  text-align: center;
+  width: 316px;
+  text-align: left;
 }
 
-img.sample,
-table.sample {
-  float: left;
+div.thumbnail img{
+  width: 308px;
+  height: 300px;
+  padding-bottom: 8px;
 }
 
-table.sample {
-  width: 66%;
-}
-
-img.sampleMini{
-  cursor: hand;
-  cursor: pointer;
-}
-
-table.sample {
+table.meta {
   float: left;
   margin: 0 0 0 1em;
+  width: 66%;
 }
 
 table.sample th{
@@ -219,6 +213,11 @@ th.title,
 td.title {
   font-size: larger;
   font-weight: bold;
+}
+
+img.sampleMini{
+  cursor: hand;
+  cursor: pointer;
 }
 
 div#tiptip_content a,

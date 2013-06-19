@@ -40,8 +40,8 @@ PapyrillioPapPalBundle_SampleDdb:
 # Sample Admin
 
 PapyrillioPapPalBundle_SampleSetMasterThumbnail:
-    pattern:  /sample/setMasterThumbnail/{id}
-    defaults: { _controller: PapyrillioPapPalBundle:Sample:setMasterThumbnail }
+    pattern:  /sample/setMasterThumbnail/{id}/{thumbnail}/{language}
+    defaults: { _controller: PapyrillioPapPalBundle:Sample:setMasterThumbnail, language: grc }
 
 PapyrillioPapPalBundle_SampleUploadImage:
     pattern:  /sample/uploadImage/{id}
