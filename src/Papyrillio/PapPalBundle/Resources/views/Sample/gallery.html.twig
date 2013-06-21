@@ -12,7 +12,7 @@
 
   <div id="count">
     <img id="butleft" class="controlButton" src="{{ asset('images/arrowL.png') }}" alt="" />
-    <span id="number">{{ samples | length ? 1 : 0 }}</span><span>/{{ samples | length }}</span>
+    <span id="number">{{ thumbnails | length ? 1 : 0 }}</span><span>/{{ thumbnails | length }}</span>
     <img id="butright" class="controlButton" src="{{ asset('images/arrowR.png') }}" alt="" />
   </div>
   <div id="slider">
@@ -21,10 +21,10 @@
       <div class="floating">
         <ul class="clearfix">
 
-          {% for sample in samples %}
-            <li id="sample{{ sample.id }}">
-              <span class="imtitle greek">{{ sample.title }}</span>
-              <a href="{{ path('PapyrillioPapPalBundle_SampleShow', {id: sample.id}) }}" title="{{ sample.title }}"><img src="{{ asset('thumbnail/placeholder.gif') }}" data-original="{{ asset(sample.thumbnail) }}" alt="" /></a>
+          {% for thumbnail in thumbnails %}
+            <li id="sample{{ thumbnail.sample.id ~ thumbnail.language }}"><!-- !!!!!!!!!!!!!!!!!!!!!!!!!! -->
+              <span class="imtitle greek">{{ thumbnail.sample.title }}</span>
+              <a href="{{ path('PapyrillioPapPalBundle_SampleShow', {id: thumbnail.sample.id}) }}" title="{{ thumbnail.sample.title }}"><img src="{{ asset('thumbnail/placeholder.gif') }}" data-original="{{ asset('thumbnail/' ~ thumbnail.file) }}" alt="" /></a>
             </li>
           {% endfor %}
 
@@ -35,8 +35,8 @@
     <div class="clear"></div>
   </div>
   <div id="texts">
-    {% for sample in samples %}
-      <div id="text{{ sample.id }}" class="text greek"><span>{{ sample.title != 'keiner' ? sample.title : '...' }}</span><br />{{ sample.dateHgvFormat }} - {{ sample.provenance }}<br />{{ sample.material }}, {{ sample.keywords }}<br />DDbDP {{ sample.ddb }} / HGV/TM {{ sample.hgv }}</div>
+    {% for thumbnail in thumbnails %}
+      <div id="text{{ thumbnail.sample.id ~ thumbnail.language }}" class="text greek"><span>{{ thumbnail.sample.title != 'keiner' ? thumbnail.sample.title : '...' }}</span><br />{{ thumbnail.sample.dateHgvFormat }} - {{ thumbnail.sample.provenance }}<br />{{ thumbnail.sample.material }}, {{ thumbnail.language|iso }}, {{ thumbnail.sample.keywords }}<br />DDbDP {{ thumbnail.sample.ddb }} / HGV/TM {{ thumbnail.sample.hgv }}</div>
     {% endfor %}
   </div>
 

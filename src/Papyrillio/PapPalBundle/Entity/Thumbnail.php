@@ -33,7 +33,6 @@ class Thumbnail
       $this->setLanguage($language);
     }
 
-
     /**
      * Get id
      *
