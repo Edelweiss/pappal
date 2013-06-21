@@ -273,30 +273,6 @@ class SampleController extends PapPalController{
     return $this->render('PapyrillioPapPalBundle:Sample:show.html.twig', array('sample' => $sample, 'uploadForm' => $this->getUploadForm()->createView(), 'clockwise' => ImagePeer::DIRECTION_CLOCKWISE, 'counterclockwise' => ImagePeer::DIRECTION_COUNTERCLOCKWISE));
   }
 
-  public function _setMasterThumbnailAction($id){
-    $entityManager = $this->getDoctrine()->getEntityManager();
-    $repository = $entityManager->getRepository('PapyrillioPapPalBundle:Sample');
-    
-    $masterThumbnail = $this->getParameter('masterThumbnail');
-
-    if(!empty($masterThumbnail)){
-      if($sample = $repository->findOneBy(array('id' => $id))){
-        if($sample->setMasterThumbnail($masterThumbnail)){
-          $this->get('session')->setFlash('notice', 'Preview image has been set as default thumbnail.');
-        } else {
-          $this->get('session')->setFlash('error', 'Preview image ' . $masterThumbnail . ' could not bee set as default thumbnail.');
-        }
-      } else {
-        $this->get('session')->setFlash('error', 'Preview image ' . $masterThumbnail . ' could not bee set becaus record #' . $id . ' does not exist.');        
-      }
-      
-    } else {
-      $this->get('session')->setFlash('error', 'Empty image path');
-    }
-
-    return new RedirectResponse($this->generateUrl('PapyrillioPapPalBundle_SampleShow', array('id' => $id)));
-  }
-
   public function deleteAction($id){
     $entityManager = $this->getDoctrine()->getEntityManager();
     $repository = $entityManager->getRepository('PapyrillioPapPalBundle:Sample');
@@ -462,6 +438,57 @@ class SampleController extends PapPalController{
     }
 
     return new Response(json_encode(array('success' => false, 'error' => $error)));
+  }
+
+
+
+  public function unsetMasterThumbnailAction($id){
+    $entityManager = $this->getDoctrine()->getEntityManager();
+    $repository = $entityManager->getRepository('PapyrillioPapPalBundle:Sample');
+    $language = $this->getParameter('language');
+    $languages = array('lat' => 'Lateinisch', 'grc' => 'Griechisch');
+
+    if($sample = $this->getSample($id)){
+      if($sample->unsetMasterThumbnail($language)){
+        if($thumbnail = $sample->getThumbnailByLanguage($language)){
+          $entityManager->remove($thumbnail);
+          $entityManager->flush();
+          $this->get('session')->setFlash('notice', 'Master thumbnail for language ' . $languages[$language] . ' has been deleted.');
+        } else {
+          $this->get('session')->setFlash('error', 'Master thumbnail could not be deleted from database.');
+        }
+      } else {
+        $this->get('session')->setFlash('error', 'Master thumbnail could not be unset because symbolic link could not be deleted from filesystem.');
+      }
+    } else {
+      $this->get('session')->setFlash('error', 'Master thumbnail could not be unset because sample record #' . $id . ' does not exist.');
+    }
+
+    return new RedirectResponse($this->generateUrl('PapyrillioPapPalBundle_SampleShow', array('id' => $id)));
+  }
+
+  public function _setMasterThumbnailAction($id){
+    $entityManager = $this->getDoctrine()->getEntityManager();
+    $repository = $entityManager->getRepository('PapyrillioPapPalBundle:Sample');
+    
+    $masterThumbnail = $this->getParameter('masterThumbnail');
+
+    if(!empty($masterThumbnail)){
+      if($sample = $repository->findOneBy(array('id' => $id))){
+        if($sample->setMasterThumbnail($masterThumbnail)){
+          $this->get('session')->setFlash('notice', 'Preview image has been set as default thumbnail.');
+        } else {
+          $this->get('session')->setFlash('error', 'Preview image ' . $masterThumbnail . ' could not bee set as default thumbnail.');
+        }
+      } else {
+        $this->get('session')->setFlash('error', 'Preview image ' . $masterThumbnail . ' could not bee set becaus record #' . $id . ' does not exist.');        
+      }
+      
+    } else {
+      $this->get('session')->setFlash('error', 'Empty image path');
+    }
+
+    return new RedirectResponse($this->generateUrl('PapyrillioPapPalBundle_SampleShow', array('id' => $id)));
   }
 
 }

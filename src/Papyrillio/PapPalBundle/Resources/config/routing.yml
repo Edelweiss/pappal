@@ -43,6 +43,10 @@ PapyrillioPapPalBundle_SampleSetMasterThumbnail:
     pattern:  /sample/setMasterThumbnail/{id}/{thumbnail}/{language}
     defaults: { _controller: PapyrillioPapPalBundle:Sample:setMasterThumbnail, language: grc }
 
+PapyrillioPapPalBundle_SampleUnsetMasterThumbnail:
+    pattern:  /sample/unsetMasterThumbnail/{id}
+    defaults: { _controller: PapyrillioPapPalBundle:Sample:unsetMasterThumbnail }
+
 PapyrillioPapPalBundle_SampleUploadImage:
     pattern:  /sample/uploadImage/{id}
     defaults: { _controller: PapyrillioPapPalBundle:Sample:uploadImage }

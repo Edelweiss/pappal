@@ -149,8 +149,7 @@ class Sample
       foreach($this->thumbnails as $thumbnail){
         $thumbnailList[$thumbnail->getLanguage()] = ($fullpath ? readlink(__DIR__ . '/../../../../web/thumbnail') . '/' : 'thumbnail/') . $this->folder . '/' . $this->hgv . '/' . $this->hgv . ($thumbnail->getLanguage() !== 'grc' ? $thumbnail->getLanguage() : '') . '.jpg';
       }
-        
-        
+
       return $thumbnailList; //($fullpath ? readlink(__DIR__ . '/../../../../web/thumbnail') . '/' : 'thumbnail/') . $this->folder . '/' . $this->hgv . '/' . $this->hgv . '.jpg';
     }
 
@@ -168,8 +167,7 @@ class Sample
       return $thumbnails;
     }
 
-    public function setMasterThumbnail($masterThumbnail, $language = 'grc'){
-      // filesystem
+    public function setMasterThumbnail($masterThumbnail, $language = 'grc'){ // only in the filesystem, should be part of the controller
       $dir = readlink(__DIR__ . '/../../../../web/thumbnail') . '/' . $this->folder . '/' . $this->hgv;
       $masterThumbnail = $dir . '/' . $masterThumbnail;
       $link = $dir . '/' . $this->hgv . ($language != 'grc' ? $language : '') . '.jpg';
@@ -182,6 +180,17 @@ class Sample
         }
       }
       return false;
+    }
+
+    public function unsetMasterThumbnail($language = 'grc'){ // only in the filesystem, should be part of the controller
+      $dir = readlink(__DIR__ . '/../../../../web/thumbnail') . '/' . $this->folder . '/' . $this->hgv;
+      $link = $dir . '/' . $this->hgv . ($language != 'grc' ? $language : '') . '.jpg';
+
+      if(file_exists($link)){
+        return unlink($link);
+      }
+      
+      return true;
     }
     
     public function getThumbnailByLanguage($language){

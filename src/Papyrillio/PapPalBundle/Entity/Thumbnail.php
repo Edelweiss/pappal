@@ -51,7 +51,7 @@ class Thumbnail
      */
     public function setLanguage($language)
     {
-        if(in_array($language, array('lat','cop','egy','ara'))){
+        if(in_array($language, array('grc', 'lat','cop','egy','ara'))){
           if($this->file){
             $this->file = preg_replace('/(lat|cop|egy|ara)/', $language != 'grc' ? $language : '', $this->file);
           } else if ($this->sample){

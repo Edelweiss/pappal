@@ -87,6 +87,17 @@
 
 <button name="delete" type="button" id="buttonDelete" value="{{ path('PapyrillioPapPalBundle_SampleDelete', { 'id': sample.id }) }}">delete sample record</button>
 
+
+<br />
+
+<form action="{{ path('PapyrillioPapPalBundle_SampleUnsetMasterThumbnail', { 'id': sample.id }) }}" method="post">
+  <select name="language">
+    <option value="grc">Griechisch</option>
+    <option value="lat">Lateinisch</option>
+  </select>
+  <input type="submit" value="unset master thumbnail for selected language" />
+</form>
+
 {% endif %}
 
 {% endblock %}
