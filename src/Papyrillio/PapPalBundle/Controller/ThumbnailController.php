@@ -26,7 +26,7 @@ class ThumbnailController extends PapPalController{
       ->add('dateNotAfter', 'text', array('required' => false))
       ->add('title', 'text', array('required' => false))
       ->add('material', 'choice', array('choices' => array('Papyrus' => 'Papyrus', 'Ostrakon' => 'Ostrakon'), 'preferred_choices' => array(''), 'required' => false))
-      //->add('language', 'choice', array('choices' => array('grc' => 'Grieschich', 'lat' => 'Lateinisch'), 'preferred_choices' => array(''), 'required' => false))
+      //->add('language', 'choice', array('choices' => array('grc' => 'Griechisch', 'lat' => 'Lateinisch'), 'preferred_choices' => array(''), 'required' => false))
       ->add('keywords', 'text', array('required' => false))
       ->add('provenance', 'text', array('required' => false))
       ->getForm();  // digitalImages, status, importDate
