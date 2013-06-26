@@ -22,7 +22,7 @@
         <ul class="clearfix">
 
           {% for thumbnail in thumbnails %}
-            <li id="sample{{ thumbnail.sample.id ~ thumbnail.language }}"><!-- !!!!!!!!!!!!!!!!!!!!!!!!!! -->
+            <li id="sample{{ thumbnail.sample.id ~ thumbnail.language }}">
               <span class="imtitle greek">{{ thumbnail.sample.title }}</span>
               <a href="{{ path('PapyrillioPapPalBundle_SampleShow', {id: thumbnail.sample.id}) }}" title="{{ thumbnail.sample.title }}"><img src="{{ asset('thumbnail/placeholder.gif') }}" data-original="{{ asset('thumbnail/' ~ thumbnail.file) }}" alt="" /></a>
             </li>

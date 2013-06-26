@@ -33,7 +33,7 @@
                   <div>Settings</div>
                   <ul id="menu" class="ui-corner-all" style="display: none;">
                     {% set navigation = {
-                    'Samples': {'PapyrillioPapPalBundle_SampleList': {'title': 'View Samples', 'parameters': {}}},
+                    'Samples': {'PapyrillioPapPalBundle_ThumbnailList': {'title': 'View Samples', 'parameters': {}}},
 
                     'User':    {'fos_user_change_password': {'title': 'Change Password', 'parameters': {}}, 
                                  'fos_user_profile_edit': {'title': 'Edit Profile', 'parameters': {}}}
@@ -72,7 +72,7 @@
               <span> | </span>
               <a href="{{ path('PapyrillioPapPalBundle_Home') }}" title="Home" class="pageLinkTop">Home</a>
               <br />
-              <a href="{{ path('PapyrillioPapPalBundle_SampleList') }}" title="Browse Images&nbsp;…" class="pageLinkTop ">To the Images&nbsp;…</a>
+              <a href="{{ path('PapyrillioPapPalBundle_ThumbnailList') }}" title="Browse Images&nbsp;…" class="pageLinkTop ">To the Images&nbsp;…</a>
             </div>
             <div id="content">
                 {% if app.session.hasFlash('notice') %}

@@ -8,7 +8,7 @@
 
   {% for thumbnail in thumbnails %}
     <div class="sample">
-      <a href="{{ path('PapyrillioPapPalBundle_SampleShow', {id: thumbnail.sample.id}) }}"><img src="{{ asset('thumbnail/placeholder.gif') }}" data-original="{{ asset('thumbnail/' ~ thumbnail.file) }}" class="lazy" title="&lt;span class=&quot;keyword greek&quot;&gt;{{ thumbnail.sample.title != 'keiner' ? thumbnail.sample.title : '...' }}&lt;/span&gt; &lt;br/&gt; {{ thumbnail.sample.dateHgvFormat }} &lt;br/&gt; {{ thumbnail.sample.provenance }} &lt;br/&gt; {{ thumbnail.sample.material }}, &lt;span class=&quot;greek&quot;&gt;{{ thumbnail.sample.keywords }}&lt;/span&gt; &lt;br/&gt; DDbDP {{ thumbnail.sample.ddb }} / HGV/TM {{ thumbnail.sample.hgv }}" /></a>
+      <a href="{{ path('PapyrillioPapPalBundle_SampleShow', {id: thumbnail.sample.id}) }}"><img src="{{ asset('thumbnail/placeholder.gif') }}" data-original="{{ asset('thumbnail/' ~ thumbnail.file) }}" class="lazy" title="&lt;span class=&quot;keyword greek&quot;&gt;{{ thumbnail.sample.title != 'keiner' ? thumbnail.sample.title : '...' }}&lt;/span&gt; &lt;br/&gt; {{ thumbnail.sample.dateHgvFormat }} &lt;br/&gt; {{ thumbnail.sample.provenance }} &lt;br/&gt; {{ thumbnail.sample.material }}, {{ thumbnail.language | iso }}, &lt;span class=&quot;greek&quot;&gt;{{ thumbnail.sample.keywords }}&lt;/span&gt; &lt;br/&gt; DDbDP {{ thumbnail.sample.ddb }} / HGV/TM {{ thumbnail.sample.hgv }}" /></a>
       <br />
       <span class="date">{{ thumbnail.sample.dateHgvFormat }}</span>,
       <span class="provenance">{{ thumbnail.sample.provenance }}</span> -

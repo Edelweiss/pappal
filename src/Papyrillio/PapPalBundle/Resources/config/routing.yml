@@ -11,15 +11,17 @@ PapyrillioPapPalBundle_hgvChanges:
         jourFixe:  \d{4}-\d{2}-\d{2}
 
 
-# Sample
+# Thumbnail
 
-PapyrillioPapPalBundle_SampleList:
+PapyrillioPapPalBundle_ThumbnailList:
     pattern:  /sample/list
-    defaults: { _controller: PapyrillioPapPalBundle:Sample:list }
+    defaults: { _controller: PapyrillioPapPalBundle:Thumbnail:list }
 
-PapyrillioPapPalBundle_SampleGallery:
+PapyrillioPapPalBundle_ThumbnailGallery:
     pattern:  /sample/gallery
-    defaults: { _controller: PapyrillioPapPalBundle:Sample:list }
+    defaults: { _controller: PapyrillioPapPalBundle:Thumbnail:list }
+
+# Sample
 
 PapyrillioPapPalBundle_SampleShow:
     pattern:  /sample/show/{id}

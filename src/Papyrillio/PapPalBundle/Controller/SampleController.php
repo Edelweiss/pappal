@@ -14,7 +14,7 @@ use DateTime;
 use Date;
 
 class SampleController extends PapPalController{
-
+/*
   protected function getFilterForm(){
     $sample = new Sample();
 
@@ -26,6 +26,7 @@ class SampleController extends PapPalController{
       ->add('dateNotAfter', 'text', array('required' => false))
       ->add('title', 'text', array('required' => false))
       ->add('material', 'choice', array('choices' => array('Papyrus' => 'Papyrus', 'Ostrakon' => 'Ostrakon'), 'preferred_choices' => array(''), 'required' => false))
+      //->add('language', 'choice', array('choices' => array('grc' => 'Grieschich', 'lat' => 'Lateinisch'), 'preferred_choices' => array(''), 'required' => false))
       ->add('keywords', 'text', array('required' => false))
       ->add('provenance', 'text', array('required' => false))
       ->getForm();  // digitalImages, status, importDate
@@ -83,7 +84,7 @@ class SampleController extends PapPalController{
   public function getTemplate(){
     $template = 'list';
     
-    if($this->container->get('request')->get('_route') == 'PapyrillioPapPalBundle_SampleGallery'){
+    if($this->container->get('request')->get('_route') == 'PapyrillioPapPalBundle_ThumbnailGallery'){
 
       $template = 'gallery';
 
@@ -228,134 +229,7 @@ class SampleController extends PapPalController{
 
     return $this->render('PapyrillioPapPalBundle:Sample:' . $template . '.html.twig', array('thumbnails' => $thumbnails, 'filterForm' => $filterForm->createView(), 'template' => $template, 'templateOptions' => $templateOptions, 'sort' => $sort, 'sortOptions' => $sortOptions, 'sortDirections' => $sortDirections));
   }
-
-  public function _listAction(){
-    $filterForm = $this->getFilterForm(); // DEFAULT or POST or SESSION
-
-    $templateOptions = array('list' => 'Gallery', 'gallery' => 'Slideshow');
-    $template = $this->getTemplate(); // DEFAULT or ROUTE or POST or SESSION
-    
-    $filter = $this->getFilter(); // DEFAULT or POST or SESSION
-
-    $sort = $this->getSort(); // DEFAULT or POST or SESSION
-    $sortOptions = array('' => '', 'hgv' => 'HGV', 'ddb' => 'DDB', 'dateSort' => 'Date', 'title' => 'Title', 'material' => 'Material', 'provenance' => 'Provenance', 'status' => 'Status', 'importDate' => 'Import Date');
-    $sortDirections = array('asc' => 'ascending', 'desc' => 'descending');
-
-    $filterOr = array('title', 'hgv', 'ddb', 'material', 'provenance', 'keywords', 'status');
-
-    $entityManager = $this->getDoctrine()->getEntityManager();
-    $repository = $entityManager->getRepository('PapyrillioPapPalBundle:Sample');
-
-    // ORDER BY
-
-    $orderBy = ' ORDER BY';
-    if(count($sort)){
-
-      foreach($sort as $key => $direction){
-        if($key == 'hgv'){
-          $orderBy .= ' s.tm ' . ($direction === 'desc' ? 'DESC' : 'ASC') . ', s.hgv ' . ($direction === 'desc' ? 'DESC' : 'ASC') . ', ';
-        } else {
-          $orderBy .= ' s.' . $key . ' ' . ($direction === 'desc' ? 'DESC' : 'ASC') . ', ';
-        }
-      }
-      $orderBy = rtrim($orderBy, ', ');
-    } else {
-      $orderBy .= ' s.dateSort';
-    }
-
-    // WHERE
-
-    $where = ' WHERE s.status = :status';
-    $parameters = array('status' => 'ok');
-
-    if($filter){
-      // standard fields
-      foreach($filter as $field => $value){
-        $value = trim($value);
-        if(!empty($value) && in_array($field, $filterOr)){
-          $where .= ' AND (';
-          $index = 0;
-          foreach(explode(' ', $value) as $or){
-            if(preg_match('/(ae|oe|ue)/', $or)){
-              $valueUmlaut = str_replace(array('ae', 'oe', 'ue'), array('ä', 'ö', 'ü'), $or);
-              $where .= '(s.' . $field . ' LIKE :' . $field . $index . ' OR s.' . $field . ' LIKE :' . $field . ($index + 1) . ') AND '; // was: OR
-              $parameters[$field . ($index++)] = '%' . $or . '%';
-              $parameters[$field . ($index++)] = '%' . $valueUmlaut . '%';
-            } else {
-              $where .= 's.' . $field . ' LIKE :' . $field . $index . ' AND '; // was: OR
-              $parameters[$field . $index] = '%' . $or . '%';
-              $index++;
-            }
-          }
-
-          $where = rtrim($where, ' AND ') .  ')'; // was: OR
-        }
-      }
-
-      // date stuff
-      $dateSortWhen = trim($filter['dateWhen']);
-      $dateSortNotBefore = trim($filter['dateNotBefore']);
-      $dateSortNotAfter = trim($filter['dateNotAfter']);
-
-      if(strlen($dateSortNotBefore) && strlen($dateSortNotAfter)){ // between
-
-        
-        $dateSortNotBefore = Sample::generateDateSortKey(Sample::makeIsoYear($dateSortNotBefore) . '-00-00');
-        if($dateSortNotAfter < 0){
-          $dateSortNotAfter = Sample::generateDateSortKey(Sample::makeIsoYear($dateSortNotAfter) . '-13-31');
-        } else {
-          $dateSortNotAfter = Sample::generateDateSortKey(Sample::makeIsoYear($dateSortNotAfter) . '-12-31');
-        }
-
-        $where .= ' AND s.dateSort BETWEEN :dateNotBefore AND :dateNotAfter';
-        $parameters['dateNotBefore'] = $dateSortNotBefore;
-        $parameters['dateNotAfter'] = $dateSortNotAfter;
-      } else if(strlen($dateSortNotBefore)){ // not before
-
-        $dateSortNotBefore = Sample::generateDateSortKey(Sample::makeIsoYear($dateSortNotBefore) . '-00-00');
-
-        $where .= ' AND s.dateSort >= :dateNotBefore';
-        $parameters['dateNotBefore'] = $dateSortNotBefore;
-      } else if(strlen($dateSortNotAfter)){ // not after
-
-        if($dateSortNotAfter < 0){
-          $dateSortNotAfter = Sample::generateDateSortKey(Sample::makeIsoYear($dateSortNotAfter) . '-13-31');
-        } else {
-          $dateSortNotAfter = Sample::generateDateSortKey(Sample::makeIsoYear($dateSortNotAfter) . '-12-31');
-        }
-
-        $where .= ' AND s.dateSort <= :dateNotAfter';
-        $parameters['dateNotAfter'] = $dateSortNotAfter;
-      } else if(strlen($dateSortWhen)){
-
-        $dateSortFrom = Sample::generateDateSortKey(Sample::makeIsoYear($dateSortWhen) . '-00-00');
-        $dateSortTo = Sample::generateDateSortKey(Sample::makeIsoYear($dateSortWhen) . '-12-31');
-
-        if($dateSortWhen < 0){
-          $dateSortTo = Sample::generateDateSortKey(Sample::makeIsoYear($dateSortWhen) . '-13-31');
-        }
-
-        $where .= ' AND s.dateSort BETWEEN :dateFrom AND :dateTo';
-        $parameters['dateFrom'] = $dateSortFrom;
-        $parameters['dateTo'] = $dateSortTo;
-      }
- 
-    }
-
-    // SELECT
-    $query = $entityManager->createQuery('
-        SELECT s FROM PapyrillioPapPalBundle:Sample s ' . $where . ' ' . $orderBy .'
-      ');
-
-    // QUERY
-
-    $query->setParameters($parameters);
-    $samples = $query->getResult();
-    $count = count($samples);
-
-    return $this->render('PapyrillioPapPalBundle:Sample:' . $template . '.html.twig', array('samples' => $samples, 'filterForm' => $filterForm->createView(), 'template' => $template, 'templateOptions' => $templateOptions, 'sort' => $sort, 'sortOptions' => $sortOptions, 'sortDirections' => $sortDirections));
-  }
-
+*/
   public function tmAction($tm){
     $entityManager = $this->getDoctrine()->getEntityManager();
     $repository = $entityManager->getRepository('PapyrillioPapPalBundle:Sample');
@@ -410,7 +284,7 @@ class SampleController extends PapPalController{
       $entityManager->remove($sample);
       $entityManager->flush();
       $this->get('session')->setFlash('notice', 'Data record was deleted.');
-      return new RedirectResponse($this->generateUrl('PapyrillioPapPalBundle_SampleList'));
+      return new RedirectResponse($this->generateUrl('PapyrillioPapPalBundle_ThumbnailList'));
     }
 
     return new RedirectResponse($this->generateUrl('PapyrillioPapPalBundle_SampleShow', array('id' => $id)));
@@ -493,7 +367,7 @@ class SampleController extends PapPalController{
       }
       return new RedirectResponse($this->generateUrl('PapyrillioPapPalBundle_SampleShow', array('id' => $id)));
     } else {
-      return new RedirectResponse($this->generateUrl('PapyrillioPapPalBundle_SampleList'));
+      return new RedirectResponse($this->generateUrl('PapyrillioPapPalBundle_ThumbnailList'));
     }
   }
 
@@ -568,8 +442,6 @@ class SampleController extends PapPalController{
     return new Response(json_encode(array('success' => false, 'error' => $error)));
   }
 
-
-
   public function unsetMasterThumbnailAction($id){
     $entityManager = $this->getDoctrine()->getEntityManager();
     $repository = $entityManager->getRepository('PapyrillioPapPalBundle:Sample');
@@ -590,30 +462,6 @@ class SampleController extends PapPalController{
       }
     } else {
       $this->get('session')->setFlash('error', 'Master thumbnail could not be unset because sample record #' . $id . ' does not exist.');
-    }
-
-    return new RedirectResponse($this->generateUrl('PapyrillioPapPalBundle_SampleShow', array('id' => $id)));
-  }
-
-  public function _setMasterThumbnailAction($id){
-    $entityManager = $this->getDoctrine()->getEntityManager();
-    $repository = $entityManager->getRepository('PapyrillioPapPalBundle:Sample');
-    
-    $masterThumbnail = $this->getParameter('masterThumbnail');
-
-    if(!empty($masterThumbnail)){
-      if($sample = $repository->findOneBy(array('id' => $id))){
-        if($sample->setMasterThumbnail($masterThumbnail)){
-          $this->get('session')->setFlash('notice', 'Preview image has been set as default thumbnail.');
-        } else {
-          $this->get('session')->setFlash('error', 'Preview image ' . $masterThumbnail . ' could not bee set as default thumbnail.');
-        }
-      } else {
-        $this->get('session')->setFlash('error', 'Preview image ' . $masterThumbnail . ' could not bee set becaus record #' . $id . ' does not exist.');        
-      }
-      
-    } else {
-      $this->get('session')->setFlash('error', 'Empty image path');
     }
 
     return new RedirectResponse($this->generateUrl('PapyrillioPapPalBundle_SampleShow', array('id' => $id)));

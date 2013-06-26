@@ -38,7 +38,7 @@ class ImageController extends PapPalController{
       }
     } else {
       $this->get('session')->setFlash('notice', 'Sample record #' . $id . ' could not be found.');
-        return new RedirectResponse($this->generateUrl('PapyrillioPapPalBundle_SampleGallery'));
+        return new RedirectResponse($this->generateUrl('PapyrillioPapPalBundle_ThumbnailGallery'));
     }
     return $this->render('PapyrillioPapPalBundle:Image:crop.html.twig', array('sample' => $sample, 'image' => $image));
   }
