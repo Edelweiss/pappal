@@ -61,6 +61,7 @@ security:
         - { path: ^/sample/deleteImage, role: ROLE_ADMIN }
         - { path: ^/sample/delete, role: ROLE_ADMIN }
         - { path: ^/sample/setMasterThumbnail, role: ROLE_ADMIN }
+        - { path: ^/sample/unsetMasterThumbnail, role: ROLE_ADMIN }
         - { path: ^/sample/deleteThumbnail, role: ROLE_ADMIN }
         - { path: ^/sample/rotateThumbnail, role: ROLE_ADMIN }
         - { path: ^/image/, role: ROLE_ADMIN }
