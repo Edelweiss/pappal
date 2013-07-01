@@ -361,6 +361,73 @@ form#filter input#submit {
   float: right;
 }
 
+/* THUMBNAIL SEARCH FORM */
+
+form#search fieldset {
+  padding: 1em;
+  border: 1px solid #c0c0c0;
+  background-color: #303030;
+}
+
+form#search legend{
+  padding: 0.2em;
+  font-weight: bold;
+  font-variant: small-caps;
+}
+form#search button,
+form#search input,
+form#search select,
+form#search label{
+  margin: 0.2em 0 0 0.2em;
+  display: block;
+  float: left;
+  width: 10em;
+}
+
+form#search input{
+  padding: 0;
+}
+
+form#search label{
+  width: 8em;
+}
+
+form#search input#thumbnail_sample_title,
+form#search input#thumbnail_sample_keywords,
+form#search input#thumbnail_sample_provenance{
+  width: 36em;
+}
+
+form#search select#thumbnail_sample_material,
+form#search select#thumbnail_language{
+  float: right;
+  margin-right: 
+}
+
+form#search label.material,
+form#search label.language{
+  float: right;
+}
+
+form#search input#thumbnail_sample_dateWhen,
+form#search input#thumbnail_sample_dateNotBefore,
+form#search input#thumbnail_sample_dateNotAfter,
+form#search input#thumbnail_sample_hgv,
+form#search input#thumbnail_sample_ddb{
+  width: 4em;
+}
+
+form#search label.notBefore,
+form#search label.notAfter,
+form#search label.ddb{
+  text-align: right;
+}
+
+form#search input#reset,
+form#search input#submit {
+  float: right;
+}
+
 /* FOSUSer */
 
 div#fos_user_profile_form label.required{

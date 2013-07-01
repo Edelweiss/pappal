@@ -29,8 +29,10 @@ class Thumbnail
      */
     private $sample;
     
-    public function __construct($language = 'grc'){
-      $this->setLanguage($language);
+    public function __construct($language = null){
+      if($language){
+        $this->setLanguage($language);
+      }
     }
 
     /**

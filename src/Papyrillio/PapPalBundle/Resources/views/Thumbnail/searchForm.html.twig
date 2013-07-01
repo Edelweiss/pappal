@@ -1,0 +1,84 @@
+<form id="search" action="{{ path(app.request.attributes.get('_route')) }}" method="post" {{ form_enctype(searchForm) }} autocomplete="off">
+
+  <fieldset>
+    <legend>Filter</legend>
+
+        <label class="title">Title</label>
+        {{ form_widget(searchForm.sample.title) }}
+        {{ form_errors(searchForm.sample.title) }}
+
+        {{ form_widget(searchForm.sample.material) }}
+        {{ form_errors(searchForm.sample.material) }}
+        <label class="material">Material</label>
+        <div class="clear"></div>
+
+        <label class="keywords">Keywords</label>
+        {{ form_widget(searchForm.sample.keywords) }}
+        {{ form_errors(searchForm.sample.keywords) }}
+        <label> (German only)</label>
+
+        {{ form_widget(searchForm.language) }}
+        {{ form_errors(searchForm.language) }}
+        <label class="language">Language</label>
+        <div class="clear"></div>
+
+        <label class="provenance">Provenance</label>
+        {{ form_widget(searchForm.sample.provenance) }}
+        {{ form_errors(searchForm.sample.provenance) }}
+        <div class="clear"></div>
+
+        <label class="dateWhen">Year</label>
+        {{ form_widget(searchForm.sample.dateWhen) }}
+        {{ form_errors(searchForm.sample.dateWhen) }}
+
+        <label class="notBefore">Not Before</label>
+        {{ form_widget(searchForm.sample.dateNotBefore) }}
+        {{ form_errors(searchForm.sample.dateNotBefore) }}
+        <label class="notAfter">Not After</label>
+        {{ form_widget(searchForm.sample.dateNotAfter) }}
+        {{ form_errors(searchForm.sample.dateNotAfter) }}
+        <div class="clear"></div>
+
+        <label class="hgv">HGV/TM</label>
+        {{ form_widget(searchForm.sample.hgv) }}
+        {{ form_errors(searchForm.sample.hgv) }}
+        <label class="ddb">DDbDP</label>
+        {{ form_widget(searchForm.sample.ddb) }}
+        {{ form_errors(searchForm.sample.ddb) }}
+        <div class="clear"></div>
+
+  </fieldset>
+  
+  {{ form_widget(searchForm) }}
+
+  <fieldset>
+    <legend>Display options</legend>
+    <label class="sort">Sort</label>
+    <select id="sort_0_value" name="sort[0][value]">
+      {% for key, option in sortOptions %}
+        <option value="{{ key }}" {{ sort[key] is defined ? 'selected="selected"' : '' }}>{{ option }}</option>
+      {% endfor %}
+    </select>
+  
+    <select id="sort_0_direction" name="sort[0][direction]">
+      {% for key, direction in sortDirections %}
+        <option value="{{ key }}" {{ key in sort ? 'selected="selected"' : '' }}>{{ direction }}</option>
+      {% endfor %}
+    </select>
+    
+    <div class="clear"></div>
+
+    <label class="template">Image Display</label>
+    <select id="template" name="template">
+      {% for key, option in templateOptions %}
+        <option value="{{ key }}" {{ key == template ? 'selected="selected"' : '' }}>{{ option }}</option>
+      {% endfor %}
+    </select>
+  </fieldset>
+
+  <input type="submit" id="submit" value="Submit Form" />
+  <input type="reset" id="reset" value="Reset Form" />
+  <!--button type="button" id="reset" onclick="window.location.href = '{{ path(app.request.attributes.get('_route')) }}'" >Reset Form</button-->
+
+  <div class="clear"></div>
+</form>
