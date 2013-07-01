@@ -20,7 +20,7 @@ class SampleController extends PapPalController{
     $repository = $entityManager->getRepository('PapyrillioPapPalBundle:Sample');
 
     if($sample = $repository->findOneBy(array('tm' => $tm))){
-      return $this->forward('PapyrillioPapPalBundle:Sample:show', array('id' => $sample->getId()));
+      return $this->forward('PapyrillioPapPalBundle:Sample:show', array('id' => $sample->getId(), '_route' => $this->getRequest()->attributes->get('_route')));
     }
 
     return $this->render('PapyrillioPapPalBundle:Sample:notFound.html.twig', array('identifierClass' => 'tm', 'id' => $tm));
@@ -31,7 +31,7 @@ class SampleController extends PapPalController{
     $repository = $entityManager->getRepository('PapyrillioPapPalBundle:Sample');
 
     if($sample = $repository->findOneBy(array('hgv' => $hgv))){
-      return $this->forward('PapyrillioPapPalBundle:Sample:show', array('id' => $sample->getId()));
+      return $this->forward('PapyrillioPapPalBundle:Sample:show', array('id' => $sample->getId(), '_route' => $this->getRequest()->attributes->get('_route')));
     }
 
     return $this->render('PapyrillioPapPalBundle:Sample:notFound.html.twig', array('identifierClass' => 'hgv', 'id' => $hgv));
@@ -42,7 +42,7 @@ class SampleController extends PapPalController{
     $repository = $entityManager->getRepository('PapyrillioPapPalBundle:Sample');
 
     if($sample = $repository->findOneBy(array('ddb' => $ddb))){
-      return $this->forward('PapyrillioPapPalBundle:Sample:show', array('id' => $sample->getId()));
+      return $this->forward('PapyrillioPapPalBundle:Sample:show', array('id' => $sample->getId(), '_route' => $this->getRequest()->attributes->get('_route')));
     }
 
     return $this->render('PapyrillioPapPalBundle:Sample:notFound.html.twig', array('identifierClass' => 'ddb', 'id' => $ddb));

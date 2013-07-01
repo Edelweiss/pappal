@@ -60,10 +60,10 @@
 
               {% elseif app.request.attributes.get('_route') %}
                 <a href="{{ path('fos_user_security_login') }}" class="pageLinkTop">Login</a>
+                <span> | </span>
                 <!--a href="{{ path('fos_user_registration_register') }}">Register</a-->
               {% endif %}
 
-              <span> | </span>
               <a href="{{ path('PapyrillioPapPalBundle_Contact') }}" title="Contact" class="pageLinkTop">Contact</a>
               <span> | </span>
               <a href="{{ path('PapyrillioPapPalBundle_BrowsingTips') }}" title="Browsing Tips" class="pageLinkTop">Browsing Tips</a>
