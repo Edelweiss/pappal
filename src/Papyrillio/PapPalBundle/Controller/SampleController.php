@@ -66,6 +66,9 @@ class SampleController extends PapPalController{
     $sample = $repository->findOneBy(array('id' => $id));
 
     if($sample){
+      foreach($sample->getThumbnails() as $thumbnail){
+        $entityManager->remove($thumbnail);
+      }
       $entityManager->remove($sample);
       $entityManager->flush();
       $this->get('session')->setFlash('notice', 'Data record was deleted.');
