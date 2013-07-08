@@ -17,7 +17,7 @@
   <tr><th class="provenance">Provenance</th><td class="provenance">{{ sample.provenance }}</td></tr>
   <tr><th class="dateHgvFormat">Date</th><td class="dateHgvFormat">{{ sample.dateHgvFormat }}</td></tr>
   <tr>
-    <th class="language">Script{% if sample.thumbnails | length > 1 %}s{% endif %}</th>
+    <th class="language">Language{% if sample.thumbnails | length > 1 %}s{% endif %}/Script{% if sample.thumbnails | length > 1 %}s{% endif %}</th>
     <td class="language">
       {% for thumb in sample.thumbnails %}
         {% if loop.index > 1 %}, {% endif %}
