@@ -405,7 +405,7 @@ form#search input#thumbnail_sample_provenance{
 form#search select#thumbnail_sample_material,
 form#search select#thumbnail_language{
   float: right;
-  margin-right: 
+  margin-right: 10em;
 }
 
 form#search label.material,
