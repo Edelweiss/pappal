@@ -40,6 +40,10 @@ PapyrillioPapPalBundle_SampleDdb:
 
 # Sample Admin
 
+PapyrillioPapPalBundle_SampleAdminCreate:
+    pattern:  /admin/sample/create
+    defaults: { _controller: PapyrillioPapPalBundle:SampleAdmin:create }
+
 PapyrillioPapPalBundle_SampleSetMasterThumbnail:
     pattern:  /sample/setMasterThumbnail/{id}/{thumbnail}/{language}
     defaults: { _controller: PapyrillioPapPalBundle:Sample:setMasterThumbnail, language: grc }

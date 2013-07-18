@@ -3,6 +3,7 @@
 namespace Papyrillio\PapPalBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use DateTime;
 
 /**
  * Papyrillio\PapPalBundle\Entity\Sample
@@ -139,6 +140,12 @@ class Sample
      */
     private $importDate;
 
+    public function updateDateSort(){
+      $this->setDateSort(
+        self::generateDateSortKey($this->dateWhen ? $this->dateWhen : ($this->dateNotBefore ? $this->dateNotBefore : $this->dateNotAfter))
+      );
+    }
+
     public function getThumbnail($fullpath = false){
       return ($fullpath ? readlink(__DIR__ . '/../../../../web/thumbnail') . '/' : 'thumbnail/') . $this->folder . '/' . $this->hgv . '/' . $this->hgv . '.jpg';
     }
@@ -224,6 +231,8 @@ class Sample
     {
         $this->comments = new \Doctrine\Common\Collections\ArrayCollection();
         $this->thumbnails = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->status = 'ok';
+        $this->importDate = new DateTime(); // date('Y-m-d H:i:s');
     }
 
     /**
@@ -243,7 +252,8 @@ class Sample
      */
     public function setTm($tm)
     {
-        $this->tm = $tm;
+        $this->tm = $tm * 1;
+        $this->setFolder(ceil($this->tm / 1000.0));
     }
 
     /**
@@ -263,7 +273,7 @@ class Sample
      */
     public function setFolder($folder)
     {
-        $this->folder = $folder;
+        $this->folder = (int) $folder;
     }
 
     /**
@@ -283,6 +293,7 @@ class Sample
      */
     public function setHgv($hgv)
     {
+        $this->setTm(preg_replace('/[^\d]+/', '', $hgv));
         $this->hgv = $hgv;
     }
 
@@ -304,6 +315,11 @@ class Sample
     public function setDdb($ddb)
     {
         $this->ddb = $ddb;
+
+        $tokenList = explode(';', $this->ddb);
+        $this->collection = array_key_exists(0, $tokenList) ? $tokenList[0] : '';
+        $this->volume     = array_key_exists(1, $tokenList) ? $tokenList[1] : '';
+        $this->document   = array_key_exists(2, $tokenList) ? $tokenList[2] : '';
     }
 
     /**
@@ -381,9 +397,13 @@ class Sample
      *
      * @param date $dateWhen
      */
-    public function setDateWhen($dateWhen)
+    public function setDateWhen($date)
     {
-        $this->dateWhen = $dateWhen;
+        $date = trim($date);
+        if($date && !empty($date)){
+          $this->dateWhen = $date;
+          $this->updateDateSort();
+        }
     }
 
     /**
@@ -401,9 +421,13 @@ class Sample
      *
      * @param date $dateNotBefore
      */
-    public function setDateNotBefore($dateNotBefore)
+    public function setDateNotBefore($date)
     {
-        $this->dateNotBefore = $dateNotBefore;
+        $date = trim($date);
+        if($date && !empty($date)){
+          $this->dateNotBefore = $date;
+          $this->updateDateSort();
+        }
     }
 
     /**
@@ -421,9 +445,13 @@ class Sample
      *
      * @param date $dateNotAfter
      */
-    public function setDateNotAfter($dateNotAfter)
+    public function setDateNotAfter($date)
     {
-        $this->dateNotAfter = $dateNotAfter;
+        $date = trim($date);
+        if($date && !empty($date)){
+          $this->dateNotAfter = $date;
+          $this->updateDateSort();
+        }
     }
 
     /**
