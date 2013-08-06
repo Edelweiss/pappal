@@ -15,12 +15,13 @@ use Date;
 use DomDocument;
 use DOMXPath;
 use DOMNodeList;
+use PDOException;
 
 class SampleAdminController extends PapPalController{
 
   public function createAction(){
     $error = null;
-    
+    // PHP Version 5.3.15
     if($this->get('request')->getMethod() == 'POST'){
       $entityManager = $this->getDoctrine()->getEntityManager();
       $repository = $entityManager->getRepository('PapyrillioPapPalBundle:Sample');
@@ -46,39 +47,60 @@ class SampleAdminController extends PapPalController{
           $sample->setTitle($xpath->getTitle());
           $sample->setMaterial($xpath->getMaterial());
           $sample->setKeywords($xpath->getKeywords());
-          //$sample->setDigitalImages($xpath->getDigitalImages());
-          $sample->setDigitalImages('http://adore.ugent.be/OpenURL/app?id=archive.ugent.be:86EE9CA6-6FF9-11E1-B140-E3AB3B7C8C91&type=carousel');
+          $sample->setDigitalImages($xpath->getDigitalImages());
           $sample->setProvenance($xpath->getProvenance());
 
-          if(1) {//if($sample->getDigitalImages() && $sample->getHgvFormat()){
+          if($sample->getDigitalImages()){
             // 3. download images
-            // 4. create thumbnails
+            $crawler = $this->get('papyrillio_pap_pal.image_crawler');
+            try{
+              foreach($sample->getImageLinks() as $url){
+                $crawler->crawl($url, $sample->getDdb());
+              }
+              $hgvDirectory = $this->makeSureImageDirectoryExists($sample);
+              $crawler->saveImages($hgvDirectory);
 
-            // 5. determine language from meta data (greek by default)
-            $notes = $xpath->getNotes();
-            $language = 'grc';
-            if(preg_match('/^Griechisch(\.| ?-)/', $notes)){
+              // 4. determine language from meta data (greek by default)
+              $notes = $xpath->getNotes();
               $language = 'grc';
-            } elseif(preg_match('/^Lateinisch(\.| ?-)/', $notes)){
-              $language = 'lat';
+              if(preg_match('/^Griechisch(\.| ?-)/', $notes)){
+                $language = 'grc';
+              } elseif(preg_match('/^Lateinisch(\.| ?-)/', $notes)){
+                $language = 'lat';
+              }
+              
+              // 5. create thumbnails
+              $puncher = $this->get('papyrillio_pap_pal.image_puncher');
+              
+              $thumbnailDirectory = $this->makeSureThumbnailDirectoryExists($sample);
+              foreach($sample->getUploadedImages() as $fileName => $relativeFilePath){
+                $puncher->punch($hgvDirectory, $fileName, $thumbnailDirectory, $sample->getHgv(), $language != 'grc' ? $language : '');
+              }
+              $puncher->setRandomMasterSample();
+  
+              // 6. set master thumbnail
+              $thumbnail = new Thumbnail($language);
+              $thumbnail->setSample($sample);
+              
+              //$error = 'OK!';
+
+              // 7. insert into database
+              try{
+                $entityManager->persist($sample);
+                $entityManager->persist($thumbnail);
+                $entityManager->flush();
+                // success
+                $this->get('session')->setFlash('notice', 'Thumbnail for hgv #' . $hgv . ' was created.');
+                return new RedirectResponse($this->generateUrl('PapyrillioPapPalBundle_SampleShow', array('id' => $sample->getId())));
+              } catch (PDOException $e){
+                $error = 'Metadata for #' . $hgv . ' could not be saved: ' . $e->getMessage() . ' (http://www.papyri.info/hgv/' . $hgv . '/source).';
+              }              
+            } catch(Exception $e){
+              $error = 'Images for #' . $hgv . ' could not be downloaded: ' . $e->getMessage() . ' (http://www.papyri.info/hgv/' . $hgv . '/source).';
             }
-
-            // 6. set master thumbnail
-            $thumbnail = new Thumbnail($language);
-            $thumbnail->setSample($sample);
-
-            // 7. insert into database
-            $entityManager->persist($sample);
-            $entityManager->persist($thumbnail);
-            $entityManager->flush();
-            
-            // success
-            $this->get('session')->setFlash('notice', 'Thumbnail for hgv #' . $hgv . ' was created.');
-            return new RedirectResponse($this->generateUrl('PapyrillioPapPalBundle_SampleShow', array('id' => $sample->getId())));
           } else {
-            $error = 'No digital images available for #' . $hgv . ' (http://www.papyri.info/hgv/' . $hgv . '/source).';
-          }          
-                    
+            $error = 'No digital images available for hgv id #' . $hgv . ' (http://www.papyri.info/hgv/' . $hgv . '/source).';
+          }
         } else { // ERROR! XML XPATH
           $error = 'XML file for hgv id #' . $hgv . ' cannot parsed (http://www.papyri.info/hgv/' . $hgv . '/source).';
         }        

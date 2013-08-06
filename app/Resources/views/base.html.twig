@@ -27,13 +27,15 @@
             
             <div id="header">
               {% if app.user %}
-                <a href="{{ path('fos_user_security_logout', { 'id': app.user.id }) }}" class="pageLinkTop" title="logged in as {{ app.user.username }}">Logout</a>
+                <a href="{{ path('fos_user_security_logout', { 'id': app.user.id }) }}" class="pageLinkTop" title="Logged in as {{ app.user.username }}">Logout</a>
+                <span> | </span>
 
                 <div id="navigation" class="ui-widget">
                   <div>Settings</div>
                   <ul id="menu" class="ui-corner-all" style="display: none;">
                     {% set navigation = {
-                    'Samples': {'PapyrillioPapPalBundle_ThumbnailList': {'title': 'View Samples', 'parameters': {}}},
+                    'Samples': {'PapyrillioPapPalBundle_ThumbnailList': {'title': 'View Samples', 'parameters': {}},
+                                'PapyrillioPapPalBundle_SampleAdminCreate': {'title': 'Create new Sample', 'parameters': {}}},
 
                     'User':    {'fos_user_change_password': {'title': 'Change Password', 'parameters': {}}, 
                                  'fos_user_profile_edit': {'title': 'Edit Profile', 'parameters': {}}}

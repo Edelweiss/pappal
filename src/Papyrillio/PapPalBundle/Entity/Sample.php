@@ -212,7 +212,9 @@ class Sample
     public function getImageLinks(){
       return explode(', ', $this->digitalImages);
     }
-    
+    /*
+     * return Array [FILENAME] => [RELATIVE FILEPATH], e.g. array(1) { ["X-1406_0.jpg"]=> string(28) "sample/22/21346/X-1406_0.jpg" }  
+     * */
     public function getUploadedImages(){
       $imageLinks = array();
       $imageDirectory = __DIR__ . '/../../../../web/sample/' . $this->folder . '/' . $this->hgv;
