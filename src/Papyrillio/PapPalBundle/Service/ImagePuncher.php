@@ -31,7 +31,8 @@ class ImagePuncher{
     $this->targetDirectory = $targetDirectory;
     $this->prefix = $prefix;
     $this->suffix = $suffix && $suffix != 'grc' ? $suffix : '';
-    
+    $this->cropCounter = 0;
+
     if(!isset(self::$IMAGE_COUNTER[$prefix])){
       self::$IMAGE_COUNTER[$prefix] = 0;
     }

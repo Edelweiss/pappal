@@ -1235,6 +1235,7 @@ echo $url . "\n";
       throw new Exception('ImageCrawler::saveImages> images could not be loaded ' . implode(', ', $errorImages) . ' (' . $this->url . ')');
     } else {
       ImageUntiffer::untiffDirectory($path);
+      ImageUntiffer::ungifDirectory($path);
     }
   }
 }

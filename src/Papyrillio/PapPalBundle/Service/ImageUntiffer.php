@@ -29,6 +29,32 @@ class ImageUntiffer{
       unlink($tiffFile);
     }
   }
+
+  public static function ungifDirectory($directory){
+    foreach(scandir($directory) as $file){
+      if(preg_match('/^[^\.]/', $file)){
+        $fullpath = $directory . '/' . $file;
+        if(is_dir($fullpath)){
+          self::ungifDirectory($fullpath);
+        } else if(is_file($fullpath) && preg_match('/\.gif?$/', $fullpath)){
+          self::ungifFile($fullpath);
+        }
+      }
+    }
+  }
+
+  public static function ungifFile($gifFile){
+    $jpgFile = preg_replace('/\.gif$/', '.jpg', $gifFile);
+    if(!file_exists($jpgFile)){
+
+      $command = '/opt/local/bin/convert ' . $gifFile . ' ' . $jpgFile;
+      $output  = array();
+      $return  = 0;
+      $execReturn = exec($command, $output, $return);
+
+      unlink($gifFile);
+    }
+  }
 }
 
 ?>
