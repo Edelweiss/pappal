@@ -2,6 +2,8 @@
 
 namespace Papyrillio\PapPalBundle\Service;
 
+use Exception;
+
 class ImagePeer{
   const DIRECTION_CLOCKWISE        = -90;
   const DIRECTION_COUNTERCLOCKWISE = 90;

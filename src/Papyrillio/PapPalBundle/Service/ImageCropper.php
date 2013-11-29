@@ -2,6 +2,8 @@
 
 namespace Papyrillio\PapPalBundle\Service;
 
+use Exception;
+
 class ImageCropper extends ImagePeer{
   public $imageCounter = 0;
   public $cropCounter = 0;

@@ -2,6 +2,8 @@
 
 namespace Papyrillio\PapPalBundle\Service;
 
+use Exception;
+
 class ImageCrawler{
   public $images        = array();
   public $type          = null;
@@ -40,7 +42,7 @@ class ImageCrawler{
     'dpg'      => 'dpg.lib.berkeley.edu',
     'ville'    => 'ville-ge.ch',
     'rmn'      => 'photo.rmn.fr',
-    'trier'    => 'http://digipap.uni-trier.de',
+    'trier'    => 'digipap.uni-trier.de',
     'librit'   => 'librit.unibo.it',
     'nbno'     => 'nb.no',
     'oxy'      => '163.1.169.40/cgi-bin/library',
@@ -51,8 +53,8 @@ class ImageCrawler{
     'yale'     => 'beinecke.library.yale.edu',
     'bulow'    => 'igl.ku.dk',
     'misha'    => 'www.misha.fr',
-    'ifao'     => 'www.ifao.egnet.net'
-
+    'ifao'     => 'www.ifao.egnet.net',
+    'psio'     => 'psi-online.it'
   );
 
   public static $TYPE_MODE_URL = array('petri', 'trier', 'bulow', 'lib', 'ville');
@@ -398,6 +400,27 @@ class ImageCrawler{
         $url = $this->generateUrl($match[1]);
         $name =  $match[2];
         $description = "Institut français d’archéologie orientale - Le Caire";
+        $this->addImage(new Image($url, $name, $description));
+      }
+    } else {
+      throw new Exception('no images could be parsed from url ' . $this->url . ' for type ' .  $this->type);
+    }
+  }
+
+  // PSIonline - Papiri della societa italiana
+  // http://www.psi-online.it/documents/download?filen=PSI%20I%20111.jpg
+  // http://www.psi-online.it/images/orig/PSI%20I%20111.jpg?1184955400
+  // http://www.psi-online.it/images/orig/PSI I 111.jpg?1184955400
+  // http://www.psi-online.it/images/orig/PSI%20I%20111.jpg
+  // <a title="PSI I 111.jpg" name="/documents/download?filen=PSI I 111.jpg" class="group1 cboxElement" href="/images/orig/PSI I 111.jpg?1184955400"><img border="0" src="/images/thumbs/PSI I 111.jpg?1333294386" alt="PSI I 111.jpg"></a>
+  protected function getImagesPsio($html){
+    file_put_contents('TT', $html);
+    $index = 0;
+    if($matches = RegExp::searchAll($html, '<a [^>]*href="(/images/orig/(PSI [IVXLCDM]+ \d+\.jpg))\?\d+"')){
+      foreach($matches as $match){
+        $url = $this->generateUrl(str_replace(' ', '%20', $match[1]));
+        $name =   $match[2];
+        $description = 'PSIonline - Papiri della societa italiana';
         $this->addImage(new Image($url, $name, $description));
       }
     } else {

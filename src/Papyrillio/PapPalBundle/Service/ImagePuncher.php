@@ -2,6 +2,8 @@
 
 namespace Papyrillio\PapPalBundle\Service;
 
+use Exception;
+
 class ImagePuncher{
   public $path     = null; // raw/HGV_1000/HGV_ID
   public $file     = null; // filename of image, e.g. POxy.v0042.n3047.a.01.hires.jpg
