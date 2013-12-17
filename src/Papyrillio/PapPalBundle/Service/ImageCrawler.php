@@ -416,7 +416,7 @@ class ImageCrawler{
   protected function getImagesPsio($html){
     file_put_contents('TT', $html);
     $index = 0;
-    if($matches = RegExp::searchAll($html, '<a [^>]*href="(/images/orig/(PSI [IVXLCDM]+ \d+\.jpg))\?\d+"')){
+    if($matches = RegExp::searchAll($html, '<a [^>]*href="(/images/orig/(PSI [IVXLCDM]+ \d+[^\.]*\.jpg))\?\d+"')){
       foreach($matches as $match){
         $url = $this->generateUrl(str_replace(' ', '%20', $match[1]));
         $name =   $match[2];
