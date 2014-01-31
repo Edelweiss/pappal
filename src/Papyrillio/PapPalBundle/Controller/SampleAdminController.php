@@ -16,6 +16,7 @@ use DomDocument;
 use DOMXPath;
 use DOMNodeList;
 use PDOException;
+use Exception;
 
 class SampleAdminController extends PapPalController{
 
@@ -53,50 +54,62 @@ class SampleAdminController extends PapPalController{
           if($sample->getDigitalImages()){
             // 3. download images
             $crawler = $this->get('papyrillio_pap_pal.image_crawler');
-            try{
-              foreach($sample->getImageLinks() as $url){
-                $crawler->crawl($url, $sample->getDdb());
-              }
-              $hgvDirectory = $this->makeSureImageDirectoryExists($sample);
-              $crawler->saveImages($hgvDirectory);
-
-              // 4. determine language from meta data (greek by default)
-              $notes = $xpath->getNotes();
-              $language = 'grc';
-              if(preg_match('/^Griechisch(\.| ?-)/', $notes)){
-                $language = 'grc';
-              } elseif(preg_match('/^Lateinisch(\.| ?-)/', $notes)){
-                $language = 'lat';
-              }
-              
-              // 5. create thumbnails
-              $puncher = $this->get('papyrillio_pap_pal.image_puncher');
-              
-              $thumbnailDirectory = $this->makeSureThumbnailDirectoryExists($sample);
-              foreach($sample->getUploadedImages() as $fileName => $relativeFilePath){
-                $puncher->punch($hgvDirectory, $fileName, $thumbnailDirectory, $sample->getHgv(), $language != 'grc' ? $language : '');
-              }
-              $puncher->setRandomMasterSample();
-  
-              // 6. set master thumbnail
-              $thumbnail = new Thumbnail($language);
-              $thumbnail->setSample($sample);
-              
-              //$error = 'OK!';
-
-              // 7. insert into database
+			$crawlerError = '';
+			foreach($sample->getImageLinks() as $url){
               try{
-                $entityManager->persist($sample);
-                $entityManager->persist($thumbnail);
-                $entityManager->flush();
-                // success
-                $this->get('session')->setFlash('notice', 'Thumbnail for hgv #' . $hgv . ' was created.');
-                return new RedirectResponse($this->generateUrl('PapyrillioPapPalBundle_SampleShow', array('id' => $sample->getId())));
-              } catch (PDOException $e){
-                $error = 'Metadata for #' . $hgv . ' could not be saved: ' . $e->getMessage() . ' (http://www.papyri.info/hgv/' . $hgv . '/source).';
-              }              
-            } catch(Exception $e){
-              $error = 'Images for #' . $hgv . ' could not be downloaded: ' . $e->getMessage() . ' (http://www.papyri.info/hgv/' . $hgv . '/source).';
+               $crawler->crawl($url, $sample->getDdb());
+			  } catch (Exception $e) {
+			  	$crawlerError .= ($crawlerError !== '' ? ' / ' : '') . $e->getMessage();
+			  }
+            }
+			 
+            if(count($crawler->images) > 0){
+
+	            try{
+	              $hgvDirectory = $this->makeSureImageDirectoryExists($sample);
+	              $crawler->saveImages($hgvDirectory);
+	
+	              // 4. determine language from meta data (greek by default)
+	              $notes = $xpath->getNotes();
+	              $language = 'grc';
+	              if(preg_match('/^Griechisch(\.| ?-)/', $notes)){
+	                $language = 'grc';
+	              } elseif(preg_match('/^Lateinisch(\.| ?-)/', $notes)){
+	                $language = 'lat';
+	              }
+
+	              // 5. create thumbnails
+	              $puncher = $this->get('papyrillio_pap_pal.image_puncher');
+	              
+	              $thumbnailDirectory = $this->makeSureThumbnailDirectoryExists($sample);
+	              foreach($sample->getUploadedImages() as $fileName => $relativeFilePath){
+	                $puncher->punch($hgvDirectory, $fileName, $thumbnailDirectory, $sample->getHgv(), $language != 'grc' ? $language : '');
+	              }
+	              $puncher->setRandomMasterSample();
+	  
+	              // 6. set master thumbnail
+	              $thumbnail = new Thumbnail($language);
+	              $thumbnail->setSample($sample);
+	              
+	              //$error = 'OK!';
+	
+	              // 7. insert into database
+	              try{
+	                $entityManager->persist($sample);
+	                $entityManager->persist($thumbnail);
+	                $entityManager->flush();
+	                // success
+	                $this->get('session')->setFlash('notice', 'Thumbnail for hgv #' . $hgv . ' was created.');
+	                return new RedirectResponse($this->generateUrl('PapyrillioPapPalBundle_SampleShow', array('id' => $sample->getId())));
+	              } catch (PDOException $e){
+	                $error = 'Metadata for #' . $hgv . ' could not be saved: ' . $e->getMessage() . ' (http://www.papyri.info/hgv/' . $hgv . '/source).';
+	              }              
+	            } catch(Exception $e){
+	              $error = 'Images for #' . $hgv . ' could not be downloaded: ' . $e->getMessage() . ' (http://www.papyri.info/hgv/' . $hgv . '/source).';
+	            }
+
+            } else {
+              $error = 'No digital images could be crawled for hgv id #' . $hgv . ' (http://www.papyri.info/hgv/' . $hgv . '/source).' . ($crawlerError != '' ? ' → ' . $crawlerError : '');
             }
           } else {
             $error = 'No digital images available for hgv id #' . $hgv . ' (http://www.papyri.info/hgv/' . $hgv . '/source).';

@@ -357,7 +357,8 @@ class ImageCrawler{
       if(!in_array($url, self::$BROKEN_HGV_IMAGE_LINKS)){
         $this->$method(in_array($this->type, self::$TYPE_MODE_URL) ? $this->url : self::getHtml($this->url));
       } else {
-        Log::message('broken hgv image link (' . $url . ')');
+        //Log::message('broken hgv image link (' . $url . ')');
+		throw new Exception('broken hgv image link (' . $url . ')');
       }
     } else {
       throw new Exception('no type found for ' . $this->url);
@@ -385,7 +386,8 @@ class ImageCrawler{
         $this->addImage(new Image($url, $name, $description));
       }
     } else if($matches = RegExp::searchAll($html, 'Higher resolution images of this papyrus are available on <a [^>]*href="mailto:csad@classics.ox.ac.uk"><u>application</u></a>')){
-      Log::message('application for higher resolution required');
+      //Log::message('application for higher resolution required');
+	  throw new Exception('application for higher resolution required');
     } else {
       throw new Exception('no images could be parsed from url ' . $this->url . ' for type ' .  $this->type);
     }
@@ -521,7 +523,8 @@ class ImageCrawler{
         }
       }
     } else if ($key = array_search($this->url, self::$APIS_MISSING_IMAGE_LIST)) {
-      Log::Message('ImageCrawler::getImagesApis special case> '. $key . ' has no apis images (' . $this->url . ')');
+      //Log::Message('ImageCrawler::getImagesApis special case> '. $key . ' has no apis images (' . $this->url . ')');
+	  throw new Exception('ImageCrawler::getImagesApis special case> '. $key . ' has no apis images (' . $this->url . ')');
     } else {
       throw new Exception('no images could be parsed from url ' . $this->url . ' for type ' .  $this->type);
     }
@@ -593,7 +596,8 @@ class ImageCrawler{
         $this->addImage(new Image($url, $name, $description));
       }
     } else if ($key = array_search($this->url, self::$GRAZ_MISSING_IMAGE_LIST)) {
-      Log::Message('ImageCrawler::getImagesGraz special case> '. $key . ' has no graz images OR site not found (' . $this->url . ')');
+      //Log::Message('ImageCrawler::getImagesGraz special case> '. $key . ' has no graz images OR site not found (' . $this->url . ')');
+      throw new Exception('ImageCrawler::getImagesGraz special case> '. $key . ' has no graz images OR site not found (' . $this->url . ')');
     } else {
       throw new Exception('no images could be parsed from url ' . $this->url . ' for type ' .  $this->type);
     }
@@ -618,9 +622,11 @@ class ImageCrawler{
   // javascript/jsp application with frames and several hops to get the picture
   protected function getImagesOnb($html){
     if(in_array($this->url, self::$ONB_MISSING_IMAGE_LIST)){
-      Log::Message('ImageCrawler::getImagesOnb> special case: no image available (' . $this->url . ')');
+      //Log::Message('ImageCrawler::getImagesOnb> special case: no image available (' . $this->url . ')');
+      throw new Exception('ImageCrawler::getImagesOnb> special case: no image available (' . $this->url . ')');
     } else {
-      Log::Message('ImageCrawler::getImagesOnb> not implemented yet');
+      //Log::Message('ImageCrawler::getImagesOnb> not implemented yet');
+	  throw new Exception('ImageCrawler::getImagesOnb> not implemented yet');
     }
   }
 
@@ -694,21 +700,24 @@ class ImageCrawler{
   // http://www.hum.ku.dk/cni/papcoll/pc51.jpg
   // broken hgv links
   protected function getImagesHum($html){
-    Log::Message('ImageCrawler::getImagesHum> cannot be implemented (broken hgv links)');
+    //Log::Message('ImageCrawler::getImagesHum> cannot be implemented (broken hgv links)');
+	throw new Exception('ImageCrawler::getImagesHum> cannot be implemented (broken hgv links)');
   }
 
   // L'Institut de Papyrologie de la Sorbonne, Université de Paris IV (#27)
   // http://www.hum.ku.dk/cni/papcoll/pc51.jpg
   // there are only 3 distinct links, none of them works
   protected function getImagesSorbonne($html){
-    Log::Message('ImageCrawler::getImagesSorbonne> cannot be implemented (there are only 3 distinct links, none of them works)');
+    //Log::Message('ImageCrawler::getImagesSorbonne> cannot be implemented (there are only 3 distinct links, none of them works)');
+	throw new Exception('ImageCrawler::getImagesSorbonne> cannot be implemented (there are only 3 distinct links, none of them works)');
   }
 
   // Leipzig (#1)
   // http://pcclu07.rz.uni-leipzig.de:8491/servlets/MCRQueryServlet?mode=ObjectMetadata&status=2&type=schrift&layout=simple&hosts=local&lang=de&query=/mycoreobject[@ID=%27IAwJPapyri_schrift_00008840%27]
   // site cannot be called up, image link seems to be broken
   protected function getImagesLeip($html){
-    Log::Message('ImageCrawler::getImagesLeip> cannot be implemented (broken hgv links)');
+    //Log::Message('ImageCrawler::getImagesLeip> cannot be implemented (broken hgv links)');
+	throw new Exception('ImageCrawler::getImagesLeip> cannot be implemented (broken hgv links)');
   }
 
   // Department of Papyrology, University of Warsaw (#26)
@@ -731,7 +740,8 @@ class ImageCrawler{
   // http://enriqueta.man.ac.uk:8081/BrowserInsight/BrowserInsight?cmd=start&un=uman&pw=est1824=&cid=ManchesterDev-93-NA&iia=0&ig=Rylands%20Papyri&isl=0&gwisp=0%7CReference_number%7CReference%20number%7C1%7CGreek%20Papyrus%20589:%20Fragment%204%7C1&gwia=3&gc=0&ir=100286&id=22523&iwas=2
   // problem: Przepraszamy, brak wpisów spełniających podane kryteria. (Sorry, no posts matched your criteria.)
   protected function getImagesEnri($html){
-    Log::Message('ImageCrawler::getImagesEnri> cannot be implemented (and never gonna be? obsolete links: Przepraszamy, brak wpisów spełniających podane kryteria.)');
+    //Log::Message('ImageCrawler::getImagesEnri> cannot be implemented (and never gonna be? obsolete links: Przepraszamy, brak wpisów spełniających podane kryteria.)');
+	throw new Exception('ImageCrawler::getImagesEnri> cannot be implemented (and never gonna be? obsolete links: Przepraszamy, brak wpisów spełniających podane kryteria.)');
   }
 
   // APIS BERKELEY DATABASE (#4)
@@ -845,21 +855,24 @@ class ImageCrawler{
   // http://www.librit.unibo.it/servlet/ParseHtml/page/frames/index.html?idimmagine=&idoggetto=84
   // connection time out
   protected function getImagesLibrit($html){
-    Log::Message('ImageCrawler::getImagesLibrit> broken links, connection timeout');
+    //Log::Message('ImageCrawler::getImagesLibrit> broken links, connection timeout');
+	throw new Exception('ImageCrawler::getImagesLibrit> broken links, connection timeout');
   }
 
   // Nasjonalbiblioteket (#2)
   // http://www.nb.no/baser/schoyen/4/4.4/45.html#140
   // connection time out
   protected function getImagesNbno($html){
-    Log::Message('ImageCrawler::getImagesNbno> broken links');
+    //Log::Message('ImageCrawler::getImagesNbno> broken links');
+	throw new Exception('ImageCrawler::getImagesNbno> broken links');
   }
 
   // University College London (#1)
   // http://www.ucl.ac.uk/GrandLat/hawara/papydata/phaw_244.htm
   // link is broken
   protected function getImagesUcl($html){
-    Log::Message('ImageCrawler::getImagesUcl> broken links');
+    //Log::Message('ImageCrawler::getImagesUcl> broken links');
+	throw new Exception('ImageCrawler::getImagesUcl> broken links');
   }
 
   // Biblioteca Medicea Laurenziana (#4)
@@ -923,7 +936,8 @@ class ImageCrawler{
         throw new Exception('no images could be parsed from url ' . $this->url . ' for type ' .  $this->type);
       }
     } else {
-      Log::message('application needed for ' . $this->url . ' (type ' . $this->type . ')');
+      //Log::message('application needed for ' . $this->url . ' (type ' . $this->type . ')');
+	  throw new Exception('application needed for ' . $this->url . ' (type ' . $this->type . ')');
     }
   }
 
@@ -1054,11 +1068,6 @@ class ImageCrawler{
       $url = 'http://petriecat.museums.ucl.ac.uk/wwwopac/wwwopac.exe?thumbnail=../object_images/full/65/' . strtolower($match[1]) . '.jpg&outputtype=image/jpeg&xsize=800&dontkeepaspectratio=0&fullimage=1';
       // used to work with »64« instead of »65« here ------------------------------------------------^
       // sometimes »shot1« needs to attached to the image name ----------------------------------------------------------------------^
-
-echo '..................' . "\n";
-echo $match[1] . "\n";
-echo $match[2] . "\n";
-echo $url . "\n";
       
       $name =  $match[1] . '.jpg';
       $description = 'UCL MUSEUMS & COLLECTIONS PETRIE MUSEUM CATALOGUE';
@@ -1229,7 +1238,8 @@ echo $url . "\n";
     $html    = file_get_contents($url, false, $context);
 
     if($html === FALSE){
-      Log::message('ImageCrawler::getHtml> url could not be loaded ' . $url . ' (referring website: ' . $url . ')');
+      //Log::message('ImageCrawler::getHtml> url could not be loaded ' . $url . ' (referring website: ' . $url . ')');
+      throw new Exception('ImageCrawler::getHtml> url could not be loaded ' . $url . ' (referring website: ' . $url . ')');
     }
     return str_replace(array("\n", "\r"), '', $html);
   }
