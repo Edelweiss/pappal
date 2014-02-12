@@ -369,7 +369,7 @@ class ImageCrawler{
     return $this->urlProtocol . $this->urlHost . $this->urlPath . $this->urlParameters . ' (' . $this->type . ')' . "\n" . (count($this->images) ? (implode("\n", $this->images)) : 'no images');
   }
 
-  protected function addImage(Image $image){
+  public function addImage(Image $image){
     $this->images[] = $image;
   }
   

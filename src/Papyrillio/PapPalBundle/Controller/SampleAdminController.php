@@ -10,6 +10,7 @@ use Papyrillio\PapPalBundle\Entity\Thumbnail;
 use Papyrillio\PapPalBundle\Entity\Commet;
 use Papyrillio\UserBundle\Entity\User;
 use Papyrillio\PapPalBundle\Service\ImagePeer;
+use Papyrillio\PapPalBundle\Service\Image;
 use DateTime;
 use Date;
 use DomDocument;
@@ -22,11 +23,14 @@ class SampleAdminController extends PapPalController{
 
   public function createAction(){
     $error = null;
+	$createForm = $this->getCreateForm();
+
     // PHP Version 5.3.15
-    if($this->get('request')->getMethod() == 'POST'){
+    if($this->get('request')->getMethod() == 'POST' && $createForm->isValid()){
+		
       $entityManager = $this->getDoctrine()->getEntityManager();
       $repository = $entityManager->getRepository('PapyrillioPapPalBundle:Sample');
-      $hgv = trim($this->getParameter('hgv'));
+      $hgv = trim($createForm->get('hgv')->getData());
 
       if($sample = $repository->findOneBy(array('hgv' => $hgv))){ // ERROR! sample already exists
         $this->get('session')->setFlash('notice', 'Sample data for hgv id #' . $hgv . ' already exists.');
@@ -37,7 +41,7 @@ class SampleAdminController extends PapPalController{
       if(($xml = @file_get_contents('http://www.papyri.info/hgv/' . $hgv . '/source')) !== FALSE){
 
         // 2. parse XML, set meta data
-        if($xpath =  new EpiDocPath($xml)){
+        if($xpath = new EpiDocPath($xml)){
           $sample = new Sample();
           $sample->setHgv($hgv);
           $sample->setDdb($xpath->getDdb());
@@ -62,14 +66,23 @@ class SampleAdminController extends PapPalController{
 			  	$crawlerError .= ($crawlerError !== '' ? ' / ' : '') . $e->getMessage();
 			  }
             }
-			 
+
+			// 4. add upload image to the crawler
+            $files = $this->get('request')->files->get($createForm->getName());
+            $uploadedFile = $files['image'];
+			if($uploadedFile && $uploadedFile->getMimeType() === 'image/jpeg'){
+				$uploadedFile->move($uploadedFile->getPath(), $uploadedFile->getFilename() . '.jpg');
+				$image = new Image($uploadedFile->getPath() . '/' . $uploadedFile->getFilename() . '.jpg', preg_replace('/\.[^\.]+$/', '', $uploadedFile->getClientOriginalName()) . '.jpg', 'Upload');
+				$crawler->addImage($image);
+			}
+
             if(count($crawler->images) > 0){
 
 	            try{
 	              $hgvDirectory = $this->makeSureImageDirectoryExists($sample);
 	              $crawler->saveImages($hgvDirectory);
 	
-	              // 4. determine language from meta data (greek by default)
+	              // 5. determine language from meta data (greek by default)
 	              $notes = $xpath->getNotes();
 	              $language = 'grc';
 	              if(preg_match('/^Griechisch(\.| ?-)/', $notes)){
@@ -78,7 +91,7 @@ class SampleAdminController extends PapPalController{
 	                $language = 'lat';
 	              }
 
-	              // 5. create thumbnails
+	              // 6. create thumbnails
 	              $puncher = $this->get('papyrillio_pap_pal.image_puncher');
 	              
 	              $thumbnailDirectory = $this->makeSureThumbnailDirectoryExists($sample);
@@ -87,13 +100,13 @@ class SampleAdminController extends PapPalController{
 	              }
 	              $puncher->setRandomMasterSample();
 	  
-	              // 6. set master thumbnail
+	              // 7. set master thumbnail
 	              $thumbnail = new Thumbnail($language);
 	              $thumbnail->setSample($sample);
 	              
 	              //$error = 'OK!';
 	
-	              // 7. insert into database
+	              // 8. insert into database
 	              try{
 	                $entityManager->persist($sample);
 	                $entityManager->persist($thumbnail);
@@ -122,8 +135,22 @@ class SampleAdminController extends PapPalController{
       }      
     }
     
-    return $this->render('PapyrillioPapPalBundle:SampleAdmin:create.html.twig', array('error' => $error));
+    return $this->render('PapyrillioPapPalBundle:SampleAdmin:create.html.twig', array('error' => $error, 'createForm' => $createForm->createView()));
 
+  }
+
+  protected function getCreateForm(){
+    $form = $this->get('form.factory')
+     ->createBuilder('form')
+	 ->add('hgv','text', array('required' => true))
+     ->add('image','file', array('required' => false))
+     ->getForm();
+
+    if($this->get('request')->getMethod() == 'POST'){
+      $form->bindRequest($this->get('request'));
+    }
+
+    return $form;
   }
 }
 

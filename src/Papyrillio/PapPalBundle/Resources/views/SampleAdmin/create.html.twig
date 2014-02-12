@@ -12,10 +12,15 @@
   <div class="clear"></div><br /><br />
 {% endif %}
 
-<form action="" method="post">
-  <label>HGV</label>
-  <input type="text" name="hgv" />
-  <input type="submit" value="create" />
+<form action="" method="post" {{ form_enctype(createForm) }}>
+  {{ form_label(createForm.hgv, 'HGV') }}
+  {{ form_widget(createForm.hgv) }}
+  {{ form_errors(createForm.hgv) }}
+  {{ form_label(createForm.image, 'Upload image (optional, only necessary if HGV record doesn\'t contain link to online ressource or if online archive cannot be harvested like ONB)') }}
+  {{ form_widget(createForm.image) }}
+  {{ form_errors(createForm.image) }}
+  {{ form_widget(createForm) }}
+  <input type="submit" class="submit" id="form_submit" value="Create" />
 </form>
 
 {% endblock %}
