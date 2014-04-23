@@ -215,7 +215,8 @@ class ThumbnailController extends PapPalController{
       'templateOptions' => $templateOptions,
       'sort' => $sort,
       'sortOptions' => $sortOptions,
-      'sortDirections' => $sortDirections
+      'sortDirections' => $sortDirections,
+      'memo' => $this->getMemo()
     );
 
     return $this->render('PapyrillioPapPalBundle:Thumbnail:' . $template . '.html.twig', $templateVariables);

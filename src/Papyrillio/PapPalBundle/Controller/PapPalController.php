@@ -17,6 +17,13 @@ class PapPalController extends Controller{
     return $get;
   }
 
+  protected function getMemo(){
+    if($this->getRequest()->getSession()->get('memo')){
+      return $this->getRequest()->getSession()->get('memo'); // retrieve from session
+    }
+    return array();
+  }
+
   protected function getSample($id){
     $entityManager = $this->getDoctrine()->getEntityManager();
     $repository = $entityManager->getRepository('PapyrillioPapPalBundle:Sample');

@@ -1,0 +1,26 @@
+{% extends '::base.html.twig' %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('css/memo.css') }}" type="text/css" rel="stylesheet" />
+{% endblock %}
+
+{% block body %}
+
+  {% if sampleList is empty %}
+    There are currently no thumbnails selected. Please search for thumbnails and mark those that you would like to compare by hitting the star symbol underneath the picture. Bla, bla, ...
+  {% endif %}
+  
+  {% for sample in sampleList %}
+    {{ sample }}
+  {% endfor %}
+
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+
+  <script type="text/javascript">
+    $(document).ready(function(){
+    });
+  </script>
+{% endblock %}

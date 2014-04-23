@@ -10,6 +10,20 @@ PapyrillioPapPalBundle_hgvChanges:
     requirements:
         jourFixe:  \d{4}-\d{2}-\d{2}
 
+# Memo
+
+PapyrillioPapPalBundle_Memo:
+    pattern:  /memo
+    defaults: { _controller: PapyrillioPapPalBundle:Memo:default }
+
+PapyrillioPapPalBundle_MemoAdd:
+    pattern:  /memo/add/{id}
+    defaults: { _controller: PapyrillioPapPalBundle:Memo:add }
+
+PapyrillioPapPalBundle_MemoRemove:
+    pattern:  /memo/remove/{id}
+    defaults: { _controller: PapyrillioPapPalBundle:Memo:remove }
+
 # Thumbnail
 
 PapyrillioPapPalBundle_ThumbnailList:
