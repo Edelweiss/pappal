@@ -109,6 +109,11 @@ h3 span {
   font-size: 75%;
 }
 
+.clear{
+  clear: both;
+  float: none;
+}
+
 .highlight {
   color: #990102;
   line-height: 2em;
@@ -430,6 +435,28 @@ form#search label.ddb{
 form#search input#reset,
 form#search input#submit {
   float: right;
+}
+
+/* MEMO FUNCTION */
+
+span.memo, span.memoActive {
+  background-color: grey;
+  padding: 0 4px 0 4px;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  cursor: hand;
+}
+
+span.memoActive {
+  background-color: lightgreen;
+}
+
+div.memoItem {
+   width: 300px;
+   height: 300px;
+   padding: 0;
+   float: left;
 }
 
 /* FOSUSer */

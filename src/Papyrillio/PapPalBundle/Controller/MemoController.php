@@ -15,7 +15,34 @@ use Date;
 
 class MemoController extends PapPalController{
   public function defaultAction(){
-    return $this->render('PapyrillioPapPalBundle:Memo:default.html.twig', array('sampleList' => $this->getMemo()));
+    $thumbnailList = array();
+    if(count($this->getMemo())){
+      $where = ' WHERE s.status = ?0 AND ';
+      $parameters = array(0 => 'ok');
+      $index = 1;
+      foreach ($this->getMemo() as $thumbnailId) {
+        $where .= ' t.id = ?' . $index . ' OR';
+        $parameters[$index++] = $thumbnailId;
+        
+      }
+      $where = rtrim($where, ' OR') . '';
+      var_dump($where);
+      var_dump($parameters);
+      
+      $entityManager = $this->getDoctrine()->getEntityManager();
+      $repository = $entityManager->getRepository('PapyrillioPapPalBundle:Thumbnail');
+      
+      $query = $entityManager->createQuery('
+        SELECT t, s FROM PapyrillioPapPalBundle:Thumbnail t JOIN t.sample s' . $where
+      )->setParameters($parameters);
+      
+      $thumbnailList = $query->getResult();
+    }
+ 
+
+    
+
+    return $this->render('PapyrillioPapPalBundle:Memo:default.html.twig', array('thumbnailList' => $thumbnailList));
   }
   
   public function addAction($id){
@@ -34,6 +61,11 @@ class MemoController extends PapPalController{
     }
     $this->setMemo($memo);
     return new Response(json_encode(array('success' => true, 'data' => array('id' => $id, 'memo' => $memo))));
+  }
+
+  public function clearAction(){
+    $this->setMemo(array());
+    return new RedirectResponse($this->generateUrl('PapyrillioPapPalBundle_Memo'));
   }
 
   protected function setMemo($memo){

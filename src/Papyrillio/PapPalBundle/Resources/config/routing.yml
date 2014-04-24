@@ -19,10 +19,16 @@ PapyrillioPapPalBundle_Memo:
 PapyrillioPapPalBundle_MemoAdd:
     pattern:  /memo/add/{id}
     defaults: { _controller: PapyrillioPapPalBundle:Memo:add }
+    requirements:
+        id:  \d+
 
 PapyrillioPapPalBundle_MemoRemove:
     pattern:  /memo/remove/{id}
     defaults: { _controller: PapyrillioPapPalBundle:Memo:remove }
+
+PapyrillioPapPalBundle_MemoClear:
+    pattern:  /memo/clear
+    defaults: { _controller: PapyrillioPapPalBundle:Memo:clear }
 
 # Thumbnail
 
