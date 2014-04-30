@@ -459,6 +459,8 @@ div.memoItem {
    height: 300px;
    padding: 0;
    float: left;
+   border: none;
+   margin: 0.1em;
 }
 
 div.memoItem .remove {
@@ -466,6 +468,7 @@ div.memoItem .remove {
    top: 0;
    right: 0;
    background-color: #690102;
+   color: #ffffff;
    padding: 0.2em 0.4em 0.2em 0.4em;
    cursor: pointer;
    cursor: hand;

@@ -26,8 +26,6 @@ class MemoController extends PapPalController{
         
       }
       $where = rtrim($where, ' OR') . '';
-      var_dump($where);
-      var_dump($parameters);
       
       $entityManager = $this->getDoctrine()->getEntityManager();
       $repository = $entityManager->getRepository('PapyrillioPapPalBundle:Thumbnail');
