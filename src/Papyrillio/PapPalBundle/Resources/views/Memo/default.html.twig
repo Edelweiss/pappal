@@ -13,6 +13,7 @@
     {% for thumbnail in thumbnailList %}
       <div class="ui-widget-content memoItem magnify">
         <div class="large"></div>
+        <div class="remove" title="remove item from memo board" data="{{ thumbnail.id }}">remove</div>
         <a href="{{ path('PapyrillioPapPalBundle_SampleShow', {id: thumbnail.sample.id}) }}"><img class="small" src="{{ asset('thumbnail/' ~ thumbnail.file) }}" title="&lt;span class=&quot;keyword greek&quot;&gt;{{ thumbnail.sample.title != 'keiner' ? thumbnail.sample.title : '...' }}&lt;/span&gt; &lt;br/&gt; {{ thumbnail.sample.dateHgvFormat }} &lt;br/&gt; {{ thumbnail.sample.provenance }} &lt;br/&gt; {{ thumbnail.sample.material }}, {{ thumbnail.language | iso }}, &lt;span class=&quot;greek&quot;&gt;{{ thumbnail.sample.keywords }}&lt;/span&gt; &lt;br/&gt; DDbDP {{ thumbnail.sample.ddb }} / HGV/TM {{ thumbnail.sample.hgv }}" /></a>
       </div>
     {% endfor %}

@@ -8,18 +8,25 @@ $(document).ready(function(){
       }
   });
 
-  $('img[title]').tipTip({keepAlive: false});
-  
-/*  $('div.memoItem > a > img').each(function(){
-    
-    $(this).load(function(){
-      $(this).mlens( {
-        "imgSrc": $(this).attr('src'),
-        "lensSize": 120,
-        "lensShape": "circle"
-      });
+  $('div.memoItem').mouseenter(function(){
+    $(this).find('.remove').show();
+  });
+
+  $('div.memoItem').mouseleave(function(){
+    $(this).find('.remove').hide();
+  });
+
+  $('div.memoItem div.remove').click(function(){
+    var item = $(this).parent();
+    var id = $(this).attr('data');
+    var url = window.location.href + '/remove/' +  id;
+    $.getJSON(url, {}, function(data, status, jqXHR){
+      if(status == 'success' && data.success == true){
+        item.remove();
+      }
     });
-    
-  });*/
+  });
+
+  $('img[title]').tipTip({keepAlive: false});
 
 });
