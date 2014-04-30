@@ -437,7 +437,7 @@ form#search input#submit {
   float: right;
 }
 
-/* MEMO FUNCTION */
+/* MEMO FUNCTION - THUMBNAIL LIST */
 
 span.memo, span.memoActive {
   background-color: grey;
@@ -452,6 +452,8 @@ span.memoActive {
   background-color: lightgreen;
 }
 
+/* MEMO FUNCTION - MEMO BOARD */
+
 div.memoItem {
    width: 300px;
    height: 300px;
@@ -459,21 +461,15 @@ div.memoItem {
    float: left;
 }
 
-div.memoItem div.remove {
+div.memoItem .remove {
    position: absolute;
    top: 0;
    right: 0;
-}
-
-div.memoItem div.remove {
-   position: absolute;
    background-color: #690102;
    padding: 0.2em 0.4em 0.2em 0.4em;
-   top: 0;
-   right: 0;
-   display: none;
    cursor: pointer;
    cursor: hand;
+   display: none;
 }
 
 /* FOSUSer */

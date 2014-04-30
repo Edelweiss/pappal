@@ -16,7 +16,7 @@ $(document).ready(function(){
     $(this).find('.remove').hide();
   });
 
-  $('div.memoItem div.remove').click(function(){
+  $('div.memoItem .remove').click(function(){
     var item = $(this).parent();
     var id = $(this).attr('data');
     var url = window.location.href + '/remove/' +  id;
