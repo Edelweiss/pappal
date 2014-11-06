@@ -55,16 +55,17 @@ class SampleAdminController extends PapPalController{
           $sample->setDigitalImages($xpath->getDigitalImages());
           $sample->setProvenance($xpath->getProvenance());
 
-          if($sample->getDigitalImages()){
+          if($sample->getDigitalImages() or $this->get('request')->files){
+
             // 3. download images
             $crawler = $this->get('papyrillio_pap_pal.image_crawler');
-			$crawlerError = '';
-			foreach($sample->getImageLinks() as $url){
+			      $crawlerError = '';
+			      foreach($sample->getImageLinks() as $url){
               try{
-               $crawler->crawl($url, $sample->getDdb());
-			  } catch (Exception $e) {
-			  	$crawlerError .= ($crawlerError !== '' ? ' / ' : '') . $e->getMessage();
-			  }
+                $crawler->crawl($url, $sample->getDdb());
+			        } catch (Exception $e) {
+			  	      $crawlerError .= ($crawlerError !== '' ? ' / ' : '') . $e->getMessage();
+			        }
             }
 
 			// 4. add upload image to the crawler

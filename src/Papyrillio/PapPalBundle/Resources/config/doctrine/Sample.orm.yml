@@ -66,6 +66,7 @@ Papyrillio\PapPalBundle\Entity\Sample:
           type: text
         digitalImages:
           type: text
+          nullable: true
         provenance:
           type: text
 
