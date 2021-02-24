@@ -1,0 +1,137 @@
+/*<group=hacks>*/
+
+.floating {
+  float: left;
+}
+
+.clearfix {
+	display: inline-table;
+}
+
+.clearfix:after {
+	content: ".";
+	display: block;
+	height: 0;
+	clear: both;
+	visibility: hidden;
+}
+
+/* Hides from IE-mac \*/
+
+* html .clearfix {
+	height: 1%;
+}
+
+.clearfix {
+	display: block;
+}
+
+#slider,
+#texts,
+#count {
+  /*width: 780px;*/
+  /*border: 1px solid #0f0;*/
+  margin: 0 auto;
+  background-color: #222222;
+  border: 1px solid #555555;
+  padding: 1em;
+  text-align: center;
+}
+
+#count {
+  border-bottom: none;
+  height: 30px;
+  vertical-align: middle;
+  position: relative;
+}
+
+#texts {
+  border-top: none;
+}
+
+#slider > div[1]{
+  width: auto;
+  height: 10em;
+  margin: 0 auto;
+  text-align: center;
+  background: green;
+}
+
+#slider ul {
+	list-style-type: none;
+	width: 940px; /* 640 */
+	height: 348px;
+	overflow: hidden; /* cl */
+	/*border: 1px solid #00f;*/
+}
+
+#slider ul li {
+	float: left;
+	/*border: 1px solid #f00;
+	width: 320px;
+	height: 480px;*/
+	text-align: center;
+	margin: 0 6px;
+	padding-top: 6px;
+	display: none;
+	width: 0;
+	height: 0;
+}
+
+#slider ul li span,
+#slider ul li a {
+	display: block;
+	height: auto;
+	color: white;
+	text-decoration: none;
+}
+
+#slider ul li img {
+	display: block;
+}
+
+/*303030*/
+
+#butleft, #butright {
+  padding: 0px;
+  margin: 0;
+  cursor: hand;
+  cursor: pointer;
+  width: 32px;
+}
+
+#count img#butleft {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+}
+
+#count img#butright {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+}
+
+.text {
+	overflow: auto;
+	text-align: center;
+	display: none;
+	font-size: 10pt;
+}
+
+.text span {
+  font-size: 12pt;
+  font-weight: bold;
+}
+
+#slider ul li span.imtitle{
+  height: 70px;
+  overflow: hidden;
+  display: block;
+}
+
+div#slider a {
+  background: none;
+  padding: 0;
+  color: red;
+}

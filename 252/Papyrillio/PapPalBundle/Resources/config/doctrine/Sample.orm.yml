@@ -1,0 +1,90 @@
+Papyrillio\PapPalBundle\Entity\Sample:
+    type: entity
+    table: sample
+    id:
+        id:
+            type: integer
+            generator:
+                strategy: AUTO
+    fields:
+
+        # ids
+
+        tm:
+            type: integer
+        folder:
+            type: integer
+        hgv:
+            type: string
+            length: 64
+        ddb:
+            type: string
+            length: 64
+        collection:
+            type: string
+            length: 64
+        volume:
+            type: string
+            length: 64
+        document:
+            type: string
+            length: 64
+
+        # meta data
+
+        dateWhen:
+          type: string
+          length: 11
+          nullable: true
+        dateNotBefore:
+          type: string
+          length: 11
+          nullable: true
+        dateNotAfter:
+          type: string
+          length: 11
+          nullable: true
+        dateHgvFormat:
+          type: text
+        century:
+          type: integer
+          nullable: true
+        year:
+          type: integer
+          nullable: true
+        month:
+          type: integer
+          nullable: true
+        day:
+          type: integer
+          nullable: true
+        title:
+          type: text
+        material:
+          type: text
+        keywords:
+          type: text
+        digitalImages:
+          type: text
+          nullable: true
+        provenance:
+          type: text
+
+        # operational data
+
+        dateSort: # golden ratio of dateWhen, dateNotBefore, dateNotAfter: -YYYY-MM-DD
+          type: integer
+        status: # tells whether sample is ready to use
+            type: string
+            length: 64
+        importDate:
+          type: datetime
+
+    oneToMany:
+        comments:
+            targetEntity: Comment
+            mappedBy: sample
+        thumbnails:
+            targetEntity: Thumbnail
+            mappedBy: sample
+    # don't forget to init the collection in entity __construct() method

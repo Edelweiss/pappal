@@ -1,0 +1,23 @@
+Papyrillio\PapPalBundle\Entity\Thumbnail:
+    type: entity
+    table: thumbnail
+    id:
+        id:
+            type: integer
+            generator:
+                strategy: AUTO
+    fields:
+        language:
+            type: text
+        file:
+            type: text
+
+    manyToOne:
+        sample:
+            targetEntity: Sample
+            inversedBy: thumbnails
+            joinColumn:
+                name: sample_id
+                referencedColumnName: id
+                nullable: false
+    # don't forget to init the collection in entity __construct() method

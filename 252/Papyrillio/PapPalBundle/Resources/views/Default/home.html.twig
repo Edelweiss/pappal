@@ -1,0 +1,20 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+
+  <div class="page home">
+  
+    <p>PapPal facilitates the study of ancient writing by collecting images of dated papyri. Its aim is to illustrate the development and diversity of ancient scripts, and to assist in dating undated texts.</p> 
+
+    <p style="text-align: center;"><button onclick="document.location.href='{{ path('PapyrillioPapPalBundle_ThumbnailList') }}';" id="button" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" aria-disabled="false"><span" class="ui-button-text">Go to Images&nbsp;…</span></button></p>
+
+    <p>The site is supported by the University of Heidelberg’s Sonderforschungsbereich 933, Materiale Textkulturen: Materialität und Präsenz des Geschriebenen in non-typographischen Gesellschaften, which is funded by the Deutsche Forschungsgemeinschaft.</p>
+
+    <p style="text-align: center;">
+     <input type="text" id="hgv" value="5838" />
+     <button onclick="document.location.href='{{ path('PapyrillioPapPalBundle_SampleHgv', {'hgv': 0}) }}'.replace('0', $('#hgv').val());" id="button" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" aria-disabled="false"><span" class="ui-button-text">Search by HGV/TM id&nbsp;…&nbsp;(e.g. 5838)</span></button>
+    </p>
+  
+  </div>
+
+{% endblock %}
