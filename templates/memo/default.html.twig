@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+  {% if thumbnailList is empty %}
+    There are currently no thumbnails selected. Please search for thumbnails and mark those that you would like to compare by hitting the star symbol underneath the picture.
+  {% else %}
+
+    <a href="{{ path('PapyrillioPapPalBundle_MemoClear') }}">Clear Memo Board</a>
+  
+    <br class="clear" />
+
+    {% for thumbnail in thumbnailList %}
+      <div class="ui-widget-content memoItem magnify">
+        <div class="large"></div>
+        <span class="remove" title="remove item from memo board" data="{{ thumbnail.id }}">remove</span>
+        <a href="{{ path('PapyrillioPapPalBundle_SampleShow', {id: thumbnail.sample.id}) }}"><img class="small" src="{{ asset('thumbnail/' ~ thumbnail.file) }}" title="&lt;span class=&quot;keyword greek&quot;&gt;{{ thumbnail.sample.title != 'keiner' ? thumbnail.sample.title : '...' }}&lt;/span&gt; &lt;br/&gt; {{ thumbnail.sample.dateHgvFormat }} &lt;br/&gt; {{ thumbnail.sample.provenance }} &lt;br/&gt; {{ thumbnail.sample.material }}, {{ thumbnail.language | iso }}, &lt;span class=&quot;greek&quot;&gt;{{ thumbnail.sample.keywords }}&lt;/span&gt; &lt;br/&gt; DDbDP {{ thumbnail.sample.ddb }} / HGV/TM {{ thumbnail.sample.hgv }}" /></a>
+      </div>
+    {% endfor %}
+
+  {% endif %}
+
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+  <!-- https://github.com/indyone/TipTip -->
+  <script src="{{ asset('js/jquery/jquery-tipTip.mod.js') }}" type="text/javascript"></script>
+  <script src="{{ asset('js/memo.js') }}" type="text/javascript"></script>
+{% endblock %}

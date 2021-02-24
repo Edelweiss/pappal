@@ -1,0 +1,121 @@
+PapyrillioPapPalBundle_homepage:
+    path:  /hello/{name}
+    controller: App\Controller\DefaultController::index
+
+# Special
+
+PapyrillioPapPalBundle_hgvChanges:
+    path:  /hgvChanges/{jourFixe}
+    controller: App\Controller\DefaultController:hgvChanges
+    defaults:
+        jourFixe: null
+    requirements:
+        jourFixe:  \d{4}-\d{2}-\d{2}
+
+# Memo
+
+PapyrillioPapPalBundle_Memo:
+    path:  /memo
+    controller: App\Controller\MemoController::default
+
+PapyrillioPapPalBundle_MemoAdd:
+    path:  /memo/add/{id}
+    controller: App\Controller\MemoController::add
+    requirements:
+        id:  \d+
+
+PapyrillioPapPalBundle_MemoRemove:
+    path:  /memo/remove/{id}
+    controller: App\Controller\MemoController::remove
+
+PapyrillioPapPalBundle_MemoClear:
+    path:  /memo/clear
+    controller: App\Controller\MemoController::clear
+
+# Thumbnail
+
+PapyrillioPapPalBundle_ThumbnailList:
+    path:  /sample/list
+    controller: App\Controller\ThumbnailController::list
+
+PapyrillioPapPalBundle_ThumbnailGallery:
+    path:  /sample/gallery
+    controller: App\Controller\ThumbnailController::list
+
+# Sample
+
+PapyrillioPapPalBundle_SampleShow:
+    path:  /sample/show/{id}
+    controller: App\Controller\SampleController::show
+
+PapyrillioPapPalBundle_SampleTm:
+    path:  /tm/{tm}
+    controller: App\Controller\SampleController::tm
+
+PapyrillioPapPalBundle_SampleHgv:
+    path:  /hgv/{hgv}
+    controller: App\Controller\SampleController::hgv
+
+PapyrillioPapPalBundle_SampleDdb:
+    path:  /ddb/{ddb}
+    controller: App\Controller\SampleController::ddb
+
+# Sample Admin
+
+PapyrillioPapPalBundle_SampleAdminCreate:
+    path:  /admin/sample/create
+    controller: App\Controller\SampleAdminController::create
+
+PapyrillioPapPalBundle_SampleSetMasterThumbnail:
+    path:  /sample/setMasterThumbnail/{id}/{thumbnail}/{language}
+    controller: App\Controller\SampleController:setMasterThumbnail
+    defaults:
+        language: grc
+
+PapyrillioPapPalBundle_SampleUnsetMasterThumbnail:
+    path:  /sample/unsetMasterThumbnail/{id}
+    controller: App\Controller\SampleController::unsetMasterThumbnail
+
+PapyrillioPapPalBundle_SampleUploadImage:
+    path:  /sample/uploadImage/{id}
+    controller: App\Controller\SampleController::uploadImage
+
+PapyrillioPapPalBundle_SampleDeleteImage:
+    path:  /sample/deleteImage/{id}/{image}
+    controller: App\Controller\SampleController::deleteImage
+
+PapyrillioPapPalBundle_SampleDelete:
+    path:  /sample/delete/{id}
+    controller: App\Controller\SampleController::delete
+
+PapyrillioPapPalBundle_SampleDeleteThumbnail:
+    path:  /sample/deleteThumbnail/{id}/{thumbnail}
+    controller: App\Controller\SampleController::deleteThumbnail
+
+PapyrillioPapPalBundle_SampleRotateThumbnail:
+    path:  /sample/rotateThumbnail/{id}/{thumbnail}/{direction}
+    controller: App\Controller\SampleController::rotateThumbnail
+
+# Images
+
+PapyrillioPapPalBundle_ImageCrop:
+    path:  /image/crop/{id}/{image}
+    controller: App\Controller\ImageController::crop
+
+# Static pages
+
+PapyrillioPapPalBundle_Home:
+    path:  /
+    controller: App\Controller\DefaultController::home
+
+PapyrillioPapPalBundle_About:
+    path:  /about
+    controller: App\Controller\DefaultController::about
+
+PapyrillioPapPalBundle_BrowsingTips:
+    path:  /browsingTips
+    controller: App\Controller\DefaultController::browsingTips
+
+PapyrillioPapPalBundle_Contact:
+    path:  /contact
+    controller: App\Controller\DefaultController::contact

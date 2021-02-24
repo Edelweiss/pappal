@@ -1,0 +1,7 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+No matching hand sample for {{ identifierClass|upper }} no. <a href="http://www.papyri.info/{{ identifierClass == 'ddb' ? 'ddbdp' : 'hgv' }}/{{ id }}">{{ id }}</a> found on this server.
+
+{% endblock %}

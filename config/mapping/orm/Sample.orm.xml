@@ -1,0 +1,63 @@
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                   https://raw.github.com/doctrine/doctrine2/master/doctrine-mapping.xsd">
+    <entity name="App\Entity\Sample" table="sample">
+        <id name="id" type="integer">
+            <generator strategy="AUTO"/>
+            <sequence-generator sequence-name="tablename_seq" allocation-size="100" initial-value="1" />
+        </id>
+        <!-- ids -->
+        <field name="tm" type="integer"/>
+        <field name="folder" type="integer"/>
+        <field name="hgv" type="string" length="64"/>
+        <field name="ddb" type="string" length="64"/>
+        <field name="collection" type="string" length="64"/>
+        <field name="volume" type="string" length="64"/>
+        <field name="document" type="string" length="64"/>
+
+        <!-- meta data -->
+        <field name="dateWhen" type="string" length="11" nullable="true" />
+        <field name="dateNotBefore" type="string" length="11" nullable="true" />
+        <field name="dateNotAfter" type="string" length="11" nullable="true" />
+
+        <field name="dateHgvFormat" column="dateHgvFormat" type="text"/>
+
+        <field name="century" type="integer" nullable="true" />
+        <field name="year" type="integer" nullable="true" />
+        <field name="month" type="integer" nullable="true" />
+        <field name="day" type="integer" nullable="true" />
+
+        <field name="title"" type="text"/>
+        <field name="material" type="text"/>
+        <field name="keywords" type="text"/>
+        <field name="digitalImages" type="text" nullable="true" />
+        <field name="provenance" type="text"/>
+
+        <!-- operational data -->
+        <field name="dateSort" type="integer"/> <!-- golden ratio of dateWhen, dateNotBefore, dateNotAfter: -YYYY-MM-DD -->
+        <field name="status" type="string" length="64"/> <!-- tells whether sample is ready to use -->
+        <field name="importDate" type="datetime" />
+
+        <one-to-many field="comments" target-entity="Comment" mapped-by="sample" orphan-removal="true">
+            <cascade>
+                <cascade-persist/>
+                <cascade-remove/>
+            </cascade>
+            <order-by>
+                <order-by-field name="postingDate" direction="ASC" />
+            </order-by>
+        </one-to-many>
+        <one-to-many field="thumbnails" target-entity="Thumbnail" mapped-by="sample" orphan-removal="true">
+            <cascade>
+                <cascade-persist/>
+                <cascade-remove/>
+            </cascade>
+            <order-by>
+                <order-by-field name="id" direction="ASC" />
+            </order-by>
+        </one-to-many>
+        
+        <!-- don't forget to init the collection in entity __construct() method -->
+    </entity>
+</doctrine-mapping>
