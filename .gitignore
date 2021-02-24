@@ -1,3 +1,22 @@
+###> symfony/framework-bundle ###
+/.env.local
+/.env.local.php
+/.env.*.local
+/config/secrets/prod/prod.decrypt.private.php
+/public/bundles/
+/var/
+/vendor/
+###< symfony/framework-bundle ###
+
+###> symfony/phpunit-bridge ###
+.phpunit
+.phpunit.result.cache
+/phpunit.xml
+###< symfony/phpunit-bridge ###
+
+.DS_Store
+
+# LEGACY
 /web/bundles/
 /app/bootstrap*
 /app/cache/*
@@ -5,8 +24,11 @@
 /vendor/
 /app/config/parameters.ini
 /.project
-/web/thumbnail
-/web/sample
 /src/Papyrillio/PapPalBundle/Command/Update/update.ini
 /src/Papyrillio/PapPalBundle/Command/Update/sample.xml
 /src/Papyrillio/PapPalBundle/Command/Update/update.sql
+
+#NEW
+/.env*
+/public/thumbnail
+/public/sample
