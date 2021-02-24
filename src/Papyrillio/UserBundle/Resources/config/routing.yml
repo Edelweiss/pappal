@@ -1,3 +1,0 @@
-PapyrillioUserBundle_homepage:
-    pattern:  /hello/{name}
-    defaults: { _controller: PapyrillioUserBundle:Default:index }
