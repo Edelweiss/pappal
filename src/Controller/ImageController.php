@@ -6,7 +6,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 use App\Entity\Sample;
-use App\Entity\Commet;
+use App\Entity\Comment;
 use App\Entity\User;
 
 
