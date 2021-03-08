@@ -64,7 +64,7 @@ class MemoController extends PapPalController{
   }
 
   protected function setMemo($memo){
-    $this->getRequest()->getSession()->set('memo', $memo); // save to session
+    $this->session->set('memo', $memo); // save to session
   }
 }
 
