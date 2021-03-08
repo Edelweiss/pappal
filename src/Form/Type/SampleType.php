@@ -17,7 +17,7 @@ class SampleType extends AbstractType {
       $builder->add('dateNotBefore', TextType::class, ['required' => false]);
       $builder->add('dateNotAfter', TextType::class, ['required' => false]);
       $builder->add('title', TextType::class, ['required' => false]);
-      $builder->add('material', ChoiceType::class, ['choices' => ['Papyrus' => 'Papyrus', 'Ostrakon' => 'Ostrakon', 'tafel' => 'Tafeln'], 'preferred_choices' => [''], 'required' => false]);
+      $builder->add('material', ChoiceType::class, ['choices' => ['Papyrus' => 'Papyrus', 'Ostrakon' => 'Ostrakon', 'Tafeln' => 'tafel'], 'preferred_choices' => [''], 'required' => false]);
       $builder->add('keywords', TextType::class, ['required' => false]);
       $builder->add('provenance', TextType::class, ['required' => false]);
     }

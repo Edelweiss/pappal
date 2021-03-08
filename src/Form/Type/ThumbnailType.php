@@ -12,7 +12,7 @@ class ThumbnailType extends AbstractType {
 
     public function buildForm(FormBuilderInterface $builder, array $options): void {
         $builder->add('sample', SampleType::class);
-        $builder->add('language', ChoiceType::Class, ['choices' => ['grc' => 'Griechisch', 'lat' => 'Lateinisch'],
+        $builder->add('language', ChoiceType::Class, ['choices' => ['Griechisch' => 'grc', 'Lateinisch' => 'lat'],
                                                       'preferred_choices' => array(''),
                                                       'required' => false]);
         //$builder->add('template', null, array('property_path' => false));
