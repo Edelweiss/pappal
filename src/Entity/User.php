@@ -13,6 +13,12 @@ class User implements UserInterface {
     private $roles = [];
     private $password; // hashed password
     private $email;
+    private $comments;
+
+    public function __construct()
+    {
+	    $this->comments = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     public function getId(): ?int {
         return $this->id;
@@ -56,6 +62,19 @@ class User implements UserInterface {
         return $this;
     }
 
+    public function addComment(\App\Entity\Comment $comment) {
+        $comment->setUser($this);
+        $this->comments[] = $comment;
+    }
+
+    public function getComments() {
+        return $this->comments;
+    }
+
+    public function resetComments()
+    {
+      $this->comments->clear();
+    }
 
     public function getSalt() {
         // not needed when using the "bcrypt" algorithm in security.yaml
