@@ -17,53 +17,53 @@ use Date;
 class SampleController extends PapPalController{
 
   public function tm($tm): Response{
-    $entityManager = $this->getDoctrine()->getEntityManager();
-    $repository = $entityManager->getRepository('PapyrillioPapPalBundle:Sample');
+    $entityManager = $this->getDoctrine()->getManager();
+    $repository = $entityManager->getRepository(Sample::class);
 
     if($sample = $repository->findOneBy(array('tm' => $tm))){
-      return $this->forward('PapyrillioPapPalBundle:Sample:show', array('id' => $sample->getId(), '_route' => $this->getRequest()->attributes->get('_route')));
+      return $this->forward('sample/show', array('id' => $sample->getId(), '_route' => $this->getRequest()->attributes->get('_route')));
     }
 
-    return $this->render('PapyrillioPapPalBundle:Sample:notFound.html.twig', array('identifierClass' => 'tm', 'id' => $tm));
+    return $this->render('sample/notFound.html.twig', array('identifierClass' => 'tm', 'id' => $tm));
   }
 
   public function hgv($hgv): Response {
-    $entityManager = $this->getDoctrine()->getEntityManager();
-    $repository = $entityManager->getRepository('PapyrillioPapPalBundle:Sample');
+    $entityManager = $this->getDoctrine()->getManager();
+    $repository = $entityManager->getRepository(Sample::class);
 
     if($sample = $repository->findOneBy(array('hgv' => $hgv))){
-      return $this->forward('PapyrillioPapPalBundle:Sample:show', array('id' => $sample->getId(), '_route' => $this->getRequest()->attributes->get('_route')));
+      return $this->forward('sample/show', array('id' => $sample->getId(), '_route' => $this->getRoute()));
     }
 
-    return $this->render('PapyrillioPapPalBundle:Sample:notFound.html.twig', array('identifierClass' => 'hgv', 'id' => $hgv));
+    return $this->render('sample/notFound.html.twig', array('identifierClass' => 'hgv', 'id' => $hgv));
   }
 
   public function ddb($ddb): Response {
-    $entityManager = $this->getDoctrine()->getEntityManager();
-    $repository = $entityManager->getRepository('PapyrillioPapPalBundle:Sample');
+    $entityManager = $this->getDoctrine()->getManager();
+    $repository = $entityManager->getRepository(Sample::class);
 
     if($sample = $repository->findOneBy(array('ddb' => $ddb))){
-      return $this->forward('PapyrillioPapPalBundle:Sample:show', array('id' => $sample->getId(), '_route' => $this->getRequest()->attributes->get('_route')));
+      return $this->forward('sample/show', array('id' => $sample->getId(), '_route' => $this->getRequest()->attributes->get('_route')));
     }
 
-    return $this->render('PapyrillioPapPalBundle:Sample:notFound.html.twig', array('identifierClass' => 'ddb', 'id' => $ddb));
+    return $this->render('sample/notFound.html.twig', array('identifierClass' => 'ddb', 'id' => $ddb));
   }
 
   public function show($id): Response {
-    $entityManager = $this->getDoctrine()->getEntityManager();
-    $repository = $entityManager->getRepository('PapyrillioPapPalBundle:Sample');
+    $entityManager = $this->getDoctrine()->getManager();
+    $repository = $entityManager->getRepository(Sample::class);
     $sample = $repository->findOneBy(array('id' => $id));
     
     if(!$sample){
-      return $this->forward('PapyrillioPapPalBundle:Sample:list');
+      return $this->forward('sample/list');
     }
 
-    return $this->render('PapyrillioPapPalBundle:Sample:show.html.twig', array('sample' => $sample, 'uploadForm' => $this->getUploadForm()->createView(), 'clockwise' => ImagePeer::DIRECTION_CLOCKWISE, 'counterclockwise' => ImagePeer::DIRECTION_COUNTERCLOCKWISE));
+    return $this->render('sample/show.html.twig', array('sample' => $sample, 'uploadForm' => $this->getUploadForm()->createView(), 'clockwise' => ImagePeer::DIRECTION_CLOCKWISE, 'counterclockwise' => ImagePeer::DIRECTION_COUNTERCLOCKWISE));
   }
 
   public function delete($id): Response {
-    $entityManager = $this->getDoctrine()->getEntityManager();
-    $repository = $entityManager->getRepository('PapyrillioPapPalBundle:Sample');
+    $entityManager = $this->getDoctrine()->getManager();
+    $repository = $entityManager->getRepository(Sample::class);
     $sample = $repository->findOneBy(array('id' => $id));
 
     if($sample){
@@ -203,8 +203,8 @@ class SampleController extends PapPalController{
   }
 
   public function setMasterThumbnail($id, $thumbnail, $language = 'grc'): Response {
-    $entityManager = $this->getDoctrine()->getEntityManager();
-    $repository = $entityManager->getRepository('PapyrillioPapPalBundle:Sample');
+    $entityManager = $this->getDoctrine()->getManager();
+    $repository = $entityManager->getRepository(Sample::class);
     $error = '';
 
     if(!empty($thumbnail)){
@@ -232,8 +232,8 @@ class SampleController extends PapPalController{
   }
 
   public function unsetMasterThumbnail($id): Response {
-    $entityManager = $this->getDoctrine()->getEntityManager();
-    $repository = $entityManager->getRepository('PapyrillioPapPalBundle:Sample');
+    $entityManager = $this->getDoctrine()->getManager();
+    $repository = $entityManager->getRepository(Sample::class);
     $language = $this->getParameter('language');
     $languages = array('lat' => 'Lateinisch', 'grc' => 'Griechisch');
 
