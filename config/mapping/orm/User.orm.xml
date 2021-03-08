@@ -6,21 +6,17 @@
         <id name="id" type="integer">
             <generator strategy="AUTO"/>
         </id>
-        <field name="postingDate" type="datetime"/>
         <field name="username" type="string" length="180" unique="true"/>
         <field name="roles" type="json"/>
-        
-        
-            /**
-     * @ORM\Column(type="json")
-     */
-        
-        <field name="post" type="text"/>
-        <many-to-one field="sample" target-entity="Sample" inversed-by="comments">
-            <join-column name="sample_id" referenced-column-name="id" nullable="false" on-delete="CASCADE"/>
-        </many-to-one>
-        <many-to-one field="user" target-entity="User" inversed-by="comments">
-            <join-column name="user_id" referenced-column-name="id" nullable="false" on-delete="CASCADE"/>
-        </many-to-one>
+        <field name="password" type="string"/>
+        <one-to-many field="comments" target-entity="Comment" mapped-by="user" orphan-removal="false">
+            <cascade>
+                <cascade-persist/>
+            </cascade>
+            <order-by>
+                <order-by-field name="sample_id" direction="ASC" />
+                <order-by-field name="postingDate" direction="ASC" />
+            </order-by>
+        </one-to-many>
     </entity>
 </doctrine-mapping>

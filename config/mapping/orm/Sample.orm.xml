@@ -17,9 +17,9 @@
         <field name="document" type="string" length="64"/>
 
         <!-- meta data -->
-        <field name="dateWhen" type="string" length="11" nullable="true" />
-        <field name="dateNotBefore" type="string" length="11" nullable="true" />
-        <field name="dateNotAfter" type="string" length="11" nullable="true" />
+        <field name="dateWhen" column="dateWhen" type="string" length="11" nullable="true" />
+        <field name="dateNotBefore" column="dateNotBefore" type="string" length="11" nullable="true" />
+        <field name="dateNotAfter" column="dateNotAfter" type="string" length="11" nullable="true" />
 
         <field name="dateHgvFormat" column="dateHgvFormat" type="text"/>
 
@@ -31,13 +31,13 @@
         <field name="title" type="text"/>
         <field name="material" type="text"/>
         <field name="keywords" type="text"/>
-        <field name="digitalImages" type="text" nullable="true" />
+        <field name="digitalImages" column="digitalImages" type="text" nullable="true" />
         <field name="provenance" type="text"/>
 
         <!-- operational data -->
-        <field name="dateSort" type="integer"/> <!-- golden ratio of dateWhen, dateNotBefore, dateNotAfter: -YYYY-MM-DD -->
+        <field name="dateSort" column="dateSort" type="integer"/> <!-- golden ratio of dateWhen, dateNotBefore, dateNotAfter: -YYYY-MM-DD -->
         <field name="status" type="string" length="64"/> <!-- tells whether sample is ready to use -->
-        <field name="importDate" type="datetime" />
+        <field name="importDate" column="importDate" type="datetime" />
 
         <one-to-many field="comments" target-entity="Comment" mapped-by="sample" orphan-removal="true">
             <cascade>
