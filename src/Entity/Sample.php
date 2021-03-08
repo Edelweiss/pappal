@@ -1,8 +1,8 @@
 <?php
 
-namespace Papyrillio\PapPalBundle\Entity;
+namespace App\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
+use App\Repository\SampleRepository;
 use DateTime;
 
 /**
