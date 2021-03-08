@@ -1,5 +1,4 @@
-<form id="search" action="{{ path(app.request.attributes.get('_route')) }}" method="post" {{ form_enctype(searchForm) }} autocomplete="off">
-
+{{ form_start(searchForm, {'attr': {'id': 'search', 'action': path(app.request.attributes.get('_route')), 'autocomplete': 'off'} }) }}
   <fieldset>
     <legend>Filter</legend>
 
@@ -81,4 +80,4 @@
   <!--button type="button" id="reset" onclick="window.location.href = '{{ path(app.request.attributes.get('_route')) }}'" >Reset Form</button-->
 
   <div class="clear"></div>
-</form>
+{{ form_end(searchForm) }}

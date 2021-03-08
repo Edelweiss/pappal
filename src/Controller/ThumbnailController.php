@@ -9,7 +9,7 @@ use App\Entity\Sample;
 use App\Entity\Comment;
 use App\Entity\Thumbnail;
 use App\Entity\User;
-#use Papyrillio\PapPalBundle\Form\Type\ThumbnailType;
+use App\Form\Type\ThumbnailType;
 use DateTime;
 use Date;
 
@@ -21,11 +21,11 @@ class ThumbnailController extends PapPalController{
     if($thumbnail = $this->getParameter('thumbnail')){
       $result = array_merge(array('s' => $thumbnail['sample']), array('t' => array('language' => $thumbnail['language'])));
 
-      $this->getRequest()->getSession()->set('thumbnailFilter', $result); // save to session
+      $this->session->set('thumbnailFilter', $result); // save to session
 
-    } elseif($this->getRequest()->getSession()->get('thumbnailFilter')){
+    } elseif($this->session->get('thumbnailFilter')){
 
-      $result = $this->getRequest()->getSession()->get('thumbnailFilter'); // retrieve session
+      $result = $this->session->get('thumbnailFilter'); // retrieve session
 
     }
     return $result;
@@ -40,11 +40,11 @@ class ThumbnailController extends PapPalController{
         }
       }
       
-      $this->getRequest()->getSession()->set('sampleSort', $result); // save to session
+      $this->session->set('sampleSort', $result); // save to session
 
-    } elseif($this->getRequest()->getSession()->get('sampleSort')){
+    } elseif($this->session->get('sampleSort')){
 
-      $result = $this->getRequest()->getSession()->get('sampleSort'); // retrieve session
+      $result = $this->session->get('sampleSort'); // retrieve session
 
     }
     return $result;
@@ -53,18 +53,19 @@ class ThumbnailController extends PapPalController{
   public function getTemplate(){
     $template = 'list';
     
-    if($this->container->get('request')->get('_route') == 'PapyrillioPapPalBundle_ThumbnailGallery'){
+    #if($this->container->get('request')->get('_route') == 'PapyrillioPapPalBundle_ThumbnailGallery'){
+    if($this->getRoute() == 'PapyrillioPapPalBundle_ThumbnailGallery'){
 
       $template = 'gallery';
 
     } elseif($this->getParameter('template')){
 
       $template = $this->getParameter('template');
-      $this->getRequest()->getSession()->set('sampleTemplate', $template); // save to session
+      $this->session->set('sampleTemplate', $template); // save to session
 
-    } elseif($this->getRequest()->getSession()->get('sampleTemplate')){
+    } elseif($this->session->get('sampleTemplate')){
 
-      $template = $this->getRequest()->getSession()->get('sampleTemplate'); // retrieve session
+      $template = $this->session->get('sampleTemplate'); // retrieve session
 
     }
 
@@ -72,17 +73,17 @@ class ThumbnailController extends PapPalController{
   }
 
   protected function getSearchForm(){
-    $form = $this->createForm(new ThumbnailType(), new Thumbnail());
-    
-    if ($this->getRequest()->getMethod() == 'POST') {
+    $form = $this->createForm(ThumbnailType::class, new Thumbnail());
 
-      $form->bindRequest($this->getRequest());
+    if($this->getParameter('thumbnailSearchForm')) { // cl: how can I check for POST data containing search form information?
 
-      $this->getRequest()->getSession()->set('thumbnailSearchForm', $this->getRequest()); // save to session
+      #$form->bindRequest($this->getRequest());
 
-    } elseif ($this->getRequest()->getSession()->get('thumbnailSearchForm')) {
+      #$this->session->set('thumbnailSearchForm', $this->getRequest()); // save to session
 
-      $form->bindRequest($this->getRequest()->getSession()->get('thumbnailSearchForm')); // retrieve session
+    } elseif ($this->session->get('thumbnailSearchForm')) {
+
+      #$form->bindRequest($this->session->get('thumbnailSearchForm')); // retrieve session
 
     }
 
@@ -103,8 +104,8 @@ class ThumbnailController extends PapPalController{
 
     $filterOr = array('status', 'title', 'hgv', 'ddb', 'material', 'provenance', 'keywords', 'language');
 
-    $entityManager = $this->getDoctrine()->getEntityManager();
-    $repository = $entityManager->getRepository('PapyrillioPapPalBundle:Thumbnail');
+    $entityManager = $this->getDoctrine()->getManager();
+    $repository = $entityManager->getRepository(Thumbnail::class);
 
     // ORDER BY
 
@@ -207,7 +208,7 @@ class ThumbnailController extends PapPalController{
 
     // SELECT
     $query = $entityManager->createQuery('
-      SELECT t, s FROM PapyrillioPapPalBundle:Thumbnail t JOIN t.sample s ' . $where . ' ' .$orderBy
+      SELECT t, s FROM App\Entity\Thumbnail t JOIN t.sample s ' . $where . ' ' .$orderBy
     )->setParameters($parameters);
 
     $templateVariables = array(
@@ -221,8 +222,7 @@ class ThumbnailController extends PapPalController{
       'memo' => $this->getMemo()
     );
 
-    return $this->render('PapyrillioPapPalBundle:Thumbnail:' . $template . '.html.twig', $templateVariables);
+    return $this->render('thumbnail/' . $template . '.html.twig', $templateVariables);
   }
 
 }
-
