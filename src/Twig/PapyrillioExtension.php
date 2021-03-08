@@ -1,25 +1,25 @@
 <?php
 
-namespace Papyrillio\PapPalBundle\Twig;
+namespace App\Twig;
 
-class PapyrillioExtension extends \Twig_Extension
-{
-  public function getFilters()
-  {
-    return array(
-      'iso' => new \Twig_Filter_Method($this, 'iso'),
-    );
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
+use Twig\TwigFunction;
+
+class PapyrillioExtension extends AbstractExtension {
+  public function getFilters() {
+    return [
+      new TwigFilter('iso', [$this, 'iso']),
+    ];
   }
-  
-  function getFunctions()
-   {
-    return array(
-        'processTranslations' => new \Twig_Function_Method($this, 'processTranslations')
-    );
+
+  public function getFunctions() {
+    return [
+      new TwigFunction('processTranslations', [$this, 'processTranslations']),
+    ];
    }
 
-  public function iso($value)
-  {
+  public function iso($value) {
     $iso = array(
       'grc' => 'Griechisch',
       'lat' => 'Lateinisch',
@@ -47,8 +47,4 @@ class PapyrillioExtension extends \Twig_Extension
     }
   }
 
-  public function getName()
-  {
-    return 'papyrillio_extension';
-  }
 }
