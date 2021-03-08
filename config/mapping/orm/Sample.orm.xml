@@ -28,7 +28,7 @@
         <field name="month" type="integer" nullable="true" />
         <field name="day" type="integer" nullable="true" />
 
-        <field name="title"" type="text"/>
+        <field name="title" type="text"/>
         <field name="material" type="text"/>
         <field name="keywords" type="text"/>
         <field name="digitalImages" type="text" nullable="true" />
