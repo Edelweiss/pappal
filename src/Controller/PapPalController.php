@@ -7,22 +7,29 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class PapPalController extends AbstractController{
   protected $request;
+  protected $session;
 
-  public function __construct(RequestStack $requestStack)
+  public function __construct(RequestStack $requestStack, SessionInterface $session)
   {
       $this->request = $requestStack->getCurrentRequest();
+      $this->session = $session;
   }
 
   protected function getParameter($key){
     return $this->request->query->all($key);
   }
 
+  protected function getRoute(){
+    return $this->request->attributes->get('_route');
+  }
+
   protected function getMemo(){
-    if($this->getRequest()->getSession()->get('memo')){
-      return $this->getRequest()->getSession()->get('memo'); // retrieve from session
+    if($this->session->get('memo')){
+      return $this->session->get('memo'); // retrieve from session
     }
     return array();
   }
