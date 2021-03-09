@@ -1,6 +1,6 @@
 <?php
 
-namespace Papyrillio\PapPalBundle\Service;
+namespace App\Service;
 
 class ImageUntiffer{
   public static function untiffDirectory($directory){

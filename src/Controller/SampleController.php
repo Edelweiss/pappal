@@ -10,7 +10,7 @@ use App\Entity\Comment;
 use App\Entity\Thumbnail;
 use App\Entity\User;
 
-#use Papyrillio\PapPalBundle\Service\ImagePeer;
+use App\Service\ImagePeer;
 use DateTime;
 use Date;
 
@@ -257,4 +257,3 @@ class SampleController extends PapPalController{
   }
 
 }
-

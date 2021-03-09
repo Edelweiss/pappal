@@ -1,6 +1,6 @@
 <?php
 
-namespace Papyrillio\PapPalBundle\Service;
+namespace App\Service;
 
 use Exception;
 
