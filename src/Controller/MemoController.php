@@ -27,11 +27,11 @@ class MemoController extends PapPalController{
       }
       $where = rtrim($where, ' OR') . '';
 
-      $entityManager = $this->getDoctrine()->getEntityManager();
-      $repository = $entityManager->getRepository('PapyrillioPapPalBundle:Thumbnail');
+      $entityManager = $this->getDoctrine()->getManager();
+      $repository = $entityManager->getRepository(Thumbnail::class);
 
       $query = $entityManager->createQuery('
-        SELECT t, s FROM PapyrillioPapPalBundle:Thumbnail t JOIN t.sample s' . $where
+        SELECT t, s FROM App\Entity\Thumbnail t JOIN t.sample s' . $where
       )->setParameters($parameters);
 
       $thumbnailList = $query->getResult();

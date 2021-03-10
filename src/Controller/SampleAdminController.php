@@ -30,8 +30,8 @@ class SampleAdminController extends PapPalController{
     // PHP Version 5.3.15
     if($this->get('request')->getMethod() == 'POST' && $createForm->isValid()){
 		
-      $entityManager = $this->getDoctrine()->getEntityManager();
-      $repository = $entityManager->getRepository('PapyrillioPapPalBundle:Sample');
+      $entityManager = $this->getDoctrine()->getManager();
+      $repository = $entityManager->getRepository(Sample::class);
       $hgv = trim($createForm->get('hgv')->getData());
 
       if($sample = $repository->findOneBy(array('hgv' => $hgv))){ // ERROR! sample already exists
@@ -138,7 +138,7 @@ class SampleAdminController extends PapPalController{
       }      
     }
     
-    return $this->render('PapyrillioPapPalBundle:SampleAdmin:create.html.twig', array('error' => $error, 'createForm' => $createForm->createView()));
+    return $this->render('sampleAdmin/create.html.twig', array('error' => $error, 'createForm' => $createForm->createView()));
 
   }
 

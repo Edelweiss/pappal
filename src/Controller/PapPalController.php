@@ -35,8 +35,8 @@ class PapPalController extends AbstractController{
   }
 
   protected function getSample($id){
-    $entityManager = $this->getDoctrine()->getEntityManager();
-    $repository = $entityManager->getRepository('PapyrillioPapPalBundle:Sample');
+    $entityManager = $this->getDoctrine()->getManager();
+    $repository = $entityManager->getRepository(Sample::class);
     return $repository->findOneBy(array('id' => $id));
   }
 
