@@ -20,7 +20,12 @@ class PapPalController extends AbstractController{
   }
 
   protected function getParameter($key){
-    return $this->request->query->all($key);
+    if($this->request->request->get($key)){
+      return $this->request->request->get($key);
+    } else {
+      return $this->request->query->get($key);
+    }
+    return null;
   }
 
   protected function getRoute(){
