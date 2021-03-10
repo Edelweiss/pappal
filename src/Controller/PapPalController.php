@@ -12,18 +12,18 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 class PapPalController extends AbstractController{
   protected $request;
   protected $session;
+  protected $allParameters = [];
 
   public function __construct(RequestStack $requestStack, SessionInterface $session)
   {
       $this->request = $requestStack->getCurrentRequest();
       $this->session = $session;
+      $this->allParameters = array_merge($this->request->request->all(), $this->request->query->all());
   }
 
   protected function getParameter($key){
-    if($this->request->request->get($key)){
-      return $this->request->request->get($key);
-    } else {
-      return $this->request->query->get($key);
+    if(array_key_exists($key, $this->allParameters)){
+      return $this->allParameters[$key];
     }
     return null;
   }
