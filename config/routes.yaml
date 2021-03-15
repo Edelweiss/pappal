@@ -119,3 +119,7 @@ PapyrillioPapPalBundle_BrowsingTips:
 PapyrillioPapPalBundle_Contact:
     path:  /contact
     controller: App\Controller\DefaultController::contact
+
+PapyrillioPapPalBundle_Logout:
+    path: /logout
+    methods: GET
