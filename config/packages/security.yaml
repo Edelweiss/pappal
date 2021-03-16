@@ -10,6 +10,9 @@ security:
             logout:
                 path: PapyrillioPapPalBundle_Logout
                 target: PapyrillioPapPalBundle_Home # where to redirect after logout
+            guard:
+                authenticators:
+                    - App\Security\LoginFormAuthenticator
     providers:
         app_user_provider:
             entity:

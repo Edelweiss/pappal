@@ -64,7 +64,8 @@
                 </div>
 
               {% elseif app.request.attributes.get('_route') %}
-              <!-- fos_user login and register -->
+                <a href="{{ path('PapyrillioPapPalBundle_Login') }}" class="pageLinkTop">Login</a>
+                <span> | </span>
               {% endif %}
 
               <a href="{{ path('PapyrillioPapPalBundle_Contact') }}" title="Contact" class="pageLinkTop">Contact</a>

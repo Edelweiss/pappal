@@ -120,6 +120,12 @@ PapyrillioPapPalBundle_Contact:
     path:  /contact
     controller: App\Controller\DefaultController::contact
 
+# Security
+
 PapyrillioPapPalBundle_Logout:
     path: /logout
     methods: GET
+
+PapyrillioPapPalBundle_Login:
+    path: /login
+    controller: App\Controller\SecurityController::login
