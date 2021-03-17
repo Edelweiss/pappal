@@ -122,6 +122,10 @@ PapyrillioPapPalBundle_Contact:
 
 # Security
 
+PapyrillioPapPalBundle_Registration:
+    path: /registration
+    controller: App\Controller\RegistrationController::index
+
 PapyrillioPapPalBundle_Logout:
     path: /logout
     methods: GET
