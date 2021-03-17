@@ -1,26 +1,28 @@
 security:
-    enable_authenticator_manager: true
+    encoders:
+        App\Entity\User:
+            algorithm: auto
+    providers:
+        app_user_provider:
+            entity:
+                class: App\Entity\User
+                property: username
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
             #anonymous: true
+            #anonymous: lazy
             lazy: true
-            logout:
-                path: PapyrillioPapPalBundle_Logout
-                target: PapyrillioPapPalBundle_Home # where to redirect after logout
+            provider: app_user_provider
             guard:
                 authenticators:
                     - App\Security\LoginFormAuthenticator
-    providers:
-        app_user_provider:
-            entity:
-                class: App\Entity\User
-                property: username
-    encoders:
-        App\Entity\User:
-            algorithm: auto
+            logout:
+                path: PapyrillioPapPalBundle_Logout
+                target: PapyrillioPapPalBundle_Home # where to redirect after logout
+    enable_authenticator_manager: true
 
     access_control:
         - { path: '^/admin', roles: ROLE_ADMIN }
