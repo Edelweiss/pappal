@@ -7,8 +7,9 @@
             <generator strategy="AUTO"/>
         </id>
         <field name="username" type="string" length="180" unique="true"/>
-        <field name="roles" type="json"/>
         <field name="password" type="string"/>
+        <field name="roles" type="json"/>
+        <field name="email" type="string"/>
         <one-to-many field="comments" target-entity="Comment" mapped-by="user" orphan-removal="false">
             <cascade>
                 <cascade-persist/>
