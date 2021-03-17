@@ -134,10 +134,10 @@ PapyrillioPapPalBundle_Login:
     path: /login
     controller: App\Controller\SecurityController::login
 
-PapyrillioPapPalBundle_changePassword:
+PapyrillioPapPalBundle_UserChangePassword:
     path: /user/changePassword
     controller: App\Controller\UserController::changePassword
 
-PapyrillioPapPalBundle_editUserProfile:
+PapyrillioPapPalBundle_UserEditProfile:
     path: /user/editProfile
     controller: App\Controller\UserController::editProfile
