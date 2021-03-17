@@ -133,3 +133,11 @@ PapyrillioPapPalBundle_Logout:
 PapyrillioPapPalBundle_Login:
     path: /login
     controller: App\Controller\SecurityController::login
+
+PapyrillioPapPalBundle_changePassword:
+    path: /user/changePassword
+    controller: App\Controller\UserController::changePassword
+
+PapyrillioPapPalBundle_editUserProfile:
+    path: /user/editProfile
+    controller: App\Controller\UserController::editProfile
