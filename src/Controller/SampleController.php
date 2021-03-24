@@ -9,6 +9,7 @@ use App\Entity\Sample;
 use App\Entity\Comment;
 use App\Entity\Thumbnail;
 use App\Entity\User;
+use App\Form\Type\SampleImageType;
 
 use App\Service\ImagePeer;
 use DateTime;
@@ -72,7 +73,7 @@ class SampleController extends PapPalController{
       }
       $entityManager->remove($sample);
       $entityManager->flush();
-      $this->get('session')->setFlash('notice', 'Data record was deleted.');
+      $this->addFlash('notice', 'Data record was deleted.');
       return new RedirectResponse($this->generateUrl('PapyrillioPapPalBundle_ThumbnailList'));
     }
 
@@ -80,13 +81,10 @@ class SampleController extends PapPalController{
   }
 
   protected function getUploadForm(){
-    $uploadForm = $this->get('form.factory')
-     ->createBuilder('form')
-     ->add('image','file', array('required' => true))
-     ->getForm();
-    
-    if($this->get('request')->getMethod() == 'POST'){
-      $uploadForm->bindRequest($this->get('request'));
+    $uploadForm = $this->createForm(SampleImageType::class, new Sample());
+
+    if($this->request->getMethod() == 'POST'){
+      $uploadForm->handleRequest($this->request);
     }
 
     return $uploadForm;
@@ -110,11 +108,11 @@ class SampleController extends PapPalController{
 
   public function uploadImage($id): Response {
     if($sample = $this->getSample($id)){
-      if($this->get('request')->getMethod() == 'POST'){
+      if($this->request->getMethod() == 'POST'){
         $uploadForm = $this->getUploadForm();
         if($uploadForm->isValid()){
           //Symfony\Component\HttpFoundation\File\UploadedFile
-          $files = $this->get('request')->files->get($uploadForm->getName());
+          $files = $this->request->files->get($uploadForm->getName());
           $uploadedFile = $files['image'];
           if($uploadedFile->getMimeType() == 'image/jpeg'){
 
@@ -146,12 +144,12 @@ class SampleController extends PapPalController{
             $cropper = $this->get('papyrillio_pap_pal.image_cropper');
             $cropper->crop($imageDirectory, $filename, $thumbnailDirectory, $sample->getHgv());
 
-            $this->get('session')->setFlash('notice', 'Image has been uploaded.');
+            $this->addFlash('notice', 'Image has been uploaded.');
           } else {
-            $this->get('session')->setFlash('error', 'Mime type ' . $uploadedFile->getMimeType() . ' not accepted. Please upload only jpg images.');
+            $this->addFlash('error', 'Mime type ' . $uploadedFile->getMimeType() . ' not accepted. Please upload only jpg images.');
           }
         } else {
-          $this->get('session')->setFlash('error', 'Invalid form data.');
+          $this->addFlash('error', 'Invalid form data.');
         }
       }
       return new RedirectResponse($this->generateUrl('PapyrillioPapPalBundle_SampleShow', array('id' => $id)));
@@ -242,15 +240,15 @@ class SampleController extends PapPalController{
         if($thumbnail = $sample->getThumbnailByLanguage($language)){
           $entityManager->remove($thumbnail);
           $entityManager->flush();
-          $this->get('session')->setFlash('notice', 'Master thumbnail for language ' . $languages[$language] . ' has been deleted.');
+          $this->addFlash('notice', 'Master thumbnail for language ' . $languages[$language] . ' has been deleted.');
         } else {
-          $this->get('session')->setFlash('error', 'Master thumbnail could not be deleted from database.');
+          $this->addFlash('error', 'Master thumbnail could not be deleted from database.');
         }
       } else {
-        $this->get('session')->setFlash('error', 'Master thumbnail could not be unset because symbolic link could not be deleted from filesystem.');
+        $this->addFlash('error', 'Master thumbnail could not be unset because symbolic link could not be deleted from filesystem.');
       }
     } else {
-      $this->get('session')->setFlash('error', 'Master thumbnail could not be unset because sample record #' . $id . ' does not exist.');
+      $this->addFlash('error', 'Master thumbnail could not be unset because sample record #' . $id . ' does not exist.');
     }
 
     return new RedirectResponse($this->generateUrl('PapyrillioPapPalBundle_SampleShow', array('id' => $id)));

@@ -30,18 +30,18 @@ class ImageController extends PapPalController{
           try{
             $cropper->cropSpecial($coordinates['x'], $coordinates['y'], $coordinates['w'], $coordinates['h'], $this->getDirectoryForImages($sample), $image, $this->makeSureThumbnailDirectoryExists($sample), $sample->getHgv());
           }catch(Exception $e){
-            $this->get('session')->setFlash('notice', 'File ' . $filepath . ' could not be cropped.');
+            $this->addFlash('notice', 'File ' . $filepath . ' could not be cropped.');
             return new RedirectResponse($this->generateUrl('PapyrillioPapPalBundle_SampleShow', array('id' => $id)));
           }
 
           return new RedirectResponse($this->generateUrl('PapyrillioPapPalBundle_SampleShow', array('id' => $id)));
         }
       } else {
-        $this->get('session')->setFlash('notice', 'File ' . $filepath . ' could not be found on this system.');
+        $this->addFlash('notice', 'File ' . $filepath . ' could not be found on this system.');
         return new RedirectResponse($this->generateUrl('PapyrillioPapPalBundle_SampleShow', array('id' => $id)));
       }
     } else {
-      $this->get('session')->setFlash('notice', 'Sample record #' . $id . ' could not be found.');
+      $this->addFlash('notice', 'Sample record #' . $id . ' could not be found.');
         return new RedirectResponse($this->generateUrl('PapyrillioPapPalBundle_ThumbnailGallery'));
     }
     return $this->render('image/crop.html.twig', array('sample' => $sample, 'image' => $image));

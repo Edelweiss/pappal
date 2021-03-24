@@ -44,12 +44,9 @@
           <br />
         {% endfor %}
         
-        <form action="{{ path('PapyrillioPapPalBundle_SampleUploadImage', { 'id': sample.id }) }}" method="post" {{ form_enctype(uploadForm) }}>
-          {{ form_widget(uploadForm.image) }}
-          {{ form_errors(uploadForm.image) }}
-          {{ form_widget(uploadForm) }}
-          <input type="submit" class="submit" id="form_submit" value="Save" />
-        </form>
+
+        {{ form(uploadForm) }}
+        
       {% else %}
         {% for key, uploadedImage in sample.uploadedImages %}
           <a href="{{ asset(uploadedImage) }}">{{ key }}</a><br />

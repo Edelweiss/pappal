@@ -3,12 +3,14 @@
 namespace App\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
 use App\Entity\Sample;
 use App\Entity\Comment;
 use App\Entity\Thumbnail;
 use App\Entity\User;
+use App\Form\Type\SampleCreateType;
 
 
 #use Papyrillio\PapPalBundle\Service\ImagePeer;
@@ -25,20 +27,19 @@ class SampleAdminController extends PapPalController{
 
   public function create(): Response {
     $error = null;
-	$createForm = $this->getCreateForm();
+	  $createForm = $this->getCreateForm();
 
     // PHP Version 5.3.15
-    if($this->get('request')->getMethod() == 'POST' && $createForm->isValid()){
-		
+    if($this->request->getMethod() == 'POST' && $createForm->isValid()){
       $entityManager = $this->getDoctrine()->getManager();
       $repository = $entityManager->getRepository(Sample::class);
       $hgv = trim($createForm->get('hgv')->getData());
 
       if($sample = $repository->findOneBy(array('hgv' => $hgv))){ // ERROR! sample already exists
-        $this->get('session')->setFlash('notice', 'Sample data for hgv id #' . $hgv . ' already exists.');
+        $this->addFlash('notice', 'Sample data for hgv id #' . $hgv . ' already exists.');
         return new RedirectResponse($this->generateUrl('PapyrillioPapPalBundle_SampleShow', array('id' => $sample->getId())));
       }
-      
+
       // 1. get meta data
       if(($xml = @file_get_contents('http://www.papyri.info/hgv/' . $hgv . '/source')) !== FALSE){
 
@@ -57,7 +58,7 @@ class SampleAdminController extends PapPalController{
           $sample->setDigitalImages($xpath->getDigitalImages());
           $sample->setProvenance($xpath->getProvenance());
 
-          if($sample->getDigitalImages() or $this->get('request')->files){
+          if($sample->getDigitalImages() or $this->request->files){
 
             // 3. download images
             $crawler = $this->get('papyrillio_pap_pal.image_crawler');
@@ -71,7 +72,7 @@ class SampleAdminController extends PapPalController{
             }
 
 			// 4. add upload image to the crawler
-            $files = $this->get('request')->files->get($createForm->getName());
+            $files = $this->request->files->get($createForm->getName());
             $uploadedFile = $files['image'];
 			if($uploadedFile && $uploadedFile->getMimeType() === 'image/jpeg'){
 				$uploadedFile->move($uploadedFile->getPath(), $uploadedFile->getFilename() . '.jpg');
@@ -115,7 +116,7 @@ class SampleAdminController extends PapPalController{
 	                $entityManager->persist($thumbnail);
 	                $entityManager->flush();
 	                // success
-	                $this->get('session')->setFlash('notice', 'Thumbnail for hgv #' . $hgv . ' was created.');
+	                $this->addFlash('notice', 'Thumbnail for hgv #' . $hgv . ' was created.');
 	                return new RedirectResponse($this->generateUrl('PapyrillioPapPalBundle_SampleShow', array('id' => $sample->getId())));
 	              } catch (PDOException $e){
 	                $error = 'Metadata for #' . $hgv . ' could not be saved: ' . $e->getMessage() . ' (http://www.papyri.info/hgv/' . $hgv . '/source).';
@@ -143,18 +144,41 @@ class SampleAdminController extends PapPalController{
   }
 
   protected function getCreateForm(){
-    $form = $this->get('form.factory')
-     ->createBuilder('form')
-	 ->add('hgv','text', array('required' => true))
-     ->add('image','file', array('required' => false))
-     ->getForm();
+    $form = $this->createForm(SampleCreateType::class, new Sample()); // only two fields needed: hgv and image
 
-    if($this->get('request')->getMethod() == 'POST'){
-      $form->bindRequest($this->get('request'));
+    if($this->request->getMethod() == 'POST'){
+      $form->handleRequest($this->request);
     }
 
     return $form;
   }
+  
+  
+  
+  
+
+    protected function DELETE_getSearchForm(){
+    $form = $this->createForm(ThumbnailType::class, new Thumbnail());
+
+    if($this->getParameter('thumbnailSearchForm')) { // cl: how can I check for POST data containing search form information?
+
+      #$form->bindRequest($this->getRequest());
+
+      #$this->session->set('thumbnailSearchForm', $this->getRequest()); // save to session
+
+    } elseif ($this->session->get('thumbnailSearchForm')) {
+
+      #$form->bindRequest($this->session->get('thumbnailSearchForm')); // retrieve session
+
+    }
+
+    return $form;
+  }
+  
+  
+  
+  
+  
 }
 
 class EpiDocPath extends DOMXPath {

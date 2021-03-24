@@ -12,15 +12,8 @@
   <div class="clear"></div><br /><br />
 {% endif %}
 
-<form action="" method="post" {{ form_enctype(createForm) }}>
-  {{ form_label(createForm.hgv, 'HGV') }}
-  {{ form_widget(createForm.hgv) }}
-  {{ form_errors(createForm.hgv) }}
-  {{ form_label(createForm.image, 'Upload image (optional, only necessary if HGV record doesn\'t contain link to online ressource or if online archive cannot be harvested like ONB)') }}
-  {{ form_widget(createForm.image) }}
-  {{ form_errors(createForm.image) }}
-  {{ form_widget(createForm) }}
-  <input type="submit" class="submit" id="form_submit" value="Create" />
-</form>
+{{ form(createForm) }}
+
+<p>(uploading an image is optional, only necessary if HGV record doesn't contain link to online ressource or if online archive cannot be harvested, as is the case for ONB)</p>
 
 {% endblock %}
