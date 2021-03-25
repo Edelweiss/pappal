@@ -1,0 +1,24 @@
+App\Entity\Sample:
+    properties:
+        tm:
+            - Type: integer
+        hgv:
+            - Regex: '/^\d+[a-z]*$/'
+        ddb:
+            - Regex: '/^.+;.*;.+$/'
+        dateWhen:
+            - Date: ~
+        dateNotBefore:
+            - Date: ~
+        dateNotAfter:
+            - Date: ~
+        material:
+            - Type:
+                type: [Papyrus, Ostrakon]
+App\Entity\Thumbnail:
+    properties:
+        file:
+            - Regex: '/^.+\.jpe?g$/'
+        language:
+            - Type:
+                type: [grc, lat]
