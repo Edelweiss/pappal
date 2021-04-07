@@ -13,6 +13,7 @@ use App\Form\Type\SampleImageType;
 
 use App\Service\ImageRotator;
 use App\Service\ImageCropper;
+use App\Service\ImagePeer;
 use DateTime;
 use Date;
 
