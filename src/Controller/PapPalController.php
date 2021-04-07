@@ -23,7 +23,7 @@ class PapPalController extends AbstractController{
   }
 
   protected function getParameter($key){
-    if(parent::getParameter($key)){ // Symfony Container Parameters
+    if(parent::getParameter($key)){ // cl: Symfony Container Parameters
       return parent::getParameter($key);
     }
     if(array_key_exists($key, $this->allParameters)){ // GET & POST
