@@ -5,6 +5,7 @@ namespace App\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+user App\Service\ImageCropper;
 use App\Entity\Sample;
 use App\Entity\Comment;
 use App\Entity\User;
@@ -18,14 +19,13 @@ use Date;
 
 class ImageController extends PapPalController{
 
-  public function crop($id, $image): Response {
+  public function crop($id, $image, ImageCropper $cropper): Response {
     if($sample = $this->getSample($id)){
       if(file_exists($this->getFilepathForImage($sample, $image))){
 
         if($this->getRequest()->getMethod() === 'POST'){
 
           $coordinates = $this->getParameter('image');
-          $cropper = $this->get('papyrillio_pap_pal.image_cropper');
 
           try{
             $cropper->cropSpecial($coordinates['x'], $coordinates['y'], $coordinates['w'], $coordinates['h'], $this->getDirectoryForImages($sample), $image, $this->makeSureThumbnailDirectoryExists($sample), $sample->getHgv());

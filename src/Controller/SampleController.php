@@ -11,7 +11,8 @@ use App\Entity\Thumbnail;
 use App\Entity\User;
 use App\Form\Type\SampleImageType;
 
-use App\Service\ImagePeer;
+use App\Service\ImageRotator;
+use App\Service\ImageCropper;
 use DateTime;
 use Date;
 
@@ -106,7 +107,7 @@ class SampleController extends PapPalController{
     }
   }
 
-  public function uploadImage($id): Response {
+  public function uploadImage($id, ImageCropper $cropper): Response {
     if($sample = $this->getSample($id)){
       if($this->request->getMethod() == 'POST'){
         $uploadForm = $this->getUploadForm();
@@ -141,7 +142,6 @@ class SampleController extends PapPalController{
 
             // create thumbnails
             $thumbnailDirectory = $this->getDirectoryForThumbnails($sample);
-            $cropper = $this->get('papyrillio_pap_pal.image_cropper');
             $cropper->crop($imageDirectory, $filename, $thumbnailDirectory, $sample->getHgv());
 
             $this->addFlash('notice', 'Image has been uploaded.');
@@ -179,7 +179,7 @@ class SampleController extends PapPalController{
     }
   }
 
-  public function rotateThumbnail($id, $thumbnail, $direction): Response {
+  public function rotateThumbnail($id, $thumbnail, $direction, ImageRotator $rotator): Response {
     if($sample = $this->getSample($id)){
       $thumbnailDirectory = $this->getParameter('kernel.project_dir'). '/public/thumbnail';
       $folderDirectory = $thumbnailDirectory . '/' . $sample->getFolder();
@@ -188,7 +188,6 @@ class SampleController extends PapPalController{
 
       if(file_exists($filepath)){
         try{
-          $rotator = $this->get('papyrillio_pap_pal.image_rotator');
           $rotator->rotate($hgvDirectory, $thumbnail, $direction);
           return new Response(json_encode(array('success' => true, 'data' => array('id' => $id, 'thumbnail' => $thumbnail))));          
         } catch(Exception $e) {

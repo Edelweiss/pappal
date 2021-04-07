@@ -6,15 +6,15 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
+use App\Service\ImageCrawler;
+use App\Service\ImagePuncher;
+use App\Service\Image;
 use App\Entity\Sample;
 use App\Entity\Comment;
 use App\Entity\Thumbnail;
 use App\Entity\User;
 use App\Form\Type\SampleCreateType;
 
-
-#use Papyrillio\PapPalBundle\Service\ImagePeer;
-#use Papyrillio\PapPalBundle\Service\Image;
 use DateTime;
 use Date;
 use DomDocument;
@@ -25,7 +25,7 @@ use Exception;
 
 class SampleAdminController extends PapPalController{
 
-  public function create(): Response {
+  public function create(ImageCrawler $crawler, ImagePuncher $puncher): Response {
     $error = null;
 	  $createForm = $this->getCreateForm();
 
@@ -61,7 +61,6 @@ class SampleAdminController extends PapPalController{
           if($sample->getDigitalImages() or $this->request->files){
 
             // 3. download images
-            $crawler = $this->get('papyrillio_pap_pal.image_crawler');
 			      $crawlerError = '';
 			      foreach($sample->getImageLinks() as $url){
               try{
@@ -96,8 +95,6 @@ class SampleAdminController extends PapPalController{
 	              }
 
 	              // 6. create thumbnails
-	              $puncher = $this->get('papyrillio_pap_pal.image_puncher');
-	              
 	              $thumbnailDirectory = $this->makeSureThumbnailDirectoryExists($sample);
 	              foreach($sample->getUploadedImages() as $fileName => $relativeFilePath){
 	                $puncher->punch($hgvDirectory, $fileName, $thumbnailDirectory, $sample->getHgv(), $language != 'grc' ? $language : '');
