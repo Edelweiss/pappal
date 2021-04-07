@@ -54,7 +54,7 @@ class SampleController extends PapPalController{
     $entityManager = $this->getDoctrine()->getManager();
     $repository = $entityManager->getRepository(Sample::class);
     $sample = $repository->findOneBy(array('id' => $id));
-    
+
     if(!$sample){
       return $this->forward('sample/list');
     }
@@ -181,7 +181,7 @@ class SampleController extends PapPalController{
 
   public function rotateThumbnail($id, $thumbnail, $direction): Response {
     if($sample = $this->getSample($id)){
-      $thumbnailDirectory = $this->get('kernel')->getRootDir() . '/../web/thumbnail';
+      $thumbnailDirectory = $this->getParameter('kernel.project_dir'). '/public/thumbnail';
       $folderDirectory = $thumbnailDirectory . '/' . $sample->getFolder();
       $hgvDirectory = $folderDirectory . '/' . $sample->getHgv();
       $filepath =  $hgvDirectory . '/' . $thumbnail;
