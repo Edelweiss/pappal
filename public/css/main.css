@@ -309,6 +309,11 @@ div#header a:last-child {
   font-size: larger;
 }
 
+div#header div#navigation a:last-child {
+  padding: 0;
+  font-size: inherit;
+}
+
 /* SAMPLE FILTER */
 
 form#filter fieldset {
