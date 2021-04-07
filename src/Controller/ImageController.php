@@ -5,7 +5,7 @@ namespace App\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-user App\Service\ImageCropper;
+use App\Service\ImageCropper;
 use App\Entity\Sample;
 use App\Entity\Comment;
 use App\Entity\User;
