@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use App\Entity\Sample;
 
 class PapPalController extends AbstractController{
   protected $request;
@@ -22,7 +23,10 @@ class PapPalController extends AbstractController{
   }
 
   protected function getParameter($key){
-    if(array_key_exists($key, $this->allParameters)){
+    if(parent::getParameter($key)){ // Symfony Container Parameters
+      return parent::getParameter($key);
+    }
+    if(array_key_exists($key, $this->allParameters)){ // GET & POST
       return $this->allParameters[$key];
     }
     return null;
