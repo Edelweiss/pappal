@@ -140,6 +140,8 @@ class Sample
      */
     private $importDate;
 
+    private const THUMBNAIL_DIR = __DIR__ . '/../../public/thumbnail';
+
     public function updateDateSort(){
       $this->setDateSort(
         self::generateDateSortKey($this->dateWhen ? $this->dateWhen : ($this->dateNotBefore ? $this->dateNotBefore : $this->dateNotAfter))
@@ -147,22 +149,22 @@ class Sample
     }
 
     public function getThumbnail($fullpath = false){
-      return ($fullpath ? readlink(__DIR__ . '/../../../../web/thumbnail') . '/' : 'thumbnail/') . $this->folder . '/' . $this->hgv . '/' . $this->hgv . '.jpg';
+      return ($fullpath ? readlink(Sample::THUMBNAIL_DIR) . '/' : 'thumbnail/') . $this->folder . '/' . $this->hgv . '/' . $this->hgv . '.jpg';
     }
 
     public function getThumbnailList($fullpath = false){
       $thumbnailList = array();
       
       foreach($this->thumbnails as $thumbnail){
-        $thumbnailList[$thumbnail->getLanguage()] = ($fullpath ? readlink(__DIR__ . '/../../../../web/thumbnail') . '/' : 'thumbnail/') . $this->folder . '/' . $this->hgv . '/' . $this->hgv . ($thumbnail->getLanguage() !== 'grc' ? $thumbnail->getLanguage() : '') . '.jpg';
+        $thumbnailList[$thumbnail->getLanguage()] = ($fullpath ? readlink(Sample::THUMBNAIL_DIR) . '/' : 'thumbnail/') . $this->folder . '/' . $this->hgv . '/' . $this->hgv . ($thumbnail->getLanguage() !== 'grc' ? $thumbnail->getLanguage() : '') . '.jpg';
       }
 
-      return $thumbnailList; //($fullpath ? readlink(__DIR__ . '/../../../../web/thumbnail') . '/' : 'thumbnail/') . $this->folder . '/' . $this->hgv . '/' . $this->hgv . '.jpg';
+      return $thumbnailList; //($fullpath ? readlink(Sample::THUMBNAIL_DIR) . '/' : 'thumbnail/') . $this->folder . '/' . $this->hgv . '/' . $this->hgv . '.jpg';
     }
 
     public function getThumbnailStash(){
       $thumbnails = array();
-      $thumbnailDirectory = __DIR__ . '/../../../../web/thumbnail/' . $this->folder . '/' . $this->hgv;
+      $thumbnailDirectory = Sample::THUMBNAIL_DIR . '/' . $this->folder . '/' . $this->hgv;
 
       if(file_exists($thumbnailDirectory)){
         foreach(scandir($thumbnailDirectory) as $file){
@@ -175,7 +177,7 @@ class Sample
     }
 
     public function setMasterThumbnail($masterThumbnail, $language = 'grc'){ // only in the filesystem, should be part of the controller
-      $dir = readlink(__DIR__ . '/../../../../web/thumbnail') . '/' . $this->folder . '/' . $this->hgv;
+      $dir = readlink(Sample::THUMBNAIL_DIR) . '/' . $this->folder . '/' . $this->hgv;
       $masterThumbnail = $dir . '/' . $masterThumbnail;
       $link = $dir . '/' . $this->hgv . ($language != 'grc' ? $language : '') . '.jpg';
       if(file_exists($masterThumbnail)){
@@ -190,7 +192,7 @@ class Sample
     }
 
     public function unsetMasterThumbnail($language = 'grc'){ // only in the filesystem, should be part of the controller
-      $dir = readlink(__DIR__ . '/../../../../web/thumbnail') . '/' . $this->folder . '/' . $this->hgv;
+      $dir = readlink(Sample::THUMBNAIL_DIR) . '/' . $this->folder . '/' . $this->hgv;
       $link = $dir . '/' . $this->hgv . ($language != 'grc' ? $language : '') . '.jpg';
 
       if(file_exists($link)){
