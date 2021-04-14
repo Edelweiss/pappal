@@ -23,16 +23,4 @@ class ThumbnailType extends AbstractType {
             'data_class' => Thumbnail::class,
         ]);
     }
-    
-    /*public function getDefaultOptions(array $options)
-    {
-        return array(
-            'data_class' => 'Papyrillio\PapPalBundle\Entity\Thumbnail',
-        );
-    }
-
-    public function getName()
-    {
-        return 'thumbnail';
-    }*/
 }

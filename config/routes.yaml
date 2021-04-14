@@ -71,6 +71,10 @@ PapyrillioPapPalBundle_SampleSetMasterThumbnail:
     controller: App\Controller\SampleController:setMasterThumbnail
     defaults:
         language: grc
+    requirements:
+        id:  \d+
+        thumbnail:  \d+_\d+_\d+.jpg
+        language: grc|lat|cop|egy|ara
 
 PapyrillioPapPalBundle_SampleUnsetMasterThumbnail:
     path:  /sample/unsetMasterThumbnail/{id}

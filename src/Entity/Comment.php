@@ -31,7 +31,7 @@ class Comment {
         return $this->post;
     }
 
-    public function setSample(\Papyrillio\PapPalBundle\Entity\Sample $sample) {
+    public function setSample(\App\Entity\Sample $sample) {
         $this->sample = $sample;
     }
 
@@ -39,7 +39,7 @@ class Comment {
         return $this->sample;
     }
 
-    public function setUser(\Papyrillio\UserBundle\Entity\User $user) {
+    public function setUser(\App\Entity\User $user) {
         $this->user = $user;
     }
 

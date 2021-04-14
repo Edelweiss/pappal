@@ -205,25 +205,21 @@ class SampleController extends PapPalController{
     $repository = $entityManager->getRepository(Sample::class);
     $error = '';
 
-    if(!empty($thumbnail)){
-      if($sample = $this->getSample($id)){
-        if($sample->setMasterThumbnail($thumbnail, $language)){
-          if(!$sample->getThumbnailByLanguage($language)){
-            $newThumbnail = new Thumbnail($language);
-            $newThumbnail->setSample($sample);
-            $entityManager->persist($newThumbnail);
-            $entityManager->flush();
-            $sample->addThumbnail($newThumbnail); // Nanyatte!?!
-          }
-          return new Response(json_encode(array('success' => true, 'data' => array('id' => $id, 'thumbnail' => $thumbnail, 'asset' => $sample->getThumbnailByLanguage($language)->getFile(), 'language' => $language))));
-        } else {
-          $error = 'Preview image ' . $thumbnail . ' could not bee set as default thumbnail.';
+    if($sample = $this->getSample($id)){
+      if($sample->setMasterThumbnail($thumbnail, $language)){
+        if(!$sample->getThumbnailByLanguage($language)){
+          $newThumbnail = new Thumbnail($language);
+          $newThumbnail->setSample($sample);
+          $entityManager->persist($newThumbnail);
+          $entityManager->flush();
+          $sample->addThumbnail($newThumbnail); // Nanyatte!?!
         }
+        return new Response(json_encode(array('success' => true, 'data' => array('id' => $id, 'thumbnail' => $thumbnail, 'asset' => $sample->getThumbnailByLanguage($language)->getFile(), 'language' => $language))));
       } else {
-        $error = 'Preview image ' . $thumbnail . ' could not bee set because record #' . $id . ' does not exist.';
+        $error = 'Preview image ' . $thumbnail . ' could not be set as default thumbnail.';
       }
     } else {
-      $error = 'Empty image path';
+      $error = 'Preview image ' . $thumbnail . ' could not be set because record #' . $id . ' does not exist.';
     }
 
     return new Response(json_encode(array('success' => false, 'error' => $error)));

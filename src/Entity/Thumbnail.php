@@ -49,7 +49,7 @@ class Thumbnail {
     /**
      * Set sample -> also upates member variable »file«
      */
-    public function setSample(\Papyrillio\PapPalBundle\Entity\Sample $sample) {
+    public function setSample(\App\Entity\Sample $sample) {
         $this->sample = $sample;
         $this->file = $sample->getFolder() . '/' . $sample->getHgv() . '/' . $sample->getHgv() . ($this->language != 'grc' ? $this->language : '') . '.jpg';
     }

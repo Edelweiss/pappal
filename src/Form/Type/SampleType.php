@@ -27,16 +27,4 @@ class SampleType extends AbstractType {
             'data_class' => Sample::class,
         ]);
     }
-
-    /*public function getDefaultOptions(array $options)
-    {
-        return [
-            'data_class' => 'Papyrillio\PapPalBundle\Entity\Sample',
-        ];
-    }
-
-    public function getName()
-    {
-        return 'sample';
-    }*/
 }
