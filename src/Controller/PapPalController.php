@@ -70,7 +70,7 @@ class PapPalController extends AbstractController{
   }
 
   protected function getDirectory($sample, $rootDirectory = 'sample'){
-    return $this->get('kernel')->getRootDir() . '/../web/' . $rootDirectory . '/' . $sample->getFolder() . '/' . $sample->getHgv();
+    return $this->getParameter('kernel.project_dir'). '/public/' . $rootDirectory . '/' . $sample->getFolder() . '/' . $sample->getHgv();
   }
 
   // makeSureDirectoryExists
@@ -84,7 +84,7 @@ class PapPalController extends AbstractController{
   }
 
   protected function makeSureDirectoryExists($sample, $rootDirectory = 'sample'){
-    $rootDirectory = $this->get('kernel')->getRootDir() . '/../web/' . $rootDirectory;
+    $rootDirectory = $this->getParameter('kernel.project_dir'). '/public/' . $rootDirectory;
     $folderDirectory = $rootDirectory . '/' . $sample->getFolder();
     $hgvDirectory = $folderDirectory . '/' . $sample->getHgv();
 

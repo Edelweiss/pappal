@@ -141,6 +141,7 @@ class Sample
     private $importDate;
 
     private const THUMBNAIL_DIR = __DIR__ . '/../../public/thumbnail';
+    private const SAMPLE_DIR    = __DIR__ . '/../../public/sample';
 
     public function updateDateSort(){
       $this->setDateSort(
@@ -219,7 +220,7 @@ class Sample
      * */
     public function getUploadedImages(){
       $imageLinks = array();
-      $imageDirectory = __DIR__ . '/../../../../web/sample/' . $this->folder . '/' . $this->hgv;
+      $imageDirectory = Sample::SAMPLE_DIR . '/' . $this->folder . '/' . $this->hgv;
 
       if(file_exists($imageDirectory)){
         foreach(scandir($imageDirectory) as $file){
