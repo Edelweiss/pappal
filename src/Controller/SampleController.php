@@ -163,14 +163,14 @@ class SampleController extends PapPalController{
     if($sample = $this->getSample($id)){
       if(file_exists($filepath = $this->getFilepathForThumbnail($sample, $thumbnail))){
         $link = readlink($sample->getThumbnail(true));
-        if(strstr($link, '/' . $thumbnail) === FALSE){
+        if($link != $thumbnail){
           if(unlink($filepath)){
             return new Response(json_encode(array('success' => true, 'data' => array('id' => $id, 'thumbnail' => $thumbnail))));          
           } else {
-            return new Response(json_encode(array('success' => false, 'error' => 'File ' . $filepath . ' could not be deleted.')));
+            return new Response(json_encode(array('success' => false, 'error' => 'Unlink operation failed for file ' . $filepath)));
           }
         } else {
-          return new Response(json_encode(array('success' => false, 'error' => 'Thumbnail ' . $thumbnail . ' could be deleted because it is the current preview item.')));
+          return new Response(json_encode(array('success' => false, 'error' => 'Thumbnail ' . $thumbnail . ' was not deleted because it is the current preview item.')));
         }
       } else {
         return new Response(json_encode(array('success' => false, 'error' => 'File ' . $filepath . ' could not be found on this system.')));
