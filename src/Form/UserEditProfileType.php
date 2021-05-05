@@ -15,9 +15,9 @@ class UserEditProfileType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder
-            ->add('username', TextType::class)
+            ->add('username', TextType::class) // ALTER TABLE `user` ADD UNIQUE(`username`);
             ->add('email', EmailType::class)
-            //->add('password', PasswordType::class)
+            ->add('password', PasswordType::class)
             ;
     }
 
