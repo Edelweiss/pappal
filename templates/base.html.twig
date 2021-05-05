@@ -82,9 +82,19 @@
               <br />
               <a href="{{ path('PapyrillioPapPalBundle_ThumbnailList') }}" title="Browse Images&nbsp;…" class="pageLinkTop ">To the Images&nbsp;…</a>
             </div>
+            <div id="flash"><!-- flash -->
+              {% if app.session.flashbag.peekAll|length > 0 %}
+                {% for type, messages in app.session.flashbag.all %}
+                  {% for message in messages %}
+                    <div class="{{ type ? type : '' }}">
+                      {{ message|trans({}, domain|default('messages')) }}
+                    </div>
+                  {% endfor %}
+                {% endfor %}
+              {% endif %}
+            </div>
             <div id="content">
-                <!-- flash -->
-                {% block body %}{% endblock %}
+              {% block body %}{% endblock %}
             </div>
             <div class="clear">&nbsp;</div>
             <div id="footer">
