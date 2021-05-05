@@ -257,29 +257,29 @@ div#tiptip_content span.title:hover {
 /* LOGIN */
 
 form#login,
-form[name="user"] {
+form[name^="user"] {
     margin: 0 auto;
     width: 19em;
     padding: 10em;
 }
 
-form[name="user"] {
+form[name^="user"] {
     width: 22em;
 }
 
 form#login label,
-form[name="user"] label {
+form[name^="user"] label {
     float: left;
     margin: 0.2em;
 }
 
 form#login input,
-form[name="user"] input {
+form[name^="user"] input {
     float: right;
     margin: 0.2em;
 }
 
-form[name="user"] button {
+form[name^="user"] button {
     float: none;
     display: block;
 }
