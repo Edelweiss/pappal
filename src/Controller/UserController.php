@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Form\UserEditProfileType;
+use App\Form\UserChangePasswordType;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use App\Entity\User;
@@ -21,7 +22,6 @@ class UserController extends PapPalController
         //}
 
         $user = $this->getUser();
-        //dump($user->getUsername());
         $form = $this->createForm(UserEditProfileType::class, $user);
 
         //$form->handleRequest($request);
@@ -56,6 +56,33 @@ class UserController extends PapPalController
         }*/
 
         return $this->render('user/editProfile.html.twig', ['form' => $form->createView()]);
+    }
+
+    public function changePassword(Request $request, AuthenticationUtils $authenticationUtils, UserPasswordEncoderInterface $passwordEncoder): Response
+    {
+        $user = $this->getUser();
+        $form = $this->createForm(UserChangePasswordType::class, $user);
+
+        if($this->getParameter('user_change_password')){
+            if($this->getParameter('password') && $passwordEncoder->isPasswordValid($user, $this->getParameter('password')) === true){
+                $form->handleRequest($request);
+                if ($form->isSubmitted() && $form->isValid()) {
+                    // Save
+                    $formData = $this->getParameter('user_change_password');
+                    $user->setPassword($passwordEncoder->encodePassword($user, $formData['password']['first']));
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($user);
+                    $em->flush();
+                    $this->addFlash('notice', 'Perfect');
+                } else {
+                    $this->addFlash('error', 'Invalid form');
+                }
+            } else {
+                $this->addFlash('error', 'Wrong password');
+            }
+        }
+
+        return $this->render('user/changePassword.html.twig', ['form' => $form->createView()]);
     }
 
 }
