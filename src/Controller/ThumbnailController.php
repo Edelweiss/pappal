@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
@@ -74,17 +73,12 @@ class ThumbnailController extends PapPalController{
 
   protected function getSearchForm(){
     $form = $this->createForm(ThumbnailType::class, new Thumbnail());
-
-    if($this->getParameter('thumbnailSearchForm')) { // cl: how can I check for POST data containing search form information?
-
-      #$form->bindRequest($this->getRequest());
-
-      #$this->session->set('thumbnailSearchForm', $this->getRequest()); // save to session
+    if($this->request->getMethod() == 'POST') {
+      $form->handleRequest($this->request);
+      $this->session->set('thumbnailSearchForm', $form->getData()); // save to session
 
     } elseif ($this->session->get('thumbnailSearchForm')) {
-
-      #$form->bindRequest($this->session->get('thumbnailSearchForm')); // retrieve session
-
+      $form->setData($this->session->get('thumbnailSearchForm')); // retrieve session
     }
 
     return $form;
