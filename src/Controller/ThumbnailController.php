@@ -55,9 +55,8 @@ class ThumbnailController extends PapPalController{
   }
 
   protected function getSearchForm(){
-    $form = null;
+    $form = $this->createForm(ThumbnailType::class, new Thumbnail());
     if($this->request->getMethod() == 'POST') {
-      $form = $this->createForm(ThumbnailType::class, new Thumbnail());
       $form->handleRequest($this->request);
       $this->session->set('thumbnailSearchForm', $form->getData()); // save to session
     } elseif ($this->session->get('thumbnailSearchForm')) {
