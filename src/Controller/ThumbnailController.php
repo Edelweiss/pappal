@@ -16,16 +16,11 @@ class ThumbnailController extends PapPalController{
 
   protected function getFilter(){
     $result = null;
-
     if($thumbnail = $this->getParameter('thumbnail')){
       $result = array_merge(array('s' => $thumbnail['sample']), array('t' => array('language' => $thumbnail['language'])));
-
       $this->session->set('thumbnailFilter', $result); // save to session
-
     } elseif($this->session->get('thumbnailFilter')){
-
       $result = $this->session->get('thumbnailFilter'); // retrieve session
-
     }
     return $result;
   }
@@ -38,49 +33,36 @@ class ThumbnailController extends PapPalController{
           $result[$sort['value']] = $sort['direction'];
         }
       }
-      
       $this->session->set('sampleSort', $result); // save to session
-
     } elseif($this->session->get('sampleSort')){
-
       $result = $this->session->get('sampleSort'); // retrieve session
-
     }
     return $result;
   }
 
   public function getTemplate(){
     $template = 'list';
-    
     #if($this->container->get('request')->get('_route') == 'PapyrillioPapPalBundle_ThumbnailGallery'){
     if($this->getRoute() == 'PapyrillioPapPalBundle_ThumbnailGallery'){
-
       $template = 'gallery';
-
     } elseif($this->getParameter('template')){
-
       $template = $this->getParameter('template');
       $this->session->set('sampleTemplate', $template); // save to session
-
     } elseif($this->session->get('sampleTemplate')){
-
       $template = $this->session->get('sampleTemplate'); // retrieve session
-
     }
-
     return $template;
   }
 
   protected function getSearchForm(){
-    $form = $this->createForm(ThumbnailType::class, new Thumbnail());
+    $form = null;
     if($this->request->getMethod() == 'POST') {
+      $form = $this->createForm(ThumbnailType::class, new Thumbnail());
       $form->handleRequest($this->request);
       $this->session->set('thumbnailSearchForm', $form->getData()); // save to session
-
     } elseif ($this->session->get('thumbnailSearchForm')) {
-      $form->setData($this->session->get('thumbnailSearchForm')); // retrieve session
+      $form = $this->createForm(ThumbnailType::class, $this->session->get('thumbnailSearchForm')); // retrieve session
     }
-
     return $form;
   }
 
