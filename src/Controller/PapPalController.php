@@ -84,7 +84,8 @@ class PapPalController extends AbstractController{
   }
 
   protected function makeSureDirectoryExists($sample, $rootDirectory = 'sample'){
-    $rootDirectory = $this->getParameter('kernel.project_dir'). '/public/' . $rootDirectory;
+    $rootDirectory = $this->getParameter('kernel.project_dir') . '/public/' . $rootDirectory;
+    
     $folderDirectory = $rootDirectory . '/' . $sample->getFolder();
     $hgvDirectory = $folderDirectory . '/' . $sample->getHgv();
 
@@ -97,7 +98,5 @@ class PapPalController extends AbstractController{
 
     return $hgvDirectory;
   }
-  
-  
 
 }

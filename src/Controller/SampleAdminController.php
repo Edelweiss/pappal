@@ -70,19 +70,21 @@ class SampleAdminController extends PapPalController{
 			        }
             }
 
-			// 4. add upload image to the crawler
+            // 4. add upload image to the crawler
             $files = $this->request->files->get($createForm->getName());
             $uploadedFile = $files['image'];
-			if($uploadedFile && $uploadedFile->getMimeType() === 'image/jpeg'){
-				$uploadedFile->move($uploadedFile->getPath(), $uploadedFile->getFilename() . '.jpg');
-				$image = new Image($uploadedFile->getPath() . '/' . $uploadedFile->getFilename() . '.jpg', preg_replace('/\.[^\.]+$/', '', $uploadedFile->getClientOriginalName()) . '.jpg', 'Upload');
-				$crawler->addImage($image);
-			}
+            if($uploadedFile && $uploadedFile->getMimeType() === 'image/jpeg'){
+              $uploadedFile->move($uploadedFile->getPath(), $uploadedFile->getFilename() . '.jpg');
+              $image = new Image($uploadedFile->getPath() . '/' . $uploadedFile->getFilename() . '.jpg', preg_replace('/\.[^\.]+$/', '', $uploadedFile->getClientOriginalName()) . '.jpg', 'Upload');
+              $crawler->addImage($image);
+            }
 
             if(count($crawler->images) > 0){
 
 	            try{
+                
 	              $hgvDirectory = $this->makeSureImageDirectoryExists($sample);
+
 	              $crawler->saveImages($hgvDirectory);
 	
 	              // 5. determine language from meta data (greek by default)
@@ -142,40 +144,12 @@ class SampleAdminController extends PapPalController{
 
   protected function getCreateForm(){
     $form = $this->createForm(SampleCreateType::class, new Sample()); // only two fields needed: hgv and image
-
     if($this->request->getMethod() == 'POST'){
       $form->handleRequest($this->request);
     }
-
     return $form;
   }
-  
-  
-  
-  
 
-    protected function DELETE_getSearchForm(){
-    $form = $this->createForm(ThumbnailType::class, new Thumbnail());
-
-    if($this->getParameter('thumbnailSearchForm')) { // cl: how can I check for POST data containing search form information?
-
-      #$form->bindRequest($this->getRequest());
-
-      #$this->session->set('thumbnailSearchForm', $this->getRequest()); // save to session
-
-    } elseif ($this->session->get('thumbnailSearchForm')) {
-
-      #$form->bindRequest($this->session->get('thumbnailSearchForm')); // retrieve session
-
-    }
-
-    return $form;
-  }
-  
-  
-  
-  
-  
 }
 
 class EpiDocPath extends DOMXPath {
