@@ -118,8 +118,8 @@ class ImagePuncher{
     $link = $this->targetDirectory . '/' . $this->prefix . $this->suffix . '.jpg';
     
     if(!file_exists($link)){
-      if(!symlink($target, $link)){
-        throw new Exception('ImageCropper::setRandomMasterSample> symlink failed (' . $target . ')');
+      if(!copy($target, $link)){
+        throw new Exception('ImageCropper::setRandomMasterSample> copy failed (' . $target . ')');
       }
     }
   }
