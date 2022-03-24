@@ -44,14 +44,14 @@ class Sample
     }
 
     public function getThumbnail($fullpath = false){
-      return ($fullpath ? readlink(Sample::THUMBNAIL_DIR) . '/' : 'thumbnail/') . $this->folder . '/' . $this->hgv . '/' . $this->hgv . '.jpg';
+      return ($fullpath ? Sample::THUMBNAIL_DIR . '/' : 'thumbnail/') . $this->folder . '/' . $this->hgv . '/' . $this->hgv . '.jpg';
     }
 
     public function getThumbnailList($fullpath = false){
       $thumbnailList = array();
       
       foreach($this->thumbnails as $thumbnail){
-        $thumbnailList[$thumbnail->getLanguage()] = ($fullpath ? readlink(Sample::THUMBNAIL_DIR) . '/' : 'thumbnail/') . $this->folder . '/' . $this->hgv . '/' . $this->hgv . ($thumbnail->getLanguage() !== 'grc' ? $thumbnail->getLanguage() : '') . '.jpg';
+        $thumbnailList[$thumbnail->getLanguage()] = ($fullpath ? Sample::THUMBNAIL_DIR . '/' : 'thumbnail/') . $this->folder . '/' . $this->hgv . '/' . $this->hgv . ($thumbnail->getLanguage() !== 'grc' ? $thumbnail->getLanguage() : '') . '.jpg';
       }
 
       return $thumbnailList; //($fullpath ? readlink(Sample::THUMBNAIL_DIR) . '/' : 'thumbnail/') . $this->folder . '/' . $this->hgv . '/' . $this->hgv . '.jpg';
@@ -72,20 +72,20 @@ class Sample
     }
 
     public function setMasterThumbnail($masterThumbnail, $language = 'grc'){ // only in the filesystem, should be part of the controller
-      $dir = readlink(Sample::THUMBNAIL_DIR) . '/' . $this->folder . '/' . $this->hgv;
+      $dir = Sample::THUMBNAIL_DIR . '/' . $this->folder . '/' . $this->hgv;
       $link = $this->hgv . ($language != 'grc' ? $language : '') . '.jpg';
       if(file_exists($dir . '/' . $masterThumbnail)){
         if(file_exists($dir . '/' . $link)){
           unlink($dir . '/' . $link);
         }
-        exec('cd ' . $dir . '; ln -s ' . $masterThumbnail . ' ' . $link);
+        exec('cd ' . $dir . '; cp ' . $masterThumbnail . ' ' . $link);
         return true;
       }
       return false;
     }
 
     public function unsetMasterThumbnail($language = 'grc'){ // only in the filesystem, should be part of the controller
-      $dir = readlink(Sample::THUMBNAIL_DIR) . '/' . $this->folder . '/' . $this->hgv;
+      $dir = Sample::THUMBNAIL_DIR . '/' . $this->folder . '/' . $this->hgv;
       $link = $dir . '/' . $this->hgv . ($language != 'grc' ? $language : '') . '.jpg';
 
       if(file_exists($link)){
