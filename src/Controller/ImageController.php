@@ -23,7 +23,7 @@ class ImageController extends PapPalController{
     if($sample = $this->getSample($id)){
       if(file_exists($this->getFilepathForImage($sample, $image))){
 
-        if($this->getRequest()->getMethod() === 'POST'){
+        if($this->request->getMethod() === 'POST'){
 
           $coordinates = $this->getParameter('image');
 

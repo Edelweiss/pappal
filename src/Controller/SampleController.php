@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Controller;
-
+use App\Controller\ThumbnailController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -24,51 +24,51 @@ class SampleController extends PapPalController{
     $entityManager = $this->getDoctrine()->getManager();
     $repository = $entityManager->getRepository(Sample::class);
 
-    if($sample = $repository->findOneBy(array('tm' => $tm))){
-      return $this->forward('sample/show', array('id' => $sample->getId(), '_route' => $this->getRequest()->attributes->get('_route')));
+    if($sample = $repository->findOneBy(['tm' => $tm])){
+      return $this->forward('App\Controller\SampleController::show', ['id' => $sample->getId(), '_route' => $this->request->attributes->get('_route')]);
     }
 
-    return $this->render('sample/notFound.html.twig', array('identifierClass' => 'tm', 'id' => $tm));
+    return $this->render('sample/notFound.html.twig', ['identifierClass' => 'tm', 'id' => $tm]);
   }
 
   public function hgv($hgv): Response {
     $entityManager = $this->getDoctrine()->getManager();
     $repository = $entityManager->getRepository(Sample::class);
 
-    if($sample = $repository->findOneBy(array('hgv' => $hgv))){
-      return $this->forward('sample/show', array('id' => $sample->getId(), '_route' => $this->getRoute()));
+    if($sample = $repository->findOneBy(['hgv' => $hgv])){
+      return $this->forward('App\Controller\SampleController::show', ['id' => $sample->getId(), '_route' => $this->getRoute()]);
     }
 
-    return $this->render('sample/notFound.html.twig', array('identifierClass' => 'hgv', 'id' => $hgv));
+    return $this->render('sample/notFound.html.twig', ['identifierClass' => 'hgv', 'id' => $hgv]);
   }
 
   public function ddb($ddb): Response {
     $entityManager = $this->getDoctrine()->getManager();
     $repository = $entityManager->getRepository(Sample::class);
 
-    if($sample = $repository->findOneBy(array('ddb' => $ddb))){
-      return $this->forward('sample/show', array('id' => $sample->getId(), '_route' => $this->getRequest()->attributes->get('_route')));
+    if($sample = $repository->findOneBy(['ddb' => $ddb])){
+      return $this->forward('App\Controller\SampleController::show', ['id' => $sample->getId(), '_route' => $this->request->attributes->get('_route')]);
     }
 
-    return $this->render('sample/notFound.html.twig', array('identifierClass' => 'ddb', 'id' => $ddb));
+    return $this->render('sample/notFound.html.twig', ['identifierClass' => 'ddb', 'id' => $ddb]);
   }
 
   public function show($id): Response {
     $entityManager = $this->getDoctrine()->getManager();
     $repository = $entityManager->getRepository(Sample::class);
-    $sample = $repository->findOneBy(array('id' => $id));
+    $sample = $repository->findOneBy(['id' => $id]);
 
     if(!$sample){
-      return $this->forward('sample/list');
+      //return $this->forward('App\Controller\ThumbnailController::list');
+      return new RedirectResponse($this->generateUrl('PapyrillioPapPalBundle_ThumbnailList'));
     }
-
-    return $this->render('sample/show.html.twig', array('sample' => $sample, 'uploadForm' => $this->getUploadForm()->createView(), 'clockwise' => ImagePeer::DIRECTION_CLOCKWISE, 'counterclockwise' => ImagePeer::DIRECTION_COUNTERCLOCKWISE));
+    return $this->render('sample/show.html.twig', ['sample' => $sample, 'uploadForm' => $this->getUploadForm()->createView(), 'clockwise' => ImagePeer::DIRECTION_CLOCKWISE, 'counterclockwise' => ImagePeer::DIRECTION_COUNTERCLOCKWISE]);
   }
 
   public function delete($id): Response {
     $entityManager = $this->getDoctrine()->getManager();
     $repository = $entityManager->getRepository(Sample::class);
-    $sample = $repository->findOneBy(array('id' => $id));
+    $sample = $repository->findOneBy(['id' => $id]);
 
     if($sample){
       foreach($sample->getThumbnails() as $thumbnail){
@@ -80,7 +80,7 @@ class SampleController extends PapPalController{
       return new RedirectResponse($this->generateUrl('PapyrillioPapPalBundle_ThumbnailList'));
     }
 
-    return new RedirectResponse($this->generateUrl('PapyrillioPapPalBundle_SampleShow', array('id' => $id)));
+    return new RedirectResponse($this->generateUrl('PapyrillioPapPalBundle_SampleShow', ['id' => $id]));
   }
 
   protected function getUploadForm(){
@@ -97,15 +97,15 @@ class SampleController extends PapPalController{
     if($sample = $this->getSample($id)){
       if(file_exists($filepath = $this->getFilepathForImage($sample, $image))){
           if(unlink($filepath)){
-            return new Response(json_encode(array('success' => true, 'data' => array('id' => $id, 'image' => $image))));          
+            return new Response(json_encode(['success' => true, 'data' => ['id' => $id, 'image' => $image]]));          
           } else {
-            return new Response(json_encode(array('success' => false, 'error' => 'File ' . $filepath . ' could not be deleted.')));
+            return new Response(json_encode(['success' => false, 'error' => 'File ' . $filepath . ' could not be deleted.']));
           }
       } else {
-        return new Response(json_encode(array('success' => false, 'error' => 'File ' . $filepath . ' could not be found on this system.')));
+        return new Response(json_encode(['success' => false, 'error' => 'File ' . $filepath . ' could not be found on this system.']));
       }
     } else {
-      return new Response(json_encode(array('success' => false, 'error' => 'Sample record #' . $id . ' could not be found.')));
+      return new Response(json_encode(['success' => false, 'error' => 'Sample record #' . $id . ' could not be found.']));
     }
   }
 
@@ -123,7 +123,7 @@ class SampleController extends PapPalController{
 
             // make sure it ends with ».jpg«
             $filename = $uploadedFile->getClientOriginalName();
-            $match = array();
+            $match = [];
             if(preg_match('/^(.+)\.jpe?g$/i', $filename, $match)){
               $filename = $match[1] . '.jpg';
             } else {
@@ -154,7 +154,7 @@ class SampleController extends PapPalController{
           $this->addFlash('error', 'Invalid form data.');
         }
       }
-      return new RedirectResponse($this->generateUrl('PapyrillioPapPalBundle_SampleShow', array('id' => $id)));
+      return new RedirectResponse($this->generateUrl('PapyrillioPapPalBundle_SampleShow', ['id' => $id]));
     } else {
       return new RedirectResponse($this->generateUrl('PapyrillioPapPalBundle_ThumbnailList'));
     }
@@ -164,15 +164,15 @@ class SampleController extends PapPalController{
     if($sample = $this->getSample($id)){
       if(file_exists($filepath = $this->getFilepathForThumbnail($sample, $thumbnail))){
           if(unlink($filepath)){
-            return new Response(json_encode(array('success' => true, 'data' => array('id' => $id, 'thumbnail' => $thumbnail))));          
+            return new Response(json_encode(['success' => true, 'data' => ['id' => $id, 'thumbnail' => $thumbnail]]));          
           } else {
-            return new Response(json_encode(array('success' => false, 'error' => 'Unlink operation failed for file ' . $filepath)));
+            return new Response(json_encode(['success' => false, 'error' => 'Unlink operation failed for file ' . $filepath]));
           }
       } else {
-        return new Response(json_encode(array('success' => false, 'error' => 'File ' . $filepath . ' could not be found on this system.')));
+        return new Response(json_encode(['success' => false, 'error' => 'File ' . $filepath . ' could not be found on this system.']));
       }
     } else {
-      return new Response(json_encode(array('success' => false, 'error' => 'Sample record #' . $id . ' could not be found.')));
+      return new Response(json_encode(['success' => false, 'error' => 'Sample record #' . $id . ' could not be found.']));
     }
   }
 
@@ -186,12 +186,12 @@ class SampleController extends PapPalController{
       if(file_exists($filepath)){
         try{
           $rotator->rotate($hgvDirectory, $thumbnail, $direction);
-          return new Response(json_encode(array('success' => true, 'data' => array('id' => $id, 'thumbnail' => $thumbnail))));          
+          return new Response(json_encode(['success' => true, 'data' => ['id' => $id, 'thumbnail' => $thumbnail]]));          
         } catch(Exception $e) {
-          return new Response(json_encode(array('success' => false, 'error' => 'File ' . $filepath . ' could not be rotated (' . $e->getMessage() . ').')));
+          return new Response(json_encode(['success' => false, 'error' => 'File ' . $filepath . ' could not be rotated (' . $e->getMessage() . ').']));
         }
       } else {
-        return new Response(json_encode(array('success' => false, 'error' => 'File ' . $filepath . ' could not be found on this system.')));
+        return new Response(json_encode(['success' => false, 'error' => 'File ' . $filepath . ' could not be found on this system.']));
       }
     }
   }
@@ -210,7 +210,7 @@ class SampleController extends PapPalController{
           $entityManager->flush();
           $sample->addThumbnail($newThumbnail); // Nanyatte!?!
         }
-        return new Response(json_encode(array('success' => true, 'data' => array('id' => $id, 'thumbnail' => $thumbnail, 'asset' => $sample->getThumbnailByLanguage($language)->getFile(), 'language' => $language))));
+        return new Response(json_encode(['success' => true, 'data' => ['id' => $id, 'thumbnail' => $thumbnail, 'asset' => $sample->getThumbnailByLanguage($language)->getFile(), 'language' => $language]]));
       } else {
         $error = 'Preview image ' . $thumbnail . ' could not be set as default thumbnail.';
       }
@@ -218,14 +218,14 @@ class SampleController extends PapPalController{
       $error = 'Preview image ' . $thumbnail . ' could not be set because record #' . $id . ' does not exist.';
     }
 
-    return new Response(json_encode(array('success' => false, 'error' => $error)));
+    return new Response(json_encode(['success' => false, 'error' => $error]));
   }
 
   public function unsetMasterThumbnail($id): Response {
     $entityManager = $this->getDoctrine()->getManager();
     $repository = $entityManager->getRepository(Sample::class);
     $language = $this->getParameter('language');
-    $languages = array('lat' => 'Lateinisch', 'grc' => 'Griechisch');
+    $languages = ['lat' => 'Lateinisch', 'grc' => 'Griechisch'];
 
     if($sample = $this->getSample($id)){
       if($sample->unsetMasterThumbnail($language)){
@@ -243,7 +243,7 @@ class SampleController extends PapPalController{
       $this->addFlash('error', 'Master thumbnail could not be unset because sample record #' . $id . ' does not exist.');
     }
 
-    return new RedirectResponse($this->generateUrl('PapyrillioPapPalBundle_SampleShow', array('id' => $id)));
+    return new RedirectResponse($this->generateUrl('PapyrillioPapPalBundle_SampleShow', ['id' => $id]));
   }
 
 }
