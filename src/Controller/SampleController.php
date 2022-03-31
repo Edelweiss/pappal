@@ -62,7 +62,7 @@ class SampleController extends PapPalController{
       //return $this->forward('App\Controller\ThumbnailController::list');
       return new RedirectResponse($this->generateUrl('PapyrillioPapPalBundle_ThumbnailList'));
     }
-    return $this->render('sample/show.html.twig', ['sample' => $sample, 'uploadForm' => $this->getUploadForm()->createView(), 'clockwise' => ImagePeer::DIRECTION_CLOCKWISE, 'counterclockwise' => ImagePeer::DIRECTION_COUNTERCLOCKWISE]);
+    return $this->render('sample/show.html.twig', ['sample' => $sample, 'uploadForm' => $this->getUploadForm($id)->createView(), 'clockwise' => ImagePeer::DIRECTION_CLOCKWISE, 'counterclockwise' => ImagePeer::DIRECTION_COUNTERCLOCKWISE]);
   }
 
   public function delete($id): Response {
@@ -83,9 +83,8 @@ class SampleController extends PapPalController{
     return new RedirectResponse($this->generateUrl('PapyrillioPapPalBundle_SampleShow', ['id' => $id]));
   }
 
-  protected function getUploadForm(){
-    $uploadForm = $this->createForm(SampleImageType::class, new Sample());
-
+  protected function getUploadForm($id){
+    $uploadForm = $this->createForm(SampleImageType::class, new Sample(), ['action' => $this->generateUrl('PapyrillioPapPalBundle_SampleUploadImage', ['id' => $id])]);
     if($this->request->getMethod() == 'POST'){
       $uploadForm->handleRequest($this->request);
     }
@@ -112,7 +111,7 @@ class SampleController extends PapPalController{
   public function uploadImage($id, ImageCropper $cropper): Response {
     if($sample = $this->getSample($id)){
       if($this->request->getMethod() == 'POST'){
-        $uploadForm = $this->getUploadForm();
+        $uploadForm = $this->getUploadForm($id);
         if($uploadForm->isValid()){
           //Symfony\Component\HttpFoundation\File\UploadedFile
           $files = $this->request->files->get($uploadForm->getName());
