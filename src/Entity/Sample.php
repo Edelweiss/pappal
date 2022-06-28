@@ -34,8 +34,8 @@ class Sample
     private $thumbnails;
     private $importDate;
 
-    private const THUMBNAIL_DIR = __DIR__ . '/../../public/thumbnail';
-    private const SAMPLE_DIR    = __DIR__ . '/../../public/sample';
+    private const THUMBNAIL_DIR = '/mnt/sds_cifs/pappal/thumbnail';
+    private const SAMPLE_DIR    = '/mnt/sds_cifs/pappal/sample';
 
     public function updateDateSort(){
       $this->setDateSort(
