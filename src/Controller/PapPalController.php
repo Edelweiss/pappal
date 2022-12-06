@@ -15,6 +15,9 @@ class PapPalController extends AbstractController{
   protected $session;
   protected $allParameters = [];
 
+  protected const THUMBNAIL_DIR = '/mnt/sds_cifs/pappal/thumbnail';
+  protected const SAMPLE_DIR    = '/mnt/sds_cifs/pappal/sample';
+
   public function __construct(RequestStack $requestStack, SessionInterface $session)
   {
       $this->request = $requestStack->getCurrentRequest();
@@ -70,7 +73,7 @@ class PapPalController extends AbstractController{
   }
 
   protected function getDirectory($sample, $rootDirectory = 'sample'){
-    return '/mnt/sds_cifs/pappal/' . $rootDirectory . '/' . $sample->getFolder() . '/' . $sample->getHgv();
+    return ($rootDirectory === 'sample' ? self::SAMPLE_DIR : self::THUMBNAIL_DIR) . '/' . $sample->getFolder() . '/' . $sample->getHgv();
   }
 
   // makeSureDirectoryExists
@@ -84,7 +87,7 @@ class PapPalController extends AbstractController{
   }
 
   protected function makeSureDirectoryExists($sample, $rootDirectory = 'sample'){
-    $rootDirectory = '/mnt/sds_cifs/pappal/' . $rootDirectory;
+    $rootDirectory = $rootDirectory === 'sample' ? self::SAMPLE_DIR : self::THUMBNAIL_DIR;
     
     $folderDirectory = $rootDirectory . '/' . $sample->getFolder();
     $hgvDirectory = $folderDirectory . '/' . $sample->getHgv();

@@ -110,13 +110,13 @@ class SampleController extends PapPalController{
 
   public function uploadImage($id, ImageCropper $cropper): Response {
     if($sample = $this->getSample($id)){
-      if($this->request->getMethod() == 'POST'){
+      if($this->request->getMethod() === 'POST'){
         $uploadForm = $this->getUploadForm($id);
         if($uploadForm->isValid()){
           //Symfony\Component\HttpFoundation\File\UploadedFile
           $files = $this->request->files->get($uploadForm->getName());
           $uploadedFile = $files['image'];
-          if($uploadedFile->getMimeType() == 'image/jpeg'){
+          if($uploadedFile->getMimeType() === 'image/jpeg'){
 
             $imageDirectory = $this->makeSureImageDirectoryExists($sample);
 
@@ -131,12 +131,9 @@ class SampleController extends PapPalController{
 
             // make sure there is no file by this name already
             $i = 0;
-            $targetFile = $imageDirectory . '/' . $filename;
-            while(file_exists($targetFile)){
-              $indexedFilename = substr($filename, 0, strrpos($filename, '.')) . '_' . ++$i . '.jpg';
-              $targetFile = $imageDirectory . '/' . $indexedFilename;
+            while(file_exists($imageDirectory . '/' . $filename)){
+              $filename = substr($filename, 0, strrpos($filename, '.')) . '_' . ++$i . '.jpg';
             }
-            $filename = $i ? $indexedFilename : $filename;
 
             // move file
             $uploadedFile->move($imageDirectory, $filename);
@@ -177,8 +174,7 @@ class SampleController extends PapPalController{
 
   public function rotateThumbnail($id, $thumbnail, $direction, ImageRotator $rotator): Response {
     if($sample = $this->getSample($id)){
-      $thumbnailDirectory = '/mnt/sds_cifs/pappal/thumbnail';
-      $folderDirectory = $thumbnailDirectory . '/' . $sample->getFolder();
+      $folderDirectory = self::THUMBNAIL_DIR . '/' . $sample->getFolder();
       $hgvDirectory = $folderDirectory . '/' . $sample->getHgv();
       $filepath =  $hgvDirectory . '/' . $thumbnail;
 
