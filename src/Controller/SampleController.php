@@ -174,7 +174,7 @@ class SampleController extends PapPalController{
 
   public function rotateThumbnail($id, $thumbnail, $direction, ImageRotator $rotator): Response {
     if($sample = $this->getSample($id)){
-      $folderDirectory = self::THUMBNAIL_DIR . '/' . $sample->getFolder();
+      $folderDirectory = $this->getParameter('app.thumbnail_dir') . '/' . $sample->getFolder();
       $hgvDirectory = $folderDirectory . '/' . $sample->getHgv();
       $filepath =  $hgvDirectory . '/' . $thumbnail;
 
