@@ -73,7 +73,7 @@ PapyrillioPapPalBundle_SampleSetMasterThumbnail:
         language: grc
     requirements:
         id:  \d+
-        thumbnail:  \d+_\d+_\d+.jpg
+        thumbnail:  \d+[a-z]*_\d+_\d+.jpg
         language: grc|lat|cop|egy|ara
 
 PapyrillioPapPalBundle_SampleUnsetMasterThumbnail:
