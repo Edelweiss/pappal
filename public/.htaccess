@@ -3,3 +3,5 @@
      RewriteCond %{REQUEST_FILENAME} !-f
      RewriteRule ^(.*)$ index.php [QSA,L]
 </IfModule>
+
+# RewriteRule ^https://pappal.info/$ https://pappal.zaw.uni-heidelberg.de/$1 [R=301,NC,C]
