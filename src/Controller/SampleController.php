@@ -124,7 +124,7 @@ class SampleController extends PapPalController{
             $filename = $uploadedFile->getClientOriginalName();
             $match = [];
 
-            if($uploadedFile->getMimeType() === 'image/jpeg')){
+            if($uploadedFile->getMimeType() === 'image/jpeg'){
               if(preg_match('/^(.+)\.jpe?g$/i', $filename, $match)){
                 $filename = $match[1] . '.jpg';
               } else {
