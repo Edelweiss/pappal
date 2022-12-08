@@ -53,7 +53,7 @@ class ImageCropper extends ImagePeer{
   }
 
   public function crop($sourcePath, $sourceFile, $targetDirectory, $targetPrefix = 'pappal'){
-    $this->configure($sourcePath, $sourceFile, $targetDirectory, $prefix);
+    $this->configure($sourcePath, $sourceFile, $targetDirectory, $targetPrefix);
 
     // make sure we have valid source image !!!
     // make sure its big enough for the crop !!!

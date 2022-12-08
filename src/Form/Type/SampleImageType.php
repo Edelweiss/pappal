@@ -19,9 +19,9 @@ class SampleImageType extends AbstractType {
         'constraints' => [
            new File([
               'mimeTypes' => [
-                  'image/jpeg'
+                  'image/jpeg', 'image/png'
                   ],
-           'mimeTypesMessage' => 'Please upload jpg file.'
+           'mimeTypesMessage' => 'Please upload jpg or png file.'
            ])
         ]
       ]);
