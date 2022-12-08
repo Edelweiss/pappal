@@ -5,10 +5,10 @@ namespace App\Service;
 use Exception;
 
 class ImageCropper extends ImagePeer{
-  public $imageCounter = 0;
+  public $imageCounter = 0;       // will be set from currently highest number, e.g. 8235b_n_8.jpg => n+1
   public $cropCounter = 0;
-  public $targetDirectory = null; // thumbnail/HGV_1000/HGV_ID
-  public $prefix = null; // usually HGV id
+  public $targetDirectory = null; // thumbnail/<HGV_FOLDER_1000>/<HGV_ID>
+  public $prefix = null;          // usually HGV id
 
   protected function configure($path, $file, $targetDirectory = null, $prefix = null){
     $this->loadImage($path, $file, $prefix);
@@ -17,9 +17,29 @@ class ImageCropper extends ImagePeer{
     $this->imageCounter = self::getImageCounter($targetDirectory);
   }
 
+  /*
+  8235b_0_0.jpg (thumbnails…)
+  8235b_0_1.jpg
+  …
+  8235b_0_8.jpg
+  8235b_1_0.jpg
+  8235b_1_1.jpg
+  …
+  8235b_1_8.jpg
+  …  
+  8235b_n_0.jpg
+  8235b_n_1.jpg
+  8235b_n_3.jpg
+  …
+  8235b_n_8.jpg (thumbnail with highest number)
+  8235b.jpg     (master thumbnail)
+  8235b_lat.jpg (master thumbnail latin)
+  
+  returns n+1 (0 if there aren’t any thumbnails yet)
+  */
   public static function getImageCounter($targetDirectory){
     $imageCounter = -1;
-    if(file_exists($targetDirectory)){
+    if(is_dir($targetDirectory)){
       foreach(scandir($targetDirectory) as $file){
         if(preg_match('/^[\da-z]+_(\d+)_(\d+).jpg$/', $file, $match)){
           $imageNumber = (int) $match[1];
@@ -32,8 +52,8 @@ class ImageCropper extends ImagePeer{
     return $imageCounter + 1;
   }
 
-  public function crop($path, $file, $targetDirectory, $prefix){
-    $this->configure($path, $file, $targetDirectory, $prefix);
+  public function crop($sourcePath, $sourceFile, $targetDirectory, $targetPrefix = 'pappal'){
+    $this->configure($sourcePath, $sourceFile, $targetDirectory, $prefix);
 
     // make sure we have valid source image !!!
     // make sure its big enough for the crop !!!
@@ -94,17 +114,6 @@ class ImageCropper extends ImagePeer{
 
   protected function destroyThumbnail($thumbnail){
     imagedestroy($thumbnail);
-  }
-  
-  public function setRandomMasterSample(){
-    $target = $this->targetDirectory . '/' . $this->prefix . '_' . $this->imageCounter . '_0.jpg';
-    $link = $this->targetDirectory . '/' . $this->prefix . '.jpg';
-    
-    if(!file_exists($link)){
-      if(!symlink($target, $link)){
-        throw new Exception('ImageCropper::setRandomMasterSample> symlink failed (' . $target . ')');
-      }
-    }
   }
 }
 

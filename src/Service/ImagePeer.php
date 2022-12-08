@@ -32,11 +32,11 @@ class ImagePeer{
     $this->height = $imageSize[1];
     $this->mime = $imageSize['mime'];
     
-    if($this->mime == 'image/jpeg'){
+    if($this->mime === 'image/jpeg'){
       $this->image = imagecreatefromjpeg($this->filepath);
-    } else if($this->mime == 'image/png'){
+    } else if($this->mime === 'image/png'){
       $this->image = imagecreatefrompng($this->filepath);
-    } else if($this->mime == 'image/gif'){
+    } else if($this->mime === 'image/gif'){
       $this->image = imagecreatefromgif($this->filepath);
     } else {
       throw new Exception('ImagePeer> Unrecognised image format ' . $this->filepath . ' / ' . $this->mime . (!empty($prefix) ? ' (' . $prefix . ')' : ''));

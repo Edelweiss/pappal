@@ -116,23 +116,32 @@ class SampleController extends PapPalController{
           //Symfony\Component\HttpFoundation\File\UploadedFile
           $files = $this->request->files->get($uploadForm->getName());
           $uploadedFile = $files['image'];
-          if($uploadedFile->getMimeType() === 'image/jpeg'){
+          if(($uploadedFile->getMimeType() === 'image/jpeg') || ($uploadedFile->getMimeType() === 'image/png')){
 
             $imageDirectory = $this->makeSureImageDirectoryExists($sample);
 
-            // make sure it ends with ».jpg«
+            // make sure it ends with ».jpg« or ».png«
             $filename = $uploadedFile->getClientOriginalName();
             $match = [];
-            if(preg_match('/^(.+)\.jpe?g$/i', $filename, $match)){
-              $filename = $match[1] . '.jpg';
+
+            if($uploadedFile->getMimeType() === 'image/jpeg')){
+              if(preg_match('/^(.+)\.jpe?g$/i', $filename, $match)){
+                $filename = $match[1] . '.jpg';
+              } else {
+                $filename .= '.jpg';
+              }
             } else {
-              $filename .= '.jpg';
+              if(preg_match('/^(.+)\.png$/i', $filename, $match)){
+                $filename = $match[1] . '.png';
+              } else {
+                $filename .= '.png';
+              }
             }
 
             // make sure there is no file by this name already
             $i = 0;
             while(file_exists($imageDirectory . '/' . $filename)){
-              $filename = substr($filename, 0, strrpos($filename, '.')) . '_' . ++$i . '.jpg';
+              $filename = substr($filename, 0, strrpos($filename, '.')) . '_' . ++$i . ($uploadedFile->getMimeType() === 'image/jpeg' ? '.jpg' : '.png' );
             }
 
             // move file
@@ -144,7 +153,7 @@ class SampleController extends PapPalController{
 
             $this->addFlash('notice', 'Image has been uploaded.');
           } else {
-            $this->addFlash('error', 'Mime type ' . $uploadedFile->getMimeType() . ' not accepted. Please upload only jpg images.');
+            $this->addFlash('error', 'Mime type ' . $uploadedFile->getMimeType() . ' not accepted. Please upload only jpg or png images.');
           }
         } else {
           $this->addFlash('error', 'Invalid form data.');
