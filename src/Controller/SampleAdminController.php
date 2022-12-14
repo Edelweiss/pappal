@@ -72,19 +72,43 @@ class SampleAdminController extends PapPalController{
             // 4. add upload image to the crawler
             $files = $this->request->files->get($createForm->getName());
             $uploadedFile = $files['image'];
-            if($uploadedFile && $uploadedFile->getMimeType() === 'image/jpeg'){
-              $uploadedFile->move($uploadedFile->getPath(), $uploadedFile->getFilename() . '.jpg');
-              $image = new Image($uploadedFile->getPath() . '/' . $uploadedFile->getFilename() . '.jpg', preg_replace('/\.[^\.]+$/', '', $uploadedFile->getClientOriginalName()) . '.jpg', 'Upload');
+            $imageDirectory = $this->makeSureImageDirectoryExists($sample);
+
+            if($uploadedFile && ($uploadedFile->getMimeType() === 'image/jpeg' || $uploadedFile->getMimeType() === 'image/png')){
+                // make sure it ends with ».jpg« or ».png«
+                $filename = $uploadedFile->getClientOriginalName();
+                $match = [];
+
+                if($uploadedFile->getMimeType() === 'image/jpeg'){
+                  if(preg_match('/^(.+)\.jpe?g$/i', $filename, $match)){
+                    $filename = $match[1] . '.jpg';
+                  } else {
+                    $filename .= '.jpg';
+                  }
+                } else {
+                  if(preg_match('/^(.+)\.png$/i', $filename, $match)){
+                    $filename = $match[1] . '.png';
+                  } else {
+                    $filename .= '.png';
+                  }
+                }
+
+                // make sure there is no file by this name already
+                $i = 0;
+                while(file_exists($imageDirectory . '/' . $filename)){
+                  $filename = substr($filename, 0, strrpos($filename, '.')) . '_' . ++$i . ($uploadedFile->getMimeType() === 'image/jpeg' ? '.jpg' : '.png' );
+                }
+
+              // move file
+              $uploadedFile->move($imageDirectory, $filename);
+              $image = new Image($imageDirectory  . '/' .  $filename, 'Upload');
               $crawler->addImage($image);
             }
 
             if(count($crawler->images) > 0){
 
 	            try{
-                
-	              $hgvDirectory = $this->makeSureImageDirectoryExists($sample);
-
-	              $crawler->saveImages($hgvDirectory);
+	              $crawler->saveImages($imageDirectory);
 	
 	              // 5. determine language from meta data (greek by default)
 	              $notes = $xpath->getNotes();
@@ -98,7 +122,7 @@ class SampleAdminController extends PapPalController{
 	              // 6. create thumbnails
 	              $thumbnailDirectory = $this->makeSureThumbnailDirectoryExists($sample);
 	              foreach($sample->getUploadedImages() as $fileName => $relativeFilePath){
-	                $puncher->punch($hgvDirectory, $fileName, $thumbnailDirectory, $sample->getHgv(), $language != 'grc' ? $language : '');
+	                $puncher->punch($imageDirectory, $fileName, $thumbnailDirectory, $sample->getHgv(), $language != 'grc' ? $language : '');
 	              }
 	              $puncher->setRandomMasterSample();
 	  
