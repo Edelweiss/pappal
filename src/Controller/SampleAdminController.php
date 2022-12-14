@@ -29,8 +29,7 @@ class SampleAdminController extends PapPalController{
     $error = null;
 	  $createForm = $this->getCreateForm();
 
-    // PHP Version 5.3.15
-    if($this->request->getMethod() == 'POST' && $createForm->isValid()){
+    if($this->request->getMethod() === 'POST' && $createForm->isValid()){
       $entityManager = $this->getDoctrine()->getManager();
       $repository = $entityManager->getRepository(Sample::class);
       $hgv = trim($createForm->get('hgv')->getData());
