@@ -101,7 +101,7 @@ class SampleAdminController extends PapPalController{
 
               // move file
               $uploadedFile->move($imageDirectory, $filename);
-              $image = new Image($imageDirectory  . '/' .  $filename, 'Upload');
+              $image = new Image($imageDirectory  . '/' .  $filename, $filename, 'Upload');
               $crawler->addImage($image);
             }
 
