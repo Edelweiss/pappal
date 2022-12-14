@@ -34,8 +34,8 @@ class Sample
     private $thumbnails;
     private $importDate;
 
-    private const THUMBNAIL_DIR = '/mnt/sds_cifs/pappal/thumbnail_dev';
-    private const SAMPLE_DIR    = '/mnt/sds_cifs/pappal/sample_dev';
+    private const THUMBNAIL_DIR = '/mnt/sds_cifs/pappal/thumbnail';
+    private const SAMPLE_DIR    = '/mnt/sds_cifs/pappal/sample';
 
     public function updateDateSort(){
       $this->setDateSort(
@@ -116,7 +116,7 @@ class Sample
 
       if(file_exists($imageDirectory)){
         foreach(scandir($imageDirectory) as $file){
-          if(preg_match('/^(.+\.jpg)$/', $file, $matches)){
+          if(preg_match('/^(.+\.(jpg|png))$/', $file, $matches)){
             $imageLinks[$matches[1]] = 'sample/' . $this->folder . '/' . $this->hgv . '/' . $matches[1];
           }
         }
