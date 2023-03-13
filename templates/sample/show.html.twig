@@ -77,6 +77,8 @@
     <span onclick="sampleSetMasterThumbnail('{{ path('PapyrillioPapPalBundle_SampleSetMasterThumbnail', {'id': sample.id, 'thumbnail': key, 'language': 'grc'})}}');">Set as master thumb for Greek</span>
     <div class="clear"></div>
     <span onclick="sampleSetMasterThumbnail('{{ path('PapyrillioPapPalBundle_SampleSetMasterThumbnail', {'id': sample.id, 'thumbnail': key, 'language': 'lat'})}}');">Set as master thumb for Latin</span>
+    <div class="clear"></div>
+    <span onclick="sampleSetMasterThumbnail('{{ path('PapyrillioPapPalBundle_SampleSetMasterThumbnail', {'id': sample.id, 'thumbnail': key, 'language': 'cop'})}}');">Set as master thumb for Coptic</span>
   </div>
 {% endfor %}
 
@@ -91,6 +93,7 @@
   <select name="language">
     <option value="grc">Griechisch</option>
     <option value="lat">Lateinisch</option>
+    <option value="cop">Koptisch</option>
   </select>
   <input type="submit" value="unset master thumbnail for selected language" />
 </form>

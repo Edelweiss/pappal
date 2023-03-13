@@ -16,7 +16,7 @@ class ImagePuncher{
   public $cropCounter = 0;
   public $targetDirectory = null; // thumbnail/HGV_1000/HGV_ID
   public $prefix = null; // usually HGV id
-  public $suffix = null; // usually empty or e.g. »lat« for latin handsamples
+  public $suffix = null; // usually empty or e.g. »lat« or »cop« for Latin or Coptic handsamples
   
   public static $THUMBNAIL_SIZE = 300;
   public static $GOLDEN_RATIO = 0.618;

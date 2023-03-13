@@ -229,7 +229,7 @@ class SampleController extends PapPalController{
     $entityManager = $this->getDoctrine()->getManager();
     $repository = $entityManager->getRepository(Sample::class);
     $language = $this->getParameter('language');
-    $languages = ['lat' => 'Lateinisch', 'grc' => 'Griechisch'];
+    $languages = ['cop' => 'Koptisch', 'lat' => 'Lateinisch', 'grc' => 'Griechisch'];
 
     if($sample = $this->getSample($id)){
       if($sample->unsetMasterThumbnail($language)){

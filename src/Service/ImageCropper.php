@@ -33,7 +33,8 @@ class ImageCropper extends ImagePeer{
   …
   8235b_n_8.jpg (thumbnail with highest number)
   8235b.jpg     (master thumbnail)
-  8235b_lat.jpg (master thumbnail latin)
+  8235b_lat.jpg (master thumbnail for Latin)
+  8235b_cop.jpg (master thumbnail for Coptic)
   
   returns n+1 (0 if there aren’t any thumbnails yet)
   */

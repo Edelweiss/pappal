@@ -113,10 +113,12 @@ class SampleAdminController extends PapPalController{
 	              // 5. determine language from meta data (greek by default)
 	              $notes = $xpath->getNotes();
 	              $language = 'grc';
-	              if(preg_match('/^Griechisch(\.| ?-)/', $notes)){
+	              if(preg_match('/^[Gg]riechisch(\.| ?-)/', $notes)){
 	                $language = 'grc';
-	              } elseif(preg_match('/^Lateinisch(\.| ?-)/', $notes)){
+	              } elseif(preg_match('/^[Ll]ateinisch(\.| ?-)/', $notes)){
 	                $language = 'lat';
+	              } elseif(preg_match('/^[Kk]optisch(\.| ?-)/', $notes)){
+	                $language = 'cop';
 	              }
 
 	              // 6. create thumbnails
