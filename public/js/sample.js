@@ -69,7 +69,7 @@ function sampleSetMasterThumbnail(path){
           'egy': 'Demotisch',
           'ara': 'Griechisch'
         }[data.data.language];
-        $('div#thumbnail').html($('div#thumbnail').html() + '<img width="300" alt="' + language + '" title="' + language + '" src="' + src + '" id="' + imageId + '">');
+        $('div#thumbnail').html($('div#thumbnail').html() + '<img width="300" alt="' + language + '" title="' + language + '" src="' + src + '" id="' + imageId + '"/>');
       }
 
     } else {
